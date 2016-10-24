@@ -1,2 +1,1 @@
-from ..cryptorandom import *
-from ..prng import *
+from cryptorandom import *
