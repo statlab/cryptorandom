@@ -20,8 +20,7 @@ PYTHON_VERSION = (2, 7)
 
 INSTALL_REQUIRES = [
     'numpy',
-    'scipy',
-    'hashlib'
+    'scipy'
 ]
 
 TESTS_REQUIRE = [
