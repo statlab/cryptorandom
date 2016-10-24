@@ -21,8 +21,8 @@ before_install:
 #  - wheelhouse_pip_r_install ${DEPENDS}
 
 install:
-  - python setup.py install
-
+#  - python setup.py install
+  - pip install -r requirements.txt
 
 # command to run tests
 #script: nosetests
