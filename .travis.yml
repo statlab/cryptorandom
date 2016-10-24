@@ -18,14 +18,14 @@ before_install:
   - source venv/bin/activate
   - python --version
   - pip install --upgrade pip
-  - wheelhouse_pip_r_install ${DEPENDS}
+#  - wheelhouse_pip_r_install ${DEPENDS}
 
 install:
   - python setup.py install
 
 
 # command to run tests
-script: nosetests
+#script: nosetests
 
 
 #script:
