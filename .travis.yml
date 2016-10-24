@@ -14,7 +14,6 @@ python:
   - 3.5
 
 before_install:
-  - source tools/travis_tools.sh
   - virtualenv --python=python venv
   - source venv/bin/activate
   - python --version
