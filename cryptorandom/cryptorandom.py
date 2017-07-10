@@ -81,7 +81,7 @@ class BaseRandom(random.Random):
         >>> str(r)
         'SHA256 PRNG with seed 5'
         """
-        stringrepr = self.__class__.__name__ + " PRNG with seed " + str(self.baseseed)
+        stringrepr = self.__class__.__name__ + " PRNG with seed " + str(self.baseseed) + " and counter " + str(self.counter)
         return stringrepr
         
         
@@ -152,7 +152,7 @@ class SHA256(BaseRandom):
     
     def randint(self, a, b, size=None):
         """
-        Generate random integers between a and b, inclusive.
+        Generate random integers between a (inclusive) and b (exclusive).
         size controls the number of ints generated. If size=None, just one is produced.
         The following tests match the output of Ron's and Philip's implementations.
 
@@ -163,9 +163,9 @@ class SHA256(BaseRandom):
         assert a <= b, "lower and upper limits are switched"
         
         if size==None:
-            return a + (self.nextRandom() % (b-a+1))
+            return a + (self.nextRandom() % (b-a))
         else:
-            return np.reshape(np.array([a + (self.nextRandom() % (b-a+1)) for i in np.arange(np.prod(size))]), size)
+            return np.reshape(np.array([a + (self.nextRandom() % (b-a)) for i in np.arange(np.prod(size))]), size)
 
         
         
