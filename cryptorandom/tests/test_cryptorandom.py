@@ -6,8 +6,8 @@ from ..cryptorandom import BaseRandom, SHA256
 
 def test_SHA256():
     r = SHA256(5)
-    assert(repr(r) == 'SHA256 PRNG with seed 5')
-    assert(str(r) == 'SHA256 PRNG with seed 5')
+    assert(repr(r) == 'SHA256 PRNG with seed 5 and counter 0')
+    assert(str(r) == 'SHA256 PRNG with seed 5 and counter 0')
     
     assert(r.getstate() == (5, 0))
     r.next()
@@ -34,5 +34,5 @@ def test_SHA256_random():
     assert(r.nextRandom() == expected)
     
     r = SHA256(12345678901234567890)
-    fiverand = r.randint(1, 1000, 5)
+    fiverand = r.randint(1, 1001, 5)
     assert( (fiverand == np.array([405, 426, 921, 929,  56])).all() )
