@@ -12,7 +12,6 @@ import random
 # Import library of cryptographic hash functions
 import hashlib
 import cython
-from sha256 import sha256 as c_sha256
 
 # Define useful constants
 cdef int BPF = 53        # Number of bits in a float
@@ -204,7 +203,7 @@ class SHA256(BaseRandom):
         True
         """
         self.basehash.update(const_byte[self.counter % 255])
-        # Apply SHA-256, interpreting hex output as hexadecimal integer
+        # Apply SHA-256, interpreting digest output as integer
         # to yield 256-bit integer (a python "long integer")
         hash_output = self.basehash.digest()
         self.next()
