@@ -1,7 +1,5 @@
 """
-To run docstring tests, run the following from the terminal:
-
-python sha256prng.py -v
+SHA-256 PRNG prototype in Python
 """
 
 from __future__ import division
@@ -70,9 +68,9 @@ class BaseRandom(random.Random):
         """
         Jump ahead n steps in the period
         """
-        self.counter += n        
+        self.counter += n
 
-            
+
     def __repr__(self):
         """
         >>> r = SHA256(5)
@@ -92,55 +90,23 @@ class BaseRandom(random.Random):
 class SHA256(BaseRandom):
     """
     PRNG based on the SHA-256 cryptographic hash function.
-    
-    >>> r = SHA256(5)
-    >>> r.getstate()
-    (5, 0)
-    >>> r.next()
-    >>> r.getstate()
-    (5, 1)
-    >>> r.jumpahead(5)
-    >>> r.getstate()
-    (5, 6)
-    >>> r.seed(22, 3)
-    >>> r.getstate()
-    (22, 3)
-    """
-    
-#    def __init__(self, seed=None):
-#        self.__init__(seed=seed)
-#        self.hashfun = "SHA-256"
-        
+    """ 
         
     def random(self, size=None):
         """
         Generate random numbers between 0 and 1.
         size controls the number of ints generated. If size=None, just one is produced.
         The following tests match the output of Ron's and Philip's implementations.
-
-        >>> r = SHA256(12345678901234567890)
-        >>> r.next()
-        >>> e1 = int("4da594a8ab6064d666eab2bdf20cb4480e819e0c3102ca353de57caae1d11fd1", 16)
-        >>> e2 = int("ae230ec16bee77f77c7378f4eb5d265d931665e29e8bbee7e733f58d3815d338", 16)
-        >>> expected = np.array([e1, e2]) * 2**-256
-        >>> r.random(2) == expected
-        array([ True,  True], dtype=bool)
         """
         if size==None:
             return self.nextRandom()*RECIP_HASHLEN
         else:
             return np.reshape(np.array([self.nextRandom()*RECIP_HASHLEN for i in np.arange(np.prod(size))]), size)
-            
+
     
     def nextRandom(self):
         """
         Generate the next hash value
-        
-        >>> r = SHA256(12345678901234567890)
-        >>> r.next()
-        >>> expected = int("4da594a8ab6064d666eab2bdf20cb4480e819e0c3102ca353de57caae1d11fd1", 16)
-        >>> r.nextRandom() == expected
-        True
         """
         hash_input = (str(self.baseseed) + "," + str(self.counter)).encode('utf-8')
         # Apply SHA-256, interpreting hex output as hexadecimal integer
@@ -155,10 +121,6 @@ class SHA256(BaseRandom):
         Generate random integers between a (inclusive) and b (exclusive).
         size controls the number of ints generated. If size=None, just one is produced.
         The following tests match the output of Ron's and Philip's implementations.
-
-        >>> r = SHA256(12345678901234567890)
-        >>> r.randint(1, 1000, 5)
-        array([405, 426, 921, 929,  56])
         """
         assert a <= b, "lower and upper limits are switched"
         
@@ -166,26 +128,3 @@ class SHA256(BaseRandom):
             return a + (self.nextRandom() % (b-a))
         else:
             return np.reshape(np.array([a + (self.nextRandom() % (b-a)) for i in np.arange(np.prod(size))]), size)
-
-        
-        
-################################################################################
-############################## some sample code ################################
-################################################################################
-
-# pseudo-random number generator
-def toy_example():
-    seed = 12345678901234567890
-    count = 0
-    hash_input = (str(seed) + "," + str(count)).encode('utf-8')
-    # Apply SHA-256, interpreting hex output as hexadecimal integer
-    # to yield 256-bit integer (a python "long integer")
-    hash_output = int(hashlib.sha256(hash_input).hexdigest(),16)
-
-    print(hash_output*RECIP_HASHLEN)
-    count += 1
-
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()
