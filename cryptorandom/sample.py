@@ -3,7 +3,7 @@ import numpy as np
 #cimport numpy as np
 #import cython
 
-def randomSample(n, N, weights=None, replace=False, method="Cormen", prng=np.random)
+def randomSample(n, N, weights=None, replace=False, method="Cormen", prng=np.random):
     '''
        Random sample of size n from a population of size N drawn with or without weights, with or without replacement.
        
@@ -28,18 +28,18 @@ def randomSample(n, N, weights=None, replace=False, method="Cormen", prng=np.ran
         assert n <= N
         
     methods = {
-        "Fisher-Yates" : lambda  N, n: fykd(N, n, gen=prng),
+        "Fisher-Yates" : lambda  N, n: fykd_sample(N, n, gen=prng),
         "PIKK" : lambda N, n: PIKK(N, n, gen=prng),
         "Cormen" : lambda N, n: Random_Sample(N, n, gen=prng),
         "Waterman_R" : lambda N, n: Algorithm_R(N, n, gen=prng),
-        "Vitter_Z" :  # TODO
-        "sample_by_index" : lambda N, n: sample_by_index(N, n, gen=prng)
+# TODO        "Vitter_Z" :  
+        "sample_by_index" : lambda N, n: sample_by_index(N, n, gen=prng),
         "Exponential" : lambda N, n: exponential_sample(n, weights, prng),
         "Elimination" : lambda N, n: elimination_sample(n, weights, replace, prng)
     }
     
     try: 
-        sam = methods[method](N, n):
+        sam = methods[method](N, n)
     except ValueError: 
         print("Sampling method is incompatible with the inputs")
     return sam
@@ -96,12 +96,11 @@ def Algorithm_R(n, k, gen=np.random):
     return set(S)
 
 
-def sample_by_index(int n, int k, gen=np.random):
+def sample_by_index(n, k, gen=np.random):
     '''
     Generate a random sample of 1,...,n by selecting indices uniformly at random
     '''
-    cdef int nprime = n
-    cdef int j, w
+    nprime = n
     S = set()
     Pop = list(range(1, n+1))
     while nprime > n-k:
