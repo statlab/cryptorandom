@@ -40,7 +40,7 @@ def test_SHA256_random():
 def test_SHA256_randint():
     """
     Test that SHA256 random integers are correct.
-    The following tests match the output of Ron's and Philip's implementations.
+    The tests for next() and randint_trunc() match the output of Ron's and Philip's implementations.
     """    
     
     r = SHA256(12345678901234567890)
@@ -49,9 +49,27 @@ def test_SHA256_randint():
     assert(r.nextRandom() == expected)
     
     r = SHA256(12345678901234567890)
-    fiverand = r.randint(1, 1001, 5)
+    fiverand = r.randint_trunc(1, 1001, 5)
     assert( (fiverand == np.array([405, 426, 921, 929,  56])).all() )
+    
+    r = SHA256(12345678901234567890)
+    onerand = r.randint_trunc(1, 1001)
+    assert(onerand == fiverand[0])
+    
+    r = SHA256(12345678901234567890)
+    fiverand = r.randint(1, 1001, 5)
+    assert( (fiverand == np.array([930, 311, 697, 597, 608])).all() )
     
     r = SHA256(12345678901234567890)
     onerand = r.randint(1, 1001)
     assert(onerand == fiverand[0])
+    
+def test_SHA256_bits():
+    r = SHA256(12345678901234567890)
+    val = r.getrandbits(30)
+    assert(val < 2**30)
+    assert(val.bit_length() == 30)
+    
+    val = r.randbelow_from_randbits(5)
+    assert(val < 5)
+    assert(val.bit_length() <= int(5).bit_length())

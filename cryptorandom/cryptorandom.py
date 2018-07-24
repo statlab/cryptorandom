@@ -116,7 +116,7 @@ class SHA256(BaseRandom):
         return(hash_output)
         
     
-    def randint(self, a, b, size=None):
+    def randint_trunc(self, a, b, size=None):
         """
         Generate random integers between a (inclusive) and b (exclusive).
         size controls the number of ints generated. If size=None, just one is produced.
@@ -128,3 +128,37 @@ class SHA256(BaseRandom):
             return a + (self.nextRandom() % (b-a))
         else:
             return np.reshape(np.array([a + (self.nextRandom() % (b-a)) for i in np.arange(np.prod(size))]), size)
+            
+            
+    def getrandbits(self, k):
+        """
+        Calls nextRandom and takes the first k out of 256 bits
+        """
+        val = self.nextRandom()
+        return val >> (HASHLEN-k)
+        
+        
+    def randbelow_from_randbits(self, n):
+        """
+        Generate a random integer between 0 (inclusive) and n (exclusive).
+        Raises ValueError if n==0.
+        """
+        mu = int(n).bit_length()
+        r = self.getrandbits(mu) # 0 <= r < 2**mu
+        while r >= n:
+            r = self.getrandbits(mu)
+        return r
+        
+        
+    def randint(self, a, b, size=None):
+        """
+        Generate random integers between a (inclusive) and b (exclusive).
+        size controls the number of ints generated. If size=None, just one is produced.
+        The following tests match the output of Ron's and Philip's implementations.
+        """
+        assert a <= b, "lower and upper limits are switched"
+        
+        if size==None:
+            return a + self.randbelow_from_randbits(b-a)
+        else:
+            return np.reshape(np.array([a + self.randbelow_from_randbits(b-a) for i in np.arange(np.prod(size))]), size)
