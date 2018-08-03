@@ -161,11 +161,11 @@ class SHA256(BaseRandom):
         Generate a random integer between 0 (inclusive) and n (exclusive).
         Raises ValueError if n==0.
         """
-        mu = int(n).bit_length()
-        r = self.getrandbits(mu) # 0 <= r < 2**mu
-        while r >= n:
+        mu = int(n-1).bit_length()
+        r = self.getrandbits(mu)   # 0 <= r < 2**mu
+        while int(r) >= n:
             r = self.getrandbits(mu)
-        return r
+        return int(r)
         
         
     def randint(self, a, b, size=None):
