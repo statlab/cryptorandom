@@ -62,10 +62,10 @@ def test_SHA256_randint():
     v = np.array([0]*5, dtype=int)
     inx = 0
     while inx < 5:
-        u = t & int(2**11-1)
+        u = t & int(2**10-1)
         while u > 1000:
             t = (t >> 10)
-            u = t & int(2**11-1)
+            u = t & int(2**10-1)
         v[inx] = int(u)+1
         t = (t >> 10)
         inx = inx+1
@@ -80,21 +80,20 @@ def test_SHA256_randint():
 def test_SHA256_bits():
     r = SHA256(12345678901234567890)
     s = SHA256(12345678901234567890)
-    val = r.getrandbits(30)
     v = s.nextRandom()
-    assert(val == (v & int(2**31 - 1)))
-    
-    val = r.getrandbits(10)
-    assert(val == ((v >> 30) & int(2**11-1)))
-    
+    cumbits = 0
+    for k in [10, 20, 30]:   # check that bits are "consumed" correctly
+        val = r.getrandbits(k)
+        assert(val == (v >> cumbits & int(2**k - 1)))
+        cumbits = cumbits + k   
+         
     r = SHA256(12345678901234567890)
     s = SHA256(12345678901234567890)
     val = r.getrandbits(500)
     v = s.nextRandom()
     w = s.nextRandom()
-    assert( val == ((w<<256 | v) & int(2**501 - 1)) )
+    assert( val == ((w<<256 | v) & int(2**500 - 1)) )  # check that blocks are appended correctly
     
+    r = SHA256(12345678901234567890)
     val = r.randbelow_from_randbits(5)
-    assert(val < 5)
-    assert(val >= 0)
-    assert(val.bit_length() <= int(5).bit_length())
+    assert(val == 4)
