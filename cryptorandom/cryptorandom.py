@@ -150,7 +150,7 @@ class SHA256(BaseRandom):
         while k > self.randbits_remaining:                 # pre-pend more random bits
             self.randbits = (self.nextRandom() << self.randbits_remaining | self.randbits)  # accounts for leading 0s
             self.randbits_remaining = self.randbits_remaining + HASHLEN
-        val = (self.randbits & int(2**(k+1)-1))            # harvest least significant k bits
+        val = (self.randbits & int(2**k-1))            # harvest least significant k bits
         self.randbits_remaining = self.randbits_remaining - k
         self.randbits = self.randbits >> k                 # discard the k harvested bits
         return val
@@ -161,10 +161,10 @@ class SHA256(BaseRandom):
         Generate a random integer between 0 (inclusive) and n (exclusive).
         Raises ValueError if n==0.
         """
-        mu = int(n-1).bit_length()
-        r = self.getrandbits(mu)   # 0 <= r < 2**mu
+        k = int(n-1).bit_length()
+        r = self.getrandbits(k)   # 0 <= r < 2**k
         while int(r) >= n:
-            r = self.getrandbits(mu)
+            r = self.getrandbits(k)
         return int(r)
         
         
