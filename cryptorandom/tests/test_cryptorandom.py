@@ -66,10 +66,22 @@ def test_SHA256_randint():
     
 def test_SHA256_bits():
     r = SHA256(12345678901234567890)
+    s = SHA256(12345678901234567890)
     val = r.getrandbits(30)
-    assert(val < 2**30)
-    assert(val.bit_length() == 30)
+    v = s.nextRandom()
+    assert(val == (v & int(2**31 - 1)))
+    
+    val = r.getrandbits(10)
+    assert(val == ((v >> 30) & int(2**11-1)))
+    
+    r = SHA256(12345678901234567890)
+    s = SHA256(12345678901234567890)
+    val = r.getrandbits(500)
+    v = s.nextRandom()
+    w = s.nextRandom()
+    assert( val = ((w>>256 | v) & int(2**501 - 1)) )
     
     val = r.randbelow_from_randbits(5)
     assert(val < 5)
+    assert(val >= 0)
     assert(val.bit_length() <= int(5).bit_length())
