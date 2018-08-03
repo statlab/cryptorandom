@@ -57,8 +57,21 @@ def test_SHA256_randint():
     assert(onerand == fiverand[0])
     
     r = SHA256(12345678901234567890)
+    s = SHA256(12345678901234567890)
+    t = s.nextRandom()
+    v = np.array([0]*5, dtype=int)
+    inx = 0
+    while inx < 5:
+        u = t & int(2**11-1)
+        while u > 1000:
+            t = (t >> 10)
+            u = t & int(2**11-1)
+        v[inx] = int(u)+1
+        t = (t >> 10)
+        inx = inx+1
     fiverand = r.randint(1, 1001, 5)
-    assert( (fiverand == np.array([930, 311, 697, 597, 608])).all() )
+    
+    assert( (fiverand == v).all() )
     
     r = SHA256(12345678901234567890)
     onerand = r.randint(1, 1001)
@@ -66,10 +79,22 @@ def test_SHA256_randint():
     
 def test_SHA256_bits():
     r = SHA256(12345678901234567890)
+    s = SHA256(12345678901234567890)
     val = r.getrandbits(30)
-    assert(val < 2**30)
-    assert(val.bit_length() == 30)
+    v = s.nextRandom()
+    assert(val == (v & int(2**31 - 1)))
+    
+    val = r.getrandbits(10)
+    assert(val == ((v >> 30) & int(2**11-1)))
+    
+    r = SHA256(12345678901234567890)
+    s = SHA256(12345678901234567890)
+    val = r.getrandbits(500)
+    v = s.nextRandom()
+    w = s.nextRandom()
+    assert( val == ((w<<256 | v) & int(2**501 - 1)) )
     
     val = r.randbelow_from_randbits(5)
     assert(val < 5)
+    assert(val >= 0)
     assert(val.bit_length() <= int(5).bit_length())

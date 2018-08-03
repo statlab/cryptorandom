@@ -41,9 +41,14 @@ class BaseRandom(random.Random):
 		
         a only gets changed at initiation. Counter gets updated each time
         the prng gets called.
+        
+        randbits are random bits not yet returned outside the class
+        
         """
         self.baseseed = baseseed
         self.counter = counter
+        self.randbits = None
+        self.randbits_remaining = 0
 
         
     def next(self):
@@ -129,14 +134,27 @@ class SHA256(BaseRandom):
         else:
             return np.reshape(np.array([a + (self.nextRandom() % (b-a)) for i in np.arange(np.prod(size))]), size)
             
-            
+                      
     def getrandbits(self, k):
         """
-        Calls nextRandom and takes the first k out of 256 bits
-        """
-        val = self.nextRandom()
-        return val >> (HASHLEN-k)
+        Returns k pseudorandom bits. 
+        If self.randbits contains at least k bits, returns k of those bits and removes them.
         
+        If self.randbits has fewer than k bits, calls self.nextRandom() as many times as needed to
+        populate self.randbits with at least k random bits, returns those k, and keeps 
+        any remaining bits in self.randbits
+        """
+        if self.randbits is None:                          # initialize the cache
+            self.randbits = self.nextRandom()
+            self.randbits_remaining = HASHLEN
+        while k > self.randbits_remaining:                 # pre-pend more random bits
+            self.randbits = (self.nextRandom() << self.randbits_remaining | self.randbits)  # accounts for leading 0s
+            self.randbits_remaining = self.randbits_remaining + HASHLEN
+        val = (self.randbits & int(2**(k+1)-1))            # harvest least significant k bits
+        self.randbits_remaining = self.randbits_remaining - k
+        self.randbits = self.randbits >> k                 # discard the k harvested bits
+        return val
+
         
     def randbelow_from_randbits(self, n):
         """
