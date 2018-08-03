@@ -79,7 +79,7 @@ def test_SHA256_bits():
     val = r.getrandbits(500)
     v = s.nextRandom()
     w = s.nextRandom()
-    assert( val = ((w>>256 | v) & int(2**501 - 1)) )
+    assert( val == ((w<<256 | v) & int(2**501 - 1)) )
     
     val = r.randbelow_from_randbits(5)
     assert(val < 5)

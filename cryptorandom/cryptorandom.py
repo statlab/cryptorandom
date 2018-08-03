@@ -134,24 +134,27 @@ class SHA256(BaseRandom):
         else:
             return np.reshape(np.array([a + (self.nextRandom() % (b-a)) for i in np.arange(np.prod(size))]), size)
             
-            
+                      
     def getrandbits(self, k):
         """
-        Returns k random bits. 
-        If self.randbits contains at least k bits, returns k of those bits and spoils them.
-        If self.randbits has fewer than k bits, calls nextRandom as many times as needed to
-        be able to return k random bits, and stores the remaining bits in self.randbits
+        Returns k pseudorandom bits. 
+        If self.randbits contains at least k bits, returns k of those bits and removes them.
+        
+        If self.randbits has fewer than k bits, calls self.nextRandom() as many times as needed to
+        populate self.randbits with at least k random bits, returns those k, and keeps 
+        any remaining bits in self.randbits
         """
         if self.randbits is None:                          # initialize the cache
             self.randbits = self.nextRandom()
             self.randbits_remaining = HASHLEN
         while k > self.randbits_remaining:                 # pre-pend more random bits
-            self.randbits = (self.nextRandom() << self.randbits_remaining | self.randbits )  # accounts for leading 0s
+            self.randbits = (self.nextRandom() << self.randbits_remaining | self.randbits)  # accounts for leading 0s
             self.randbits_remaining = self.randbits_remaining + HASHLEN
         val = (self.randbits & int(2**(k+1)-1))            # harvest least significant k bits
         self.randbits_remaining = self.randbits_remaining - k
-        self.randbits = self.randbits >> k                      # discard the k harvested bits
+        self.randbits = self.randbits >> k                 # discard the k harvested bits
         return val
+
         
     def randbelow_from_randbits(self, n):
         """
