@@ -18,9 +18,10 @@ def test_SHA256():
     assert r.getstate() == (5, 1)
     r.jumpahead(5)
     assert r.getstate() == (5, 6)
-    r.seed(22, 3)
-    assert r.getstate() == (22, 3)
-
+    r.seed(22)
+    assert r.getstate() == (22, 0)
+    r.setstate(2345, 3)
+    assert r.getstate() == (2345, 3)
 
 def test_SHA256_random():
     """
@@ -42,7 +43,7 @@ def test_SHA256_random():
     assert (r.random(2) == expected).all()
 
     r = SHA256()
-    r.seed(12345678901234567890, 1)
+    r.setstate(12345678901234567890, 1)
     assert r.random() == expected[0]
 
 def test_SHA256_randint():
@@ -52,7 +53,7 @@ def test_SHA256_randint():
     """
     r = SHA256(12345678901234567890)
     fiverand = r.randint_trunc(1, 1001, 5)
-    assert (fiverand == np.array([766, 536, 423, 164, 889])).all()
+    assert (fiverand == np.array([876, 766, 536, 423, 164])).all()
 
     r = SHA256(12345678901234567890)
     onerand = r.randint_trunc(1, 1001)
@@ -103,4 +104,4 @@ def test_SHA256_bits():
 
     r = SHA256(12345678901234567890)
     val = r.randbelow_from_randbits(5)
-    assert val == 4
+    assert val == 3
