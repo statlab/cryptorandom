@@ -177,9 +177,9 @@ class SHA256(BaseRandom):
             self.basehash = None
 
 
-    def seed(self, baseseed=None, counter=0):
+    def seed(self, baseseed=None):
         """
-        Initialize internal state from hashable object.
+        Initialize internal seed and hashable object with counter 0.
 
         Parameters
         ----------
@@ -193,24 +193,27 @@ class SHA256(BaseRandom):
         if not hasattr(self, 'baseseed') or baseseed != self.baseseed:
             self.baseseed = baseseed
             self._basehash()
-        self.counter = counter
+        self.counter = 0
         self.randbits = None
         self.randbits_remaining = 0
 
 
-    def setstate(self, state):
+    def setstate(self, baseseed=None, counter=0):
         """
         Set the state (seed and counter)
 
         Parameters
         ----------
-        state : tuple
-            (seed, counter) pair
+        baseseed : {None, int, string} (optional)
+            Random seed used to initialize the PRNG. It can be an integer of arbitrary length,
+            a string of arbitrary length, or `None`. Default is `None`.
+        counter : int (optional)
+            Integer that counts how many times the PRNG has been called. The counter
+             is used to update the internal state after each step. Default is 0.
         """
-        assert isinstance(int, state[1])
-
-        (self.baseseed, self.counter) = (int(val) for val in state)
+        (self.baseseed, self.counter) = (baseseed, counter)
         self._basehash()
+        self.basehash.update(b'\x00'*counter)
 
 
     def jumpahead(self, n):
@@ -218,7 +221,11 @@ class SHA256(BaseRandom):
         Jump ahead n steps in the period
         """
         self.counter += n
-        self.basehash.update(bytes(1)*n)
+        self.basehash.update(b'\x00'*n)
+
+
+    def next(self):
+        self.jumpahead(1)
 
 
     def nextRandom(self):
@@ -231,7 +238,7 @@ class SHA256(BaseRandom):
         >>> r.nextRandom() == expected
         True
         """
-        self.basehash.update(bytes(1))
+#        self.basehash.update(bytes(1))
         # Apply SHA-256, interpreting digest output as integer
         # to yield 256-bit integer (a python "long integer")
         hash_output = self.basehash.digest()
