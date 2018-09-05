@@ -52,7 +52,7 @@ def test_SHA256_randint():
     """
     r = SHA256(12345678901234567890)
     fiverand = r.randint_trunc(1, 1001, 5)
-    assert (fiverand == np.array([786, 846, 328, 39, 454])).all()
+    assert (fiverand == np.array([766, 536, 423, 164, 889])).all()
 
     r = SHA256(12345678901234567890)
     onerand = r.randint_trunc(1, 1001)
@@ -103,4 +103,4 @@ def test_SHA256_bits():
 
     r = SHA256(12345678901234567890)
     val = r.randbelow_from_randbits(5)
-    assert val == 1
+    assert val == 4

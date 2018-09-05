@@ -4,6 +4,8 @@ SHA-256 PRNG prototype in Python
 
 from __future__ import division
 import numpy as np
+import sys
+import struct
 # Import base class for PRNGs
 import random
 # Import library of cryptographic hash functions
@@ -14,6 +16,55 @@ BPF = 53        # Number of bits in a float
 RECIP_BPF = 2**-BPF
 HASHLEN = 256 # Number of bits in a hash output
 RECIP_HASHLEN = 2**-HASHLEN
+
+################################################################################
+############################## Int from Hash ###################################
+################################################################################
+
+def int_from_hash_py2(hash):
+    '''
+    Convert byte(s) to ints, specific for Python versions < 3.
+
+    Parameters
+    ----------
+    hash : bytes
+        Hash or list of hashes to convert to integers
+
+    Returns
+    -------
+    int or list ndarray of ints
+    '''
+    if isinstance(hash, list):
+        hash_int = np.array([int(h.encode('hex'), 16) for h in hash])
+    else:
+        hash_int = int(hash.encode('hex'), 16)
+    return hash_int
+
+
+def int_from_hash_py3(hash):
+    '''
+    Convert byte(s) to ints, specific for Python 3.
+
+    Parameters
+    ----------
+    hash : bytes
+        Hash or list of hashes to convert to integers
+
+    Returns
+    -------
+    int or list ndarray of ints
+    '''
+    if isinstance(hash, list):
+        hash_int = np.array([int.from_bytes(h, 'big') for h in hash])
+    else:
+        hash_int = int.from_bytes(hash, 'big')
+    return hash_int
+
+
+if sys.version_info[0] < 3:
+    int_from_hash = int_from_hash_py2
+else:
+    int_from_hash = int_from_hash_py3
 
 ################################################################################
 ############################## Base PRNG Class #################################
@@ -92,26 +143,6 @@ class BaseRandom(random.Random):
 ################################################################################
 ############################## SHA-256 Class ###################################
 ################################################################################
-
-def int_from_hash(hash):
-    '''
-    Convert byte(s) to ints.
-
-    Parameters
-    ----------
-    hash : bytes
-        Hash or list of hashes to convert to integers
-
-    Returns
-    -------
-    int or list ndarray of ints
-    '''
-    if isinstance(hash, list):
-        hash_int = np.array([int.from_bytes(h, 'little') for h in hash])
-    else:
-        hash_int = int.from_bytes(hash, 'little')
-    return hash_int
-
 
 class SHA256(BaseRandom):
     """
