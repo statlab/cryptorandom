@@ -78,7 +78,7 @@ def randomSample(a, size, replace=False, p=None, method="sample_by_index", prng=
 
     if replace is False and p is None:
         try:
-            sam = np.array(methods[method](N, size)) - 1 # shift to 0 indexing
+            sam = np.array(methods[method](N, size), dtype=np.int) - 1 # shift to 0 indexing
         except ValueError:
             print("Sampling method is incompatible with the inputs")
     elif replace is True and method in ['Fisher-Yates', 'PIKK', 'Cormen',
@@ -86,7 +86,7 @@ def randomSample(a, size, replace=False, p=None, method="sample_by_index", prng=
         raise ValueError("Method is meant for sampling without replacement")
     else:
         try:
-            sam = np.array(methods[method](size, p)) - 1
+            sam = np.array(methods[method](size, p), dtype=np.int) - 1
         except ValueError:
             print("Sampling method is incompatible with the inputs")
     return a[sam]
