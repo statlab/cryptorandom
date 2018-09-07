@@ -68,14 +68,20 @@ def randomSample(a, size, replace=False, p=None, method="sample_by_index", prng=
         "Waterman_R" : lambda N, n: Algorithm_R(N, n, prng=prng),
         "Vitter_Z" : lambda N, n: Algorithm_Z(N, n, prng=prng),
         "sample_by_index" : lambda N, n: sample_by_index(N, n, prng=prng),
-        "Exponential" : lambda N, n: exponential_sample(n, p, prng),
-        "Elimination" : lambda N, n: elimination_sample(n, p, replace, prng)
+        "Exponential" : lambda n, p: exponential_sample(n, p, prng=prng),
+        "Elimination" : lambda n, p: elimination_sample(n, p, replace=replace, prng=prng)
     }
 
-    try:
-        sam = np.array(methods[method](N, size)) - 1 # shift to 0 indexing
-    except ValueError:
-        print("Sampling method is incompatible with the inputs")
+    if replace is False and p is None:
+        try:
+            sam = np.array(methods[method](N, size)) - 1 # shift to 0 indexing
+        except ValueError:
+            print("Sampling method is incompatible with the inputs")
+    else:
+        try:
+            sam = np.array(methods[method](size, p)) - 1
+        except ValueError:
+            print("Sampling method is incompatible with the inputs")
     return a[sam]
 
 
@@ -289,7 +295,7 @@ def sample_by_index(n, k, prng=np.random):
 
 def elimination_sample(k, p, replace=True, prng=np.random):
     '''
-    Weighted random sample of size n drawn with or without replacement.
+    Weighted random sample of size k from 1, ..., n drawn with or without replacement.
     The algorithm is inefficient but transparent.
     Walker's alias method is more efficient.
 
@@ -317,7 +323,7 @@ def elimination_sample(k, p, replace=True, prng=np.random):
         if replace:
             wc = np.cumsum(weights)/np.sum(weights)  # normalize the weights
             sam = prng.random(size=k)
-            return wc.searchsorted(sam)
+            return wc.searchsorted(sam)+1
         else:
             if k > n:
                 raise ValueError('sample size larger than population in \
@@ -327,8 +333,8 @@ def elimination_sample(k, p, replace=True, prng=np.random):
             else:
                 weights_left = np.copy(weights)
                 indices_left = list(range(n))
-                sam = np.full(n, -1)
-                for i in range(n):
+                sam = np.full(k, -1)
+                for i in range(k):
                     # normalize remaining weights
                     wc = np.cumsum(weights_left)/np.sum(weights_left)
                     # generate a U[0,1]
@@ -341,12 +347,12 @@ def elimination_sample(k, p, replace=True, prng=np.random):
                     indices_left = np.delete(indices_left, inx)
                     # delete the corresponding weight
                     weights_left = np.delete(weights_left, inx)
-                return sam
+                return sam+1
 
 
 def exponential_sample(k, p, prng=np.random):
     '''
-    Weighted random sample of size n without replacement.
+    Weighted random sample of size of size k from 1, ..., n without replacement.
 
     Let X_1, ..., X_N be independent exponential random variables with rates w_1, ..., w_N,
     and let W = w_1 + ... + w_N.
@@ -387,4 +393,4 @@ def exponential_sample(k, p, prng=np.random):
         sam = prng.random(size=n)
         sam = -np.log(sam)/weights
         sample = sam.argsort()[0:k]
-        return sample
+        return sample+1
