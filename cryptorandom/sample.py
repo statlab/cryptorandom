@@ -148,6 +148,10 @@ def Random_Sample(n, k, prng=np.random):
     Recursive sampling algorithm from Cormen et al
     Draw a sample of to sample k out of 1, ..., n without replacement
 
+    Note that if k is larger than the default recursion limit of 1000, 
+    this function will throw an error. You can change the recursion
+    depth using `sys.setrecursionlimit()`.
+
     Parameters
     ----------
     n : int

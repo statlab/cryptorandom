@@ -145,6 +145,11 @@ def test_Cormen():
     assert (sam+1 == [2, 3]).all() # shift to 1-index
 
 
+@raises(RuntimeError)
+def test_cormen_recursion_depth():
+    Random_Sample(2000, 1500)
+
+
 def test_Waterman_R():
     """
     Test Waterman's algorithm R
