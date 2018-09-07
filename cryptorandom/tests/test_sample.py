@@ -76,7 +76,7 @@ def test_fykd():
     Test Fisher-Yates shuffle for random samples, fykd_sample
     """
     ff = fake_generator()
-    sam = fykd_sample(5, 2, gen=ff)
+    sam = fykd_sample(5, 2, prng=ff)
     assert sam == [1, 2]
     
     ff = fake_generator()
@@ -89,7 +89,7 @@ def test_PIKK():
     Test PIKK
     """
     ff = fake_generator()
-    sam = PIKK(5, 2, gen=ff)
+    sam = PIKK(5, 2, prng=ff)
     assert (sam == [1, 2]).all()
     
     ff = fake_generator()
@@ -102,7 +102,7 @@ def test_Cormen():
     Test Cormen et al recursive Random_Sample
     """
     ff = fake_generator()
-    sam = Random_Sample(5, 2, gen=ff)
+    sam = Random_Sample(5, 2, prng=ff)
     assert sam == [2, 3]
     
     ff = fake_generator()
@@ -115,7 +115,7 @@ def test_Waterman_R():
     Test Waterman's algorithm R
     """
     ff = fake_generator()
-    sam = Algorithm_R(5, 2, gen=ff)
+    sam = Algorithm_R(5, 2, prng=ff)
     assert sam == [1, 3]
     
     ff = fake_generator()
@@ -128,7 +128,7 @@ def test_sbi():
     Test sample_by_index
     """
     ff = fake_generator()
-    sam = sample_by_index(5, 2, gen=ff)
+    sam = sample_by_index(5, 2, prng=ff)
     assert sam == [2, 3]
     
     ff = fake_generator()
@@ -141,7 +141,7 @@ def test_Vitter_Z():
     Test Vitter's algorithm Z
     """
     ff = fake_generator()
-    sam = Algorithm_Z(5, 2, gen=ff)
+    sam = Algorithm_Z(5, 2, prng=ff)
     assert sam == [4, 2]
     
     ff = fake_generator()
@@ -149,9 +149,44 @@ def test_Vitter_Z():
     assert (sam+1 == [4, 2]).all() # shift to 1-index
 
     ff = fake_generator()
-    sam = Algorithm_Z(500, 2, gen=ff)
+    sam = Algorithm_Z(500, 2, prng=ff)
     assert sam == [420, 265]
     
     ff = fake_generator()
     sam = randomSample(500, 2, method="Vitter_Z", prng=ff)
     assert (sam+1 == [420, 265]).all() # shift to 1-index
+
+
+def test_elimination_sample():
+    """
+    Test elimination_sample
+    """
+    ff = fake_generator()
+    sam = elimination_sample(2, [0.2]*5, prng=ff)
+    assert (sam == [1, 1]).all()
+    
+    ff = fake_generator()
+    sam = elimination_sample(2, [0.2]*5, replace=False, prng=ff)
+    assert (sam == [1, 2]).all()
+
+    ff = fake_generator()
+    sam = randomSample(5, 2, p=[0.2]*5, replace=True, method="Elimination", prng=ff)
+    assert (sam+1 == [1, 1]).all() # shift to 1-index
+
+    ff = fake_generator()
+    sam = randomSample(5, 2, p=[0.2]*5, replace=False, method="Elimination", prng=ff)
+    assert (sam+1 == [1, 2]).all() # shift to 1-index
+
+
+
+def test_exponential_sample():
+    """
+    Test elimination_sample
+    """
+    ff = fake_generator()
+    sam = exponential_sample(2, [0.2]*5, prng=ff)
+    assert (sam == [5, 4]).all()
+
+    ff = fake_generator()
+    sam = randomSample(5, 2, p=[0.2]*5, replace=False, method="Exponential", prng=ff)
+    assert (sam+1 == [5, 4]).all() # shift to 1-index
