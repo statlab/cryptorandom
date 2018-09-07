@@ -1,5 +1,6 @@
 from __future__ import division
 import numpy as np
+import math
 
 def randomSample(a, size, replace=False, p=None, method="sample_by_index", prng=np.random):
     '''
@@ -65,7 +66,7 @@ def randomSample(a, size, replace=False, p=None, method="sample_by_index", prng=
         "PIKK" : lambda N, n: PIKK(N, n, gen=prng),
         "Cormen" : lambda N, n: Random_Sample(N, n, gen=prng),
         "Waterman_R" : lambda N, n: Algorithm_R(N, n, gen=prng),
-        # TODO        "Vitter_Z" :
+        "Vitter_Z" : lambda N, n: Algorithm_Z(N, n, gen=prng),
         "sample_by_index" : lambda N, n: sample_by_index(N, n, gen=prng),
         "Exponential" : lambda N, n: exponential_sample(n, p, prng),
         "Elimination" : lambda N, n: elimination_sample(n, p, replace, prng)
@@ -130,6 +131,59 @@ def Algorithm_R(n, k, gen=np.random):
         if i <= k:
             S[i-1] = t
     return S
+
+
+def Algorithm_Z(n, k, gen=np.random):
+    
+    def Algorithm_X(n, t):
+        V = gen.random()
+        s = 0
+        frac = 2
+        while frac > V:
+            s += 1
+            frac = ((t+1-n)/(t+1))**(s+1)
+        return s
+
+    def f(x, t):
+        numer = math.factorial(t-k+x)/math.factorial(t-k-1)
+        denom = math.factorial(t+x+1)/math.factorial(t)
+        return numer/denom * k/(t-k)
+    
+    def g(x, t):
+        assert x>=0
+        return k/(t+x) * (t/(t+x))**k
+        
+    def h(x, t):
+        assert x>=0
+        return k/(t+1) * ((t-k+1)/(t+x-k+1))**(k+1)
+
+    def c(t):
+        return (t+1)/(t-k+1)
+
+    sam = list(range(1, k+1))  # fill the reservoir
+    t = k
+    
+    while t<=n:
+        # Determine how many unseen records, nu, to skip
+        if t <= 22*k: # the choice of 22 is taken from Vitter's 1985 ACM paper
+            nu = Algorithm_X(k, t)
+        else:
+            var = -2
+            U = 2
+            while U > var:
+                V = gen.random()
+                X = t*(V**(-1/k) - 1)
+                U = gen.random()
+                if U <= h(np.floor(X), t)/(c(t)*g(X, t)):
+                    break
+                var = f(np.floor(X), t)/(c(t)*g(X, t))
+            nu = np.floor(X)
+        if t+nu <= n:
+            # Make the next record a candidate, replacing one at random
+            i = gen.randint(0, k)
+            sam[i] = int(t+nu)
+        t = t+nu+1
+    return sam
 
 
 def sample_by_index(n, k, gen=np.random):
