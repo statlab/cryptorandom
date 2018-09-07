@@ -1,3 +1,7 @@
+"""
+Sampling with or without weights, with or without replacement.
+"""
+
 from __future__ import division
 import numpy as np
 import math
@@ -77,6 +81,9 @@ def randomSample(a, size, replace=False, p=None, method="sample_by_index", prng=
             sam = np.array(methods[method](N, size)) - 1 # shift to 0 indexing
         except ValueError:
             print("Sampling method is incompatible with the inputs")
+    elif replace is True and method in ['Fisher-Yates', 'PIKK', 'Cormen',
+        'Waterman_R', 'Vitter_Z', 'sample_by_index']:
+        raise ValueError("Method is meant for sampling without replacement")
     else:
         try:
             sam = np.array(methods[method](size, p)) - 1
@@ -223,13 +230,13 @@ def Algorithm_Z(n, k, prng=np.random):
         numer = math.factorial(t-k+x)/math.factorial(t-k-1)
         denom = math.factorial(t+x+1)/math.factorial(t)
         return numer/denom * k/(t-k)
-    
+
     def g(x, t):
-        assert x>=0
+        assert x >= 0
         return k/(t+x) * (t/(t+x))**k
-        
+
     def h(x, t):
-        assert x>=0
+        assert x >= 0
         return k/(t+1) * ((t-k+1)/(t+x-k+1))**(k+1)
 
     def c(t):
@@ -237,8 +244,8 @@ def Algorithm_Z(n, k, prng=np.random):
 
     sam = list(range(1, k+1))  # fill the reservoir
     t = k
-    
-    while t<=n:
+
+    while t <= n:
         # Determine how many unseen records, nu, to skip
         if t <= 22*k: # the choice of 22 is taken from Vitter's 1985 ACM paper
             nu = Algorithm_X(k, t)
@@ -359,9 +366,9 @@ def exponential_sample(k, p, prng=np.random):
 
     Then the chance that X_k is the smallest of them is w_k/W.
 
-    Because of the "memoryless" property of exponential random variables and the independence, if
-    the smallest is removed, for j!=k, the chance that X_j is the smallest of the remaining variables
-    is w_j/(W-w_k), and so on.
+    Because of the "memoryless" property of exponential random variables and the independence,
+    if the smallest is removed, for j!=k, the chance that X_j is the smallest of the remaining
+    variables is w_j/(W-w_k), and so on.
 
     The percentile function of the exponential distribution with rate w is -ln(1-F)/w.
 
