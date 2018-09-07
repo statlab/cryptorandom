@@ -134,3 +134,24 @@ def test_sbi():
     ff = fake_generator()
     sam = randomSample(5, 2, method="sample_by_index", prng=ff)
     assert (sam+1 == [2, 3]).all() # shift to 1-index
+
+
+def test_Vitter_Z():
+    """
+    Test Vitter's algorithm Z
+    """
+    ff = fake_generator()
+    sam = Algorithm_Z(5, 2, gen=ff)
+    assert sam == [4, 2]
+    
+    ff = fake_generator()
+    sam = randomSample(5, 2, method="Vitter_Z", prng=ff)
+    assert (sam+1 == [4, 2]).all() # shift to 1-index
+
+    ff = fake_generator()
+    sam = Algorithm_Z(500, 2, gen=ff)
+    assert sam == [420, 265]
+    
+    ff = fake_generator()
+    sam = randomSample(500, 2, method="Vitter_Z", prng=ff)
+    assert (sam+1 == [420, 265]).all() # shift to 1-index
