@@ -96,19 +96,21 @@ def fykd_sample(n, k, gen=np.random):
 
 def PIKK(n, k, gen=np.random):
     '''
-    PIKK Algorithm: permute indices and keep k
+    PIKK Algorithm: permute indices and keep k.
+    Contrary to what Python does, this assumes indexing starts at 1.
     '''
-    return set(np.argsort(gen.random(n))[0:k])
+    return np.argsort(gen.random(n))[0:k] + 1
 
 
 def Random_Sample(n, k, gen=np.random):
     '''
     Recursive sampling algorithm from Cormen et al
+    Draw a sample of k out of 1, ..., n.
     '''
     if k == 0:
         return []
     else:
-        S = Random_Sample(n-1, k-1)
+        S = Random_Sample(n-1, k-1, gen=gen)
         i = gen.randint(1, n+1)
         if i in S:
             S.append(n)
@@ -120,6 +122,7 @@ def Random_Sample(n, k, gen=np.random):
 def Algorithm_R(n, k, gen=np.random):
     '''
     Waterman's Algorithm R for resevoir SRSs
+    Draw a sample of k out of 1, ..., n.
     '''
     S = list(range(1, k+1))  # fill the reservoir
     for t in range(k+1, n+1):
@@ -134,12 +137,12 @@ def sample_by_index(n, k, gen=np.random):
     Generate a random sample of 1,...,n by selecting indices uniformly at random
     '''
     nprime = n
-    S = set()
+    S = []
     Pop = list(range(1, n+1))
     while nprime > n-k:
         w = gen.randint(1, nprime+1)
         j = Pop[w-1]
-        S = S.union([j])
+        S.append(j)
         lastvalue = Pop.pop()
         if w < nprime:
             Pop[w-1] = lastvalue # Move last population item to the wth position
