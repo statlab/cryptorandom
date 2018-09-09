@@ -21,7 +21,7 @@ Install dependencies using:
 $ pip install -r requirements.txt
 ```
 
-Then, install permute using:
+Then, install cryptorandom using:
 
 ```
 $ pip install .
