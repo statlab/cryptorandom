@@ -1,13 +1,13 @@
-Announcement: permute 0.X.0
+Announcement: cryptorandom 0.X.0
 ===========================
 
-We're happy to announce the release of permute v0.X.0!
+We're happy to announce the release of cryptorandom v0.X.0!
 
-permute is permutation testing and confidence set toolbox for Python.
+cryptorandom is a cryptographically secure PRNG and sampling module for Python.
 
 For more information, examples, and documentation, please visit our website:
 
-http://statlab.github.io/permute/
+http://statlab.github.io/cryptorandom/
 
 
 New Features
