@@ -76,6 +76,26 @@ def test_fake_generator():
     assert out == [0.1, 0.2]
 
 
+def test_get_prng():
+    
+    ff = fake_generator()
+    gg = get_prng(ff)
+    assert ff == gg
+    
+    gg = get_prng()
+    assert isinstance(gg, SHA256)
+    
+    gg = get_prng(5)
+    assert isinstance(gg, SHA256)
+    
+    np.random.seed(234)
+    rand1 = np.random.random(size=5)
+    np.random.seed(234)
+    gg = get_prng(np.random)
+    rand2 = gg.random(size=5)
+    assert (rand1 == rand2).all()
+
+
 @raises(AssertionError)
 def test_random_sample_bad_N():
     randomSample(-2, 2)
