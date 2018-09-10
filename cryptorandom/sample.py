@@ -42,13 +42,13 @@ def random_sample(a, size, replace=False, p=None, method="sample_by_index", prng
 
     Sampling methods available are:
         Fisher-Yates:    sampling without weights, without replacement
-        PIKK:            sampling without weights, without replacement
-        recursive:       samping without weights, without replacement
+        PIKK:            sampling without weights, without replacement (deprecated)
+        Cormen:          samping without weights, without replacement
         Waterman_R:      sampling without weights, without replacement
         Vitter_Z:        sampling without weights, without replacement
         sample_by_index: sampling without weights, without replacement
 
-        Exponential:     sampling with weights, without replacement
+        Exponential:     sampling with weights, without replacement (deprecated)
         Elimination:     sampling with weights, without replacement
         ...
 
@@ -81,6 +81,7 @@ def random_sample(a, size, replace=False, p=None, method="sample_by_index", prng
     prng = get_prng(prng)
     if isinstance(a, (list, np.ndarray)):
         N = len(a)
+        a = np.array(a)
     elif isinstance(a, int):
         N = a
         a = np.arange(N)
