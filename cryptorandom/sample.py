@@ -32,7 +32,7 @@ def get_prng(seed=None):
     raise ValueError('%r cannot be used to seed a PRNG' % seed)
 
 
-def randomSample(a, size, replace=False, p=None, method="sample_by_index", prng=None):
+def random_sample(a, size, replace=False, p=None, method="sample_by_index", prng=None):
     '''
     Random sample of size `size` from a population `a` drawn with or without weights,
     with or without replacement.
@@ -95,10 +95,10 @@ def randomSample(a, size, replace=False, p=None, method="sample_by_index", prng=
 
     methods = {
         "Fisher-Yates" : lambda  N, n: fykd_sample(N, n, prng=prng),
-        "PIKK" : lambda N, n: PIKK(N, n, prng=prng),
-        "Cormen" : lambda N, n: Random_Sample(N, n, prng=prng),
-        "Waterman_R" : lambda N, n: Algorithm_R(N, n, prng=prng),
-        "Vitter_Z" : lambda N, n: Algorithm_Z(N, n, prng=prng),
+        "PIKK" : lambda N, n: pikk(N, n, prng=prng),
+        "recursive" : lambda N, n: recursive_sample(N, n, prng=prng),
+        "Waterman_R" : lambda N, n: waterman_r(N, n, prng=prng),
+        "Vitter_Z" : lambda N, n: vitter_z(N, n, prng=prng),
         "sample_by_index" : lambda N, n: sample_by_index(N, n, prng=prng),
         "Exponential" : lambda n, p: exponential_sample(n, p, prng=prng),
         "Elimination" : lambda n, p: elimination_sample(n, p, replace=replace, prng=prng)
@@ -109,7 +109,7 @@ def randomSample(a, size, replace=False, p=None, method="sample_by_index", prng=
             sam = np.array(methods[method](N, size), dtype=np.int) - 1 # shift to 0 indexing
         except ValueError:
             print("Sampling method is incompatible with the inputs")
-    elif replace is True and method in ['Fisher-Yates', 'PIKK', 'Cormen',
+    elif replace is True and method in ['Fisher-Yates', 'PIKK', 'recursive',
         'Waterman_R', 'Vitter_Z', 'sample_by_index']:
         raise ValueError("Method is meant for sampling without replacement")
     else:
@@ -151,7 +151,7 @@ def fykd_sample(n, k, prng=None):
     return a[:k]
 
 
-def PIKK(n, k, prng=None):
+def pikk(n, k, prng=None):
     '''
     PIKK Algorithm: permute indices and keep k to draw a sample
     from 1, ..., n without replacement.
@@ -175,7 +175,7 @@ def PIKK(n, k, prng=None):
     return np.argsort(prng.random(n))[0:k] + 1
 
 
-def Random_Sample(n, k, prng=None):
+def recursive_sample(n, k, prng=None):
     '''
     Recursive sampling algorithm from Cormen et al
     Draw a sample of to sample k out of 1, ..., n without replacement
@@ -202,7 +202,7 @@ def Random_Sample(n, k, prng=None):
     if k == 0:
         return []
     else:
-        S = Random_Sample(n-1, k-1, prng=prng)
+        S = recursive_sample(n-1, k-1, prng=prng)
         i = prng.randint(1, n+1)
         if i in S:
             S.append(n)
@@ -211,7 +211,7 @@ def Random_Sample(n, k, prng=None):
     return S
 
 
-def Algorithm_R(n, k, prng=None):
+def waterman_r(n, k, prng=None):
     '''
     Waterman's Algorithm R for resevoir SRSs
     Draw a sample of to sample k out of 1, ..., n without replacement
@@ -239,7 +239,7 @@ def Algorithm_R(n, k, prng=None):
     return S
 
 
-def Algorithm_Z(n, k, prng=None):
+def vitter_z(n, k, prng=None):
     '''
     Vitter's Algorithm Z for resevoir SRSs (Vitter 1985).
     Draw a sample of to sample k out of 1, ..., n without replacement
