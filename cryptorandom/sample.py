@@ -5,8 +5,34 @@ Sampling with or without weights, with or without replacement.
 from __future__ import division
 import numpy as np
 import math
+from .cryptorandom import SHA256
 
-def randomSample(a, size, replace=False, p=None, method="sample_by_index", prng=np.random):
+def get_prng(seed=None):
+    """Turn seed into a PRNG instance
+
+    Parameters
+    ----------
+    seed : {None, int, object}
+        If seed is None, return a randomly seeded instance of SHA256.
+        If seed is an int, return a new SHA256 instance seeded with seed.
+        If seed is already a PRNG instance, return it.
+        Otherwise raise ValueError.
+
+    Returns
+    -------
+    object
+    """
+    if seed is None:
+        seed = np.random.randint(0, 10**10) # generate an integer
+        return SHA256(seed)
+    if isinstance(seed, (int, np.integer)):
+        return SHA256(seed)
+    if hasattr(seed, "random") and hasattr(seed, "randint"):
+        return seed
+    raise ValueError('%r cannot be used to seed a PRNG' % seed)
+
+
+def randomSample(a, size, replace=False, p=None, method="sample_by_index", prng=None):
     '''
     Random sample of size `size` from a population `a` drawn with or without weights,
     with or without replacement.
@@ -43,14 +69,16 @@ def randomSample(a, size, replace=False, p=None, method="sample_by_index", prng=
         If not given the sample assumes a uniform distribution over all entries in a.
     method : string
         Which sampling function?
-    prng : object
-        Instance of a pseudo-random number generator, already seeded.
-        Default is Numpy PRNG (Mersenne Twister)
+    prng : {None, int, object}
+        If prng is None, return a randomly seeded instance of SHA256.
+        If prng is an int, return a new SHA256 instance seeded with seed.
+        If prng is already a PRNG instance, return it.
     Returns
     -------
     samples : single item or ndarray
         The generated random samples
     '''
+    prng = get_prng(prng)
     if isinstance(a, (list, np.ndarray)):
         N = len(a)
     elif isinstance(a, int):
@@ -94,7 +122,7 @@ def randomSample(a, size, replace=False, p=None, method="sample_by_index", prng=
 
 ###################### Sampling functions #####################################
 
-def fykd_sample(n, k, prng=np.random):
+def fykd_sample(n, k, prng=None):
     '''
     Use fykd to sample k out of 1, ..., n without replacement
 
@@ -104,13 +132,15 @@ def fykd_sample(n, k, prng=np.random):
         Population size
     k : int
         Desired sample size
-    prng : object
-        Instance of a pseudo-random number generator, already seeded.
-        Default is Numpy PRNG (Mersenne Twister)
+    prng : {None, int, object}
+        If prng is None, return a randomly seeded instance of SHA256.
+        If prng is an int, return a new SHA256 instance seeded with seed.
+        If prng is already a PRNG instance, return it.
     Returns
     -------
     list of items sampled
     '''
+    prng = get_prng(prng)
     a = list(range(1, n+1))
     rand = prng.random(k)
     ind = np.array(range(k))
@@ -121,7 +151,7 @@ def fykd_sample(n, k, prng=np.random):
     return a[:k]
 
 
-def PIKK(n, k, prng=np.random):
+def PIKK(n, k, prng=None):
     '''
     PIKK Algorithm: permute indices and keep k to draw a sample
     from 1, ..., n without replacement.
@@ -133,17 +163,19 @@ def PIKK(n, k, prng=np.random):
         Population size
     k : int
         Desired sample size
-    prng : object
-        Instance of a pseudo-random number generator, already seeded.
-        Default is Numpy PRNG (Mersenne Twister)
+    prng : {None, int, object}
+        If prng is None, return a randomly seeded instance of SHA256.
+        If prng is an int, return a new SHA256 instance seeded with seed.
+        If prng is already a PRNG instance, return it.
     Returns
     -------
     list of items sampled
     '''
+    prng = get_prng(prng)
     return np.argsort(prng.random(n))[0:k] + 1
 
 
-def Random_Sample(n, k, prng=np.random):
+def Random_Sample(n, k, prng=None):
     '''
     Recursive sampling algorithm from Cormen et al
     Draw a sample of to sample k out of 1, ..., n without replacement
@@ -158,13 +190,15 @@ def Random_Sample(n, k, prng=np.random):
         Population size
     k : int
         Desired sample size
-    prng : object
-        Instance of a pseudo-random number generator, already seeded.
-        Default is Numpy PRNG (Mersenne Twister)
+    prng : {None, int, object}
+        If prng is None, return a randomly seeded instance of SHA256.
+        If prng is an int, return a new SHA256 instance seeded with seed.
+        If prng is already a PRNG instance, return it.
     Returns
     -------
     list of items sampled
     '''
+    prng = get_prng(prng)
     if k == 0:
         return []
     else:
@@ -177,7 +211,7 @@ def Random_Sample(n, k, prng=np.random):
     return S
 
 
-def Algorithm_R(n, k, prng=np.random):
+def Algorithm_R(n, k, prng=None):
     '''
     Waterman's Algorithm R for resevoir SRSs
     Draw a sample of to sample k out of 1, ..., n without replacement
@@ -188,13 +222,15 @@ def Algorithm_R(n, k, prng=np.random):
         Population size
     k : int
         Desired sample size
-    prng : object
-        Instance of a pseudo-random number generator, already seeded.
-        Default is Numpy PRNG (Mersenne Twister)
+    prng : {None, int, object}
+        If prng is None, return a randomly seeded instance of SHA256.
+        If prng is an int, return a new SHA256 instance seeded with seed.
+        If prng is already a PRNG instance, return it.
     Returns
     -------
     list of items sampled
     '''
+    prng = get_prng(prng)
     S = list(range(1, k+1))  # fill the reservoir
     for t in range(k+1, n+1):
         i = prng.randint(1, t+1)
@@ -203,7 +239,7 @@ def Algorithm_R(n, k, prng=np.random):
     return S
 
 
-def Algorithm_Z(n, k, prng=np.random):
+def Algorithm_Z(n, k, prng=None):
     '''
     Vitter's Algorithm Z for resevoir SRSs (Vitter 1985).
     Draw a sample of to sample k out of 1, ..., n without replacement
@@ -214,13 +250,16 @@ def Algorithm_Z(n, k, prng=np.random):
         Population size
     k : int
         Desired sample size
-    prng : object
-        Instance of a pseudo-random number generator, already seeded.
-        Default is Numpy PRNG (Mersenne Twister)
+    prng : {None, int, object}
+        If prng is None, return a randomly seeded instance of SHA256.
+        If prng is an int, return a new SHA256 instance seeded with seed.
+        If prng is already a PRNG instance, return it.
     Returns
     -------
     list of items sampled
     '''
+    prng = get_prng(prng)
+    
     def Algorithm_X(n, t):
         V = prng.random()
         s = 0
@@ -272,7 +311,7 @@ def Algorithm_Z(n, k, prng=np.random):
     return sam
 
 
-def sample_by_index(n, k, prng=np.random):
+def sample_by_index(n, k, prng=None):
     '''
     Select indices uniformly at random to
     draw a sample of to sample k out of 1, ..., n without replacement
@@ -283,13 +322,15 @@ def sample_by_index(n, k, prng=np.random):
         Population size
     k : int
         Desired sample size
-    prng : object
-        Instance of a pseudo-random number generator, already seeded.
-        Default is Numpy PRNG (Mersenne Twister)
+    prng : {None, int, object}
+        If prng is None, return a randomly seeded instance of SHA256.
+        If prng is an int, return a new SHA256 instance seeded with seed.
+        If prng is already a PRNG instance, return it.
     Returns
     -------
     list of items sampled
     '''
+    prng = get_prng(prng)
     nprime = n
     S = []
     Pop = list(range(1, n+1))
@@ -304,7 +345,7 @@ def sample_by_index(n, k, prng=np.random):
     return S
 
 
-def elimination_sample(k, p, replace=True, prng=np.random):
+def elimination_sample(k, p, replace=True, prng=None):
     '''
     Weighted random sample of size k from 1, ..., n drawn with or without replacement.
     The algorithm is inefficient but transparent.
@@ -319,13 +360,15 @@ def elimination_sample(k, p, replace=True, prng=np.random):
     replace : boolean, optional
         Whether the sample is with or without replacement.
         Default True.
-    prng : object
-        Instance of a pseudo-random number generator, already seeded.
-        Default is Numpy PRNG (Mersenne Twister)
+    prng : {None, int, object}
+        If prng is None, return a randomly seeded instance of SHA256.
+        If prng is an int, return a new SHA256 instance seeded with seed.
+        If prng is already a PRNG instance, return it.
     Returns
     -------
     list of items sampled
     '''
+    prng = get_prng(prng)
     weights = np.array(p).astype(float) # ensure the weights are floats
     if any(weights < 0):
         raise ValueError('negative item weight')
@@ -361,7 +404,7 @@ def elimination_sample(k, p, replace=True, prng=np.random):
                 return sam+1
 
 
-def exponential_sample(k, p, prng=np.random):
+def exponential_sample(k, p, prng=None):
     '''
     Weighted random sample of size of size k from 1, ..., n without replacement.
 
@@ -384,13 +427,15 @@ def exponential_sample(k, p, prng=np.random):
         Desired sample size
     p : 1-D array-like, optional
         The probabilities associated with each value in 1, ... n.
-    prng : object
-        Instance of a pseudo-random number generator, already seeded.
-        Default is Numpy PRNG (Mersenne Twister)
+    prng : {None, int, object}
+        If prng is None, return a randomly seeded instance of SHA256.
+        If prng is an int, return a new SHA256 instance seeded with seed.
+        If prng is already a PRNG instance, return it.
     Returns
     -------
     list of items sampled
     '''
+    prng = get_prng(prng)
     weights = np.array(p).astype(float) # ensure the weights are floats
     if any(weights < 0):
         raise ValueError('negative item weight')
