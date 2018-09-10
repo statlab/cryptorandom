@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SHA-256 PRNG &mdash; cryptorandom 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="cryptorandom 0.1 documentation" href="../index.html" />
+    <link rel="up" title="Examples" href="index.html" />
+    <link rel="prev" title="Examples" href="index.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
+          <span>cryptorandom 0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>SHA-256 PRNG</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="index.html">Examples</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="sha-256-prng">
+<h1>SHA-256 PRNG<a class="headerlink" href="#sha-256-prng" title="Permalink to this headline">¶</a></h1>
+<div class="code highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cryptorandom.cryptorandom</span> <span class="kn">import</span> <span class="n">SHA256</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+<p><cite>SHA256</cite> must be instantiated with a seed. We recommend using a large (say, 10-20 digits) integer, but you could use any number or even a string.</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prng</span> <span class="o">=</span> <span class="n">SHA256</span><span class="p">(</span><span class="mi">1234567890</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">prng</span><span class="p">)</span>
+<span class="go">SHA256 PRNG with seed 1234567890 and counter 0</span>
+</pre></div>
+</div>
+<p>The PRNG consists of the user-supplied seed and a counter that tracks the number of pseudo-random numbers generated so far. Each time that the PRNG produces a number, one byte gets appended to the input message and the counter is increased by one.</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">array([0.8654173490455025, 0.9572848101392867, 0.9618334976404997,</span>
+<span class="go">   0.24444240654360458, 0.17469471522156924], dtype=object)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">prng</span><span class="p">)</span>
+<span class="go">SHA256 PRNG with seed 1234567890 and counter 5</span>
+</pre></div>
+</div>
+<p>The <cite>random</cite> method produces floats between 0 and 1. The <cite>randint</cite> method produces random integers on a specified range, using a bit-masking algorithm. Other PRNGs in common software (including the base <cite>random</cite> module and R) use a truncation algorithm to generate random integers, which is known to sample integers non-uniformly.</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prng</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="go">array([1, 9, 0, 7, 1])</span>
+</pre></div>
+</div>
+<p>The <cite>cryptorandom</cite> PRNG inherits methods from the base <cite>random</cite> module. This is useful for permuting lists:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fruit</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;banana&#39;</span><span class="p">,</span> <span class="s1">&#39;cherry&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">prng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">fruit</span><span class="p">)</span>
+<span class="go">&#39;cherry&#39;</span>
+</pre></div>
+</div>
+<p>To generate a single pseudo-random integer, the SHA256 PRNG is only twice the speed of Mersenne Twister.</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">timeit</span> <span class="n">prng</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="go">100000 loops, best of 3: 2.1 µs per loop</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">timeit</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="go">1000000 loops, best of 3: 1.11 µs per loop</span>
+</pre></div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="index.html">Examples</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Kellie Ottoboni and Philip B. Stark.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>
