@@ -1,0 +1,38 @@
+Announcement: cryptorandom 0.X.0
+===========================
+
+We're happy to announce the release of cryptorandom v0.X.0!
+
+cryptorandom is a cryptographically secure PRNG and sampling module for Python.
+
+For more information, examples, and documentation, please visit our website:
+
+http://statlab.github.io/cryptorandom/
+
+
+New Features
+------------
+
+
+
+
+Improvements
+------------
+
+
+
+
+API Changes
+-----------
+
+
+
+
+Deprecations
+------------
+
+
+Contributors to this release
+----------------------------
+(Listed alphabetically by last name)
+

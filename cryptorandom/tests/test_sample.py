@@ -138,6 +138,11 @@ def test_fykd():
     sam = random_sample(5, 2, method="Fisher-Yates", prng=ff)
     assert (sam+1 == [1, 2]).all() # shift to 1-index
 
+    ff = fake_generator()
+    fruit = ['apple', 'banana', 'cherry', 'pear', 'plum']
+    sam = random_sample(fruit, 2, method="Fisher-Yates", prng=ff)
+    assert (sam == ['apple', 'banana']).all()
+
 
 def test_pikk():
     """

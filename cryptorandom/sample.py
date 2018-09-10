@@ -81,6 +81,7 @@ def random_sample(a, size, replace=False, p=None, method="sample_by_index", prng
     prng = get_prng(prng)
     if isinstance(a, (list, np.ndarray)):
         N = len(a)
+        a = np.array(a)
     elif isinstance(a, int):
         N = a
         a = np.arange(N)
