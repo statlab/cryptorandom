@@ -1,5 +1,5 @@
 How to make a new release of ``cryptorandom``
-========================================
+=============================================
 
 - Update release notes.
 
