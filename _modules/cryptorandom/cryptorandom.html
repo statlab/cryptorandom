@@ -65,7 +65,7 @@
 <span class="c1">############################## Int from Hash ###################################</span>
 <span class="c1">################################################################################</span>
 
-<div class="viewcode-block" id="int_from_hash_py2"><a class="viewcode-back" href="../../api/cryptorandom.html#cryptorandom.cryptorandom.int_from_hash_py2">[docs]</a><span class="k">def</span> <span class="nf">int_from_hash_py2</span><span class="p">(</span><span class="nb">hash</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">int_from_hash_py2</span><span class="p">(</span><span class="nb">hash</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Convert byte(s) to ints, specific for Python versions &lt; 3.</span>
 
@@ -84,8 +84,8 @@
         <span class="n">hash_int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">hash</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;hex&#39;</span><span class="p">),</span> <span class="mi">16</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">hash_int</span>
 
-</div>
-<div class="viewcode-block" id="int_from_hash_py3"><a class="viewcode-back" href="../../api/cryptorandom.html#cryptorandom.cryptorandom.int_from_hash_py3">[docs]</a><span class="k">def</span> <span class="nf">int_from_hash_py3</span><span class="p">(</span><span class="nb">hash</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">int_from_hash_py3</span><span class="p">(</span><span class="nb">hash</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Convert byte(s) to ints, specific for Python 3.</span>
 
@@ -104,96 +104,20 @@
         <span class="n">hash_int</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="nb">hash</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">hash_int</span>
 
-</div>
+
 <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
     <span class="n">int_from_hash</span> <span class="o">=</span> <span class="n">int_from_hash_py2</span>
 <span class="k">else</span><span class="p">:</span>
     <span class="n">int_from_hash</span> <span class="o">=</span> <span class="n">int_from_hash_py3</span>
 
-<span class="c1">################################################################################</span>
-<span class="c1">############################## Base PRNG Class #################################</span>
-<span class="c1">################################################################################</span>
-
-<div class="viewcode-block" id="BaseRandom"><a class="viewcode-back" href="../../api/cryptorandom.html#cryptorandom.cryptorandom.BaseRandom">[docs]</a><span class="k">class</span> <span class="nc">BaseRandom</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">Random</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;Random number generator base class&#39;&#39;&#39;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize an instance.</span>
-
-<span class="sd">        Optional argument seed controls seeding, as for Random.seed().</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-
-
-<div class="viewcode-block" id="BaseRandom.seed"><a class="viewcode-back" href="../../api/cryptorandom.html#cryptorandom.cryptorandom.BaseRandom.seed">[docs]</a>    <span class="k">def</span> <span class="nf">seed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">baseseed</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">counter</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize internal state from hashable object.</span>
-
-<span class="sd">        None or no argument seeds from current time or from an operating</span>
-<span class="sd">        system specific randomness source if available.</span>
-
-<span class="sd">        If a is not None or an int or long, hash(a) is used instead.</span>
-
-<span class="sd">        a only gets changed at initiation. Counter gets updated each time</span>
-<span class="sd">        the prng gets called.</span>
-
-<span class="sd">        randbits are random bits not yet returned outside the class</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">baseseed</span> <span class="o">=</span> <span class="n">baseseed</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">randbits</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">randbits_remaining</span> <span class="o">=</span> <span class="mi">0</span>
-
-</div>
-<div class="viewcode-block" id="BaseRandom.next"><a class="viewcode-back" href="../../api/cryptorandom.html#cryptorandom.cryptorandom.BaseRandom.next">[docs]</a>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Update the counter</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
-
-</div>
-    <span class="k">def</span> <span class="nf">getstate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">baseseed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="p">)</span>
-
-
-<div class="viewcode-block" id="BaseRandom.setstate"><a class="viewcode-back" href="../../api/cryptorandom.html#cryptorandom.cryptorandom.BaseRandom.setstate">[docs]</a>    <span class="k">def</span> <span class="nf">setstate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the state (seed and counter)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">baseseed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">state</span><span class="p">)</span>
-
-</div>
-<div class="viewcode-block" id="BaseRandom.jumpahead"><a class="viewcode-back" href="../../api/cryptorandom.html#cryptorandom.cryptorandom.BaseRandom.jumpahead">[docs]</a>    <span class="k">def</span> <span class="nf">jumpahead</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Jump ahead n steps in the period</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">+=</span> <span class="n">n</span>
-
-</div>
-<div class="viewcode-block" id="BaseRandom.__repr__"><a class="viewcode-back" href="../../api/cryptorandom.html#cryptorandom.cryptorandom.BaseRandom.__repr__">[docs]</a>    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        &gt;&gt;&gt; r = SHA256(5)</span>
-<span class="sd">        &gt;&gt;&gt; repr(r)</span>
-<span class="sd">        &#39;SHA256 PRNG with seed 5&#39;</span>
-<span class="sd">        &gt;&gt;&gt; str(r)</span>
-<span class="sd">        &#39;SHA256 PRNG with seed 5&#39;</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">stringrepr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span> <span class="o">+</span> <span class="s2">&quot; PRNG with seed &quot;</span> <span class="o">+</span> \
-                    <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">baseseed</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; and counter &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">stringrepr</span>
-
 
 <span class="c1">################################################################################</span>
 <span class="c1">############################## SHA-256 Class ###################################</span>
 <span class="c1">################################################################################</span>
-</div></div>
-<div class="viewcode-block" id="SHA256"><a class="viewcode-back" href="../../api/cryptorandom.html#cryptorandom.cryptorandom.SHA256">[docs]</a><span class="k">class</span> <span class="nc">SHA256</span><span class="p">(</span><span class="n">BaseRandom</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SHA256"><a class="viewcode-back" href="../../api/cryptorandom.html#cryptorandom.cryptorandom.SHA256">[docs]</a><span class="k">class</span> <span class="nc">SHA256</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">Random</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    PRNG based on the SHA-256 cryptographic hash function.</span>
-
-<span class="sd">    Attributes:</span>
-<span class="sd">        fill in</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -203,13 +127,27 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        seed : {None, int, string} (optional)</span>
-<span class="sd">        Random seed used to initialize the PRNG. It can be an integer of arbitrary length,</span>
-<span class="sd">        a string of arbitrary length, or `None`. Default is `None`.</span>
+<span class="sd">            Random seed used to initialize the PRNG. It can be an integer of arbitrary length,</span>
+<span class="sd">             a string of arbitrary length, or `None`. Default is `None`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hashfun</span> <span class="o">=</span> <span class="s2">&quot;SHA-256&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_basehash</span><span class="p">()</span>
 
+
+<div class="viewcode-block" id="SHA256.__repr__"><a class="viewcode-back" href="../../api/cryptorandom.html#cryptorandom.cryptorandom.SHA256.__repr__">[docs]</a>    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &gt;&gt;&gt; r = SHA256(5)</span>
+<span class="sd">        &gt;&gt;&gt; repr(r)</span>
+<span class="sd">        &#39;SHA256 PRNG with seed 5 and counter 0&#39;</span>
+<span class="sd">        &gt;&gt;&gt; str(r)</span>
+<span class="sd">        &#39;SHA256 PRNG with seed 5 and counter 0&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">stringrepr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span> <span class="o">+</span> <span class="s2">&quot; PRNG with seed &quot;</span> <span class="o">+</span> \
+                    <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">baseseed</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; and counter &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">stringrepr</span>
+
+</div>
     <span class="k">def</span> <span class="nf">_basehash</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize the SHA256 hash function with given seed</span>
@@ -260,29 +198,42 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">basehash</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="o">*</span><span class="n">counter</span><span class="p">)</span>
 
 </div>
+<div class="viewcode-block" id="SHA256.getstate"><a class="viewcode-back" href="../../api/cryptorandom.html#cryptorandom.cryptorandom.SHA256.getstate">[docs]</a>    <span class="k">def</span> <span class="nf">getstate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the current state of the PRNG</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">baseseed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="p">)</span>
+
+</div>
 <div class="viewcode-block" id="SHA256.jumpahead"><a class="viewcode-back" href="../../api/cryptorandom.html#cryptorandom.cryptorandom.SHA256.jumpahead">[docs]</a>    <span class="k">def</span> <span class="nf">jumpahead</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Jump ahead n steps in the period</span>
+
+<span class="sd">        &gt;&gt;&gt; r = SHA256(5)</span>
+<span class="sd">        &gt;&gt;&gt; r.jumpahead(5)</span>
+<span class="sd">        &gt;&gt;&gt; repr(r)</span>
+<span class="sd">        &#39;SHA256 PRNG with seed 5 and counter 5&#39;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">+=</span> <span class="n">n</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">basehash</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="o">*</span><span class="n">n</span><span class="p">)</span>
 
 </div>
-    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SHA256.next"><a class="viewcode-back" href="../../api/cryptorandom.html#cryptorandom.cryptorandom.SHA256.next">[docs]</a>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Increment the counter and basehash by one</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">jumpahead</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-
+</div>
 <div class="viewcode-block" id="SHA256.nextRandom"><a class="viewcode-back" href="../../api/cryptorandom.html#cryptorandom.cryptorandom.SHA256.nextRandom">[docs]</a>    <span class="k">def</span> <span class="nf">nextRandom</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate the next hash value</span>
 
 <span class="sd">        &gt;&gt;&gt; r = SHA256(12345678901234567890)</span>
 <span class="sd">        &gt;&gt;&gt; r.next()</span>
-<span class="sd">        &gt;&gt;&gt; expected = int(&quot;4da594a8ab6064d666eab2bdf20cb4480e819e0c3102ca353de57caae1d11fd1&quot;, 16)</span>
-<span class="sd">        &gt;&gt;&gt; r.nextRandom() == expected</span>
-<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; r.nextRandom()</span>
+<span class="sd">        4da594a8ab6064d666eab2bdf20cb4480e819e0c3102ca353de57caae1d11fd1</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-<span class="c1">#        self.basehash.update(bytes(1))</span>
         <span class="c1"># Apply SHA-256, interpreting digest output as integer</span>
         <span class="c1"># to yield 256-bit integer (a python &quot;long integer&quot;)</span>
         <span class="n">hash_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">basehash</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
@@ -297,14 +248,20 @@
 <span class="sd">        The following tests match the output of Ron&#39;s and Philip&#39;s implementations.</span>
 
 <span class="sd">        &gt;&gt;&gt; r = SHA256(12345678901234567890)</span>
-<span class="sd">        &gt;&gt;&gt; r.next()</span>
-<span class="sd">        &gt;&gt;&gt; e1 = int(&quot;4da594a8ab6064d666eab2bdf20cb4480e819e0c3102ca353de57caae1d11fd1&quot;, 16)</span>
-<span class="sd">        &gt;&gt;&gt; e2 = int(&quot;ae230ec16bee77f77c7378f4eb5d265d931665e29e8bbee7e733f58d3815d338&quot;, 16)</span>
-<span class="sd">        &gt;&gt;&gt; expected = np.array([e1, e2]) * 2**-256</span>
-<span class="sd">        &gt;&gt;&gt; r.random(2) == expected</span>
-<span class="sd">        array([ True,  True], dtype=bool)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &gt;&gt;&gt; r.random(2)</span>
+<span class="sd">        array([0.9272915426537484, 0.1916135318809483], dtype=object)</span>
+<span class="sd">        &gt;&gt;&gt; r.random((2, 2))</span>
+<span class="sd">        array([[0.5846237047310486, 0.18694233108130068],</span>
+<span class="sd">               [0.9022661737961881, 0.052310932788987144]], dtype=object)</span>
 
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        size : {int, tuple, None}</span>
+<span class="sd">            If None (default), return a single random number.</span>
+<span class="sd">            If size is an int, return that many random numbers.</span>
+<span class="sd">            If size is a tuple, it determines the shape of an array</span>
+<span class="sd">            filled with random numbers.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">size</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">hash_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nextRandom</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">int_from_hash</span><span class="p">(</span><span class="n">hash_output</span><span class="p">)</span><span class="o">*</span><span class="n">RECIP_HASHLEN</span>
@@ -317,9 +274,28 @@
 </div>
 <div class="viewcode-block" id="SHA256.randint_trunc"><a class="viewcode-back" href="../../api/cryptorandom.html#cryptorandom.cryptorandom.SHA256.randint_trunc">[docs]</a>    <span class="k">def</span> <span class="nf">randint_trunc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deprecated. For large values of (b-a), this algorithm does not produce integers</span>
+<span class="sd">        uniformly at random.</span>
+<span class="sd">        </span>
 <span class="sd">        Generate random integers between a (inclusive) and b (exclusive).</span>
 <span class="sd">        size controls the number of ints generated. If size=None, just one is produced.</span>
-<span class="sd">        The following tests match the output of Ron&#39;s and Philip&#39;s implementations.</span>
+
+<span class="sd">        &gt;&gt;&gt; r = SHA256(12345678901234567890)</span>
+<span class="sd">        &gt;&gt;&gt; r.randint_trunc(0, 5, size=3)</span>
+<span class="sd">        array([0, 0, 0])</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        a : int</span>
+<span class="sd">            lower limit (included in samples)</span>
+<span class="sd">        b : int</span>
+<span class="sd">            upper limit (not included in samples)</span>
+<span class="sd">        size : {int, tuple, None}</span>
+<span class="sd">            If None (default), return a single random number.</span>
+<span class="sd">            If size is an int, return that many random numbers.</span>
+<span class="sd">            If size is a tuple, it determines the shape of an array</span>
+<span class="sd">            filled with random numbers.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="n">a</span> <span class="o">&lt;=</span> <span class="n">b</span><span class="p">,</span> <span class="s2">&quot;lower and upper limits are switched&quot;</span>
 
@@ -332,12 +308,17 @@
 </div>
 <div class="viewcode-block" id="SHA256.getrandbits"><a class="viewcode-back" href="../../api/cryptorandom.html#cryptorandom.cryptorandom.SHA256.getrandbits">[docs]</a>    <span class="k">def</span> <span class="nf">getrandbits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns k pseudorandom bits.</span>
+<span class="sd">        Generate k pseudorandom bits.</span>
 
 <span class="sd">        If self.randbits contains at least k bits, returns k of those bits and removes them.</span>
 <span class="sd">        If self.randbits has fewer than k bits, calls self.nextRandom() as many times as needed to</span>
 <span class="sd">        populate self.randbits with at least k random bits, returns those k, and keeps</span>
 <span class="sd">        any remaining bits in self.randbits</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        k : int</span>
+<span class="sd">            number of pseudorandom bits</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">randbits</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>  <span class="c1"># initialize the cache</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">randbits</span> <span class="o">=</span> <span class="n">int_from_hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nextRandom</span><span class="p">())</span>
@@ -357,6 +338,11 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate a random integer between 0 (inclusive) and n (exclusive).</span>
 <span class="sd">        Raises ValueError if n==0.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        n : int</span>
+<span class="sd">            upper limit</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
         <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getrandbits</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>   <span class="c1"># 0 &lt;= r &lt; 2**k</span>
@@ -369,7 +355,22 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate random integers between a (inclusive) and b (exclusive).</span>
 <span class="sd">        size controls the number of ints generated. If size=None, just one is produced.</span>
-<span class="sd">        The following tests match the output of Ron&#39;s and Philip&#39;s implementations.</span>
+
+<span class="sd">        &gt;&gt;&gt; r = SHA256(12345678901234567890)</span>
+<span class="sd">        &gt;&gt;&gt; r.randint(0, 5, size=3)</span>
+<span class="sd">        array([3, 2, 4])</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        a : int</span>
+<span class="sd">            lower limit (included in samples)</span>
+<span class="sd">        b : int</span>
+<span class="sd">            upper limit (not included in samples)</span>
+<span class="sd">        size : {int, tuple, None}</span>
+<span class="sd">            If None (default), return a single random number.</span>
+<span class="sd">            If size is an int, return that many random numbers.</span>
+<span class="sd">            If size is a tuple, it determines the shape of an array</span>
+<span class="sd">            filled with random numbers.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="n">a</span> <span class="o">&lt;=</span> <span class="n">b</span><span class="p">,</span> <span class="s2">&quot;lower and upper limits are switched&quot;</span>
 
@@ -390,7 +391,7 @@
       </div>
 
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2016, Kellie Ottoboni and Philip B. Stark.
+        &copy; Copyright 2018, Kellie Ottoboni and Philip B. Stark.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
