@@ -74,23 +74,6 @@ else:
 class SHA256(random.Random):
     """
     PRNG based on the SHA-256 cryptographic hash function.
-
-    Attributes:
-    -----------
-    baseseed : {int, str}
-        the initial "seed" message for the SHA-256 hash function
-    counter : int
-        tracks how many times the PRNG has been called.
-        (Counter uses zero indexing.)
-    hashfun : str
-        name of the hash function
-    randbits : int or None
-        if not None, randbits tracks random bits that have been generated
-        but not yet used to generate integers
-    randbits_remaining : int
-        number of random bits available for use to generate integers
-    basehash : _hashlib.HASH
-        hashlib SHA-256 instance
     """
 
     def __init__(self, seed=None):
@@ -181,7 +164,7 @@ class SHA256(random.Random):
     def jumpahead(self, n):
         """
         Jump ahead n steps in the period
-        
+
         >>> r = SHA256(5)
         >>> r.jumpahead(5)
         >>> repr(r)
@@ -220,20 +203,20 @@ class SHA256(random.Random):
         size controls the number of ints generated. If size=None, just one is produced.
         The following tests match the output of Ron's and Philip's implementations.
 
-        Parameters
-        ----------
-        size : {int, tuple, None}
-            if None (default), return a single random number
-            if size is an int, return that many random numbers
-            if size is a tuple, it determines the shape of an array
-            filled with random numbers
-        
         >>> r = SHA256(12345678901234567890)
         >>> r.random(2)
         array([0.9272915426537484, 0.1916135318809483], dtype=object)
         >>> r.random((2, 2))
         array([[0.5846237047310486, 0.18694233108130068],
                [0.9022661737961881, 0.052310932788987144]], dtype=object)
+
+        Parameters
+        ----------
+        size : {int, tuple, None}
+            If None (default), return a single random number.
+            If size is an int, return that many random numbers.
+            If size is a tuple, it determines the shape of an array
+            filled with random numbers.
         """
         if size == None:
             hash_output = self.nextRandom()
@@ -253,6 +236,10 @@ class SHA256(random.Random):
         Generate random integers between a (inclusive) and b (exclusive).
         size controls the number of ints generated. If size=None, just one is produced.
 
+        >>> r = SHA256(12345678901234567890)
+        >>> r.randint_trunc(0, 5, size=3)
+        array([0, 0, 0])
+
         Parameters
         ----------
         a : int
@@ -260,14 +247,11 @@ class SHA256(random.Random):
         b : int
             upper limit (not included in samples)
         size : {int, tuple, None}
-            if None (default), return a single random number
-            if size is an int, return that many random numbers
-            if size is a tuple, it determines the shape of an array
-            filled with random numbers
-        
-        >>> r = SHA256(12345678901234567890)
-        >>> r.randint_trunc(0, 5, size=3)
-        array([0, 0, 0])
+            If None (default), return a single random number.
+            If size is an int, return that many random numbers.
+            If size is a tuple, it determines the shape of an array
+            filled with random numbers.
+
         """
         assert a <= b, "lower and upper limits are switched"
 
@@ -328,6 +312,10 @@ class SHA256(random.Random):
         Generate random integers between a (inclusive) and b (exclusive).
         size controls the number of ints generated. If size=None, just one is produced.
 
+        >>> r = SHA256(12345678901234567890)
+        >>> r.randint(0, 5, size=3)
+        array([3, 2, 4])
+
         Parameters
         ----------
         a : int
@@ -335,14 +323,10 @@ class SHA256(random.Random):
         b : int
             upper limit (not included in samples)
         size : {int, tuple, None}
-            if None (default), return a single random number
-            if size is an int, return that many random numbers
-            if size is a tuple, it determines the shape of an array
-            filled with random numbers
-        
-        >>> r = SHA256(12345678901234567890)
-        >>> r.randint(0, 5, size=3)
-        array([3, 2, 4])
+            If None (default), return a single random number.
+            If size is an int, return that many random numbers.
+            If size is a tuple, it determines the shape of an array
+            filled with random numbers.
         """
         assert a <= b, "lower and upper limits are switched"
 
