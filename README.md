@@ -1,9 +1,9 @@
 [![Build Status](https://travis-ci.org/statlab/cryptorandom.svg?branch=master)](https://travis-ci.org/statlab/cryptorandom)
 # cryptorandom
-Pseudorandom number generators based on cryptographic hash functions.
+Pseudorandom number generator and random sampling using cryptographic hash functions.
+The prototype generator is built on SHA-256.
 
-The prototype generator is built on SHA256.
-
+- **Website:** [https://statlab.github.io/cryptorandom](https://statlab.github.io/cryptorandom)
 - **Source:** [https://github.com/statlab/cryptorandom](https://github.com/statlab/cryptorandom)
 - **Bug reports:** [https://github.com/statlab/cryptorandom/issues](https://github.com/statlab/cryptorandom/issues)
 

@@ -60,7 +60,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'cryptorandom'
-copyright = u'2016, Kellie Ottoboni and Philip B. Stark'
+copyright = u'2018, Kellie Ottoboni and Philip B. Stark'
 author = u'Kellie Ottoboni and Philip B. Stark'
 
 # The version info for the project you're documenting, acts as replacement for

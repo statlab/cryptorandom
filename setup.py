@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-descr = """Pseudorandom number generators based on cryptographic hash functions
+descr = """Pseudorandom number generator and random sampling using cryptographic hash functions
 
 """
 
@@ -8,7 +8,7 @@ import os
 
 
 DISTNAME = 'cryptorandom'
-DESCRIPTION = 'Pseudorandom number generators based on cryptographic hash functions'
+DESCRIPTION = 'Pseudorandom number generator and random sampling using cryptographic hash functions'
 LONG_DESCRIPTION = descr
 AUTHOR = 'Kellie Ottoboni and Philip B. Stark'
 AUTHOR_EMAIL = 'kellieotto@berkeley.edu'
