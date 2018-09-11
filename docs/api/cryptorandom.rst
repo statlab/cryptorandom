@@ -1,5 +1,5 @@
 `cryptorandom` module
 ----------------------
 
-.. automodule:: cryptorandom.cryptorandom
+.. autoclass:: cryptorandom.cryptorandom.SHA256
     :members:

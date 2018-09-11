@@ -66,90 +66,14 @@ if sys.version_info[0] < 3:
 else:
     int_from_hash = int_from_hash_py3
 
-################################################################################
-############################## Base PRNG Class #################################
-################################################################################
-
-class BaseRandom(random.Random):
-    '''Random number generator base class'''
-
-    def __init__(self, seed=None):
-        """Initialize an instance.
-
-        Optional argument seed controls seeding, as for Random.seed().
-        """
-
-        self.seed(seed)
-
-
-    def seed(self, baseseed=None, counter=0):
-        """Initialize internal state from hashable object.
-
-        None or no argument seeds from current time or from an operating
-        system specific randomness source if available.
-
-        If a is not None or an int or long, hash(a) is used instead.
-
-        a only gets changed at initiation. Counter gets updated each time
-        the prng gets called.
-
-        randbits are random bits not yet returned outside the class
-
-        """
-        self.baseseed = baseseed
-        self.counter = counter
-        self.randbits = None
-        self.randbits_remaining = 0
-
-
-    def next(self):
-        """
-        Update the counter
-        """
-        self.counter += 1
-
-
-    def getstate(self):
-        return (self.baseseed, self.counter)
-
-
-    def setstate(self, state):
-        """
-        Set the state (seed and counter)
-        """
-        (self.baseseed, self.counter) = (int(val) for val in state)
-
-
-    def jumpahead(self, n):
-        """
-        Jump ahead n steps in the period
-        """
-        self.counter += n
-
-
-    def __repr__(self):
-        """
-        >>> r = SHA256(5)
-        >>> repr(r)
-        'SHA256 PRNG with seed 5'
-        >>> str(r)
-        'SHA256 PRNG with seed 5'
-        """
-        stringrepr = self.__class__.__name__ + " PRNG with seed " + \
-                    str(self.baseseed) + " and counter " + str(self.counter)
-        return stringrepr
-
 
 ################################################################################
 ############################## SHA-256 Class ###################################
 ################################################################################
 
-class SHA256(BaseRandom):
+class SHA256(random.Random):
     """
     PRNG based on the SHA-256 cryptographic hash function.
-
-    Attributes:
-        fill in
     """
 
     def __init__(self, seed=None):
@@ -159,12 +83,26 @@ class SHA256(BaseRandom):
         Parameters
         ----------
         seed : {None, int, string} (optional)
-        Random seed used to initialize the PRNG. It can be an integer of arbitrary length,
-        a string of arbitrary length, or `None`. Default is `None`.
+            Random seed used to initialize the PRNG. It can be an integer of arbitrary length,
+             a string of arbitrary length, or `None`. Default is `None`.
         """
         self.seed(seed)
         self.hashfun = "SHA-256"
         self._basehash()
+
+
+    def __repr__(self):
+        """
+        >>> r = SHA256(5)
+        >>> repr(r)
+        'SHA256 PRNG with seed 5 and counter 0'
+        >>> str(r)
+        'SHA256 PRNG with seed 5 and counter 0'
+        """
+        stringrepr = self.__class__.__name__ + " PRNG with seed " + \
+                    str(self.baseseed) + " and counter " + str(self.counter)
+        return stringrepr
+
 
     def _basehash(self):
         """
@@ -216,15 +154,30 @@ class SHA256(BaseRandom):
         self.basehash.update(b'\x00'*counter)
 
 
+    def getstate(self):
+        """
+        Get the current state of the PRNG
+        """
+        return (self.baseseed, self.counter)
+
+
     def jumpahead(self, n):
         """
         Jump ahead n steps in the period
+
+        >>> r = SHA256(5)
+        >>> r.jumpahead(5)
+        >>> repr(r)
+        'SHA256 PRNG with seed 5 and counter 5'
         """
         self.counter += n
         self.basehash.update(b'\x00'*n)
 
 
     def next(self):
+        """
+        Increment the counter and basehash by one
+        """
         self.jumpahead(1)
 
 
@@ -234,11 +187,9 @@ class SHA256(BaseRandom):
 
         >>> r = SHA256(12345678901234567890)
         >>> r.next()
-        >>> expected = int("4da594a8ab6064d666eab2bdf20cb4480e819e0c3102ca353de57caae1d11fd1", 16)
-        >>> r.nextRandom() == expected
-        True
+        >>> r.nextRandom()
+        4da594a8ab6064d666eab2bdf20cb4480e819e0c3102ca353de57caae1d11fd1
         """
-#        self.basehash.update(bytes(1))
         # Apply SHA-256, interpreting digest output as integer
         # to yield 256-bit integer (a python "long integer")
         hash_output = self.basehash.digest()
@@ -253,14 +204,20 @@ class SHA256(BaseRandom):
         The following tests match the output of Ron's and Philip's implementations.
 
         >>> r = SHA256(12345678901234567890)
-        >>> r.next()
-        >>> e1 = int("4da594a8ab6064d666eab2bdf20cb4480e819e0c3102ca353de57caae1d11fd1", 16)
-        >>> e2 = int("ae230ec16bee77f77c7378f4eb5d265d931665e29e8bbee7e733f58d3815d338", 16)
-        >>> expected = np.array([e1, e2]) * 2**-256
-        >>> r.random(2) == expected
-        array([ True,  True], dtype=bool)
-        """
+        >>> r.random(2)
+        array([0.9272915426537484, 0.1916135318809483], dtype=object)
+        >>> r.random((2, 2))
+        array([[0.5846237047310486, 0.18694233108130068],
+               [0.9022661737961881, 0.052310932788987144]], dtype=object)
 
+        Parameters
+        ----------
+        size : {int, tuple, None}
+            If None (default), return a single random number.
+            If size is an int, return that many random numbers.
+            If size is a tuple, it determines the shape of an array
+            filled with random numbers.
+        """
         if size == None:
             hash_output = self.nextRandom()
             return int_from_hash(hash_output)*RECIP_HASHLEN
@@ -273,9 +230,28 @@ class SHA256(BaseRandom):
 
     def randint_trunc(self, a, b, size=None):
         """
+        Deprecated. For large values of (b-a), this algorithm does not produce integers
+        uniformly at random.
+        
         Generate random integers between a (inclusive) and b (exclusive).
         size controls the number of ints generated. If size=None, just one is produced.
-        The following tests match the output of Ron's and Philip's implementations.
+
+        >>> r = SHA256(12345678901234567890)
+        >>> r.randint_trunc(0, 5, size=3)
+        array([0, 0, 0])
+
+        Parameters
+        ----------
+        a : int
+            lower limit (included in samples)
+        b : int
+            upper limit (not included in samples)
+        size : {int, tuple, None}
+            If None (default), return a single random number.
+            If size is an int, return that many random numbers.
+            If size is a tuple, it determines the shape of an array
+            filled with random numbers.
+
         """
         assert a <= b, "lower and upper limits are switched"
 
@@ -288,12 +264,17 @@ class SHA256(BaseRandom):
 
     def getrandbits(self, k):
         """
-        Returns k pseudorandom bits.
+        Generate k pseudorandom bits.
 
         If self.randbits contains at least k bits, returns k of those bits and removes them.
         If self.randbits has fewer than k bits, calls self.nextRandom() as many times as needed to
         populate self.randbits with at least k random bits, returns those k, and keeps
         any remaining bits in self.randbits
+
+        Parameters
+        ----------
+        k : int
+            number of pseudorandom bits
         """
         if self.randbits is None:  # initialize the cache
             self.randbits = int_from_hash(self.nextRandom())
@@ -313,6 +294,11 @@ class SHA256(BaseRandom):
         """
         Generate a random integer between 0 (inclusive) and n (exclusive).
         Raises ValueError if n==0.
+
+        Parameters
+        ----------
+        n : int
+            upper limit
         """
         k = int(n-1).bit_length()
         r = self.getrandbits(k)   # 0 <= r < 2**k
@@ -325,7 +311,22 @@ class SHA256(BaseRandom):
         """
         Generate random integers between a (inclusive) and b (exclusive).
         size controls the number of ints generated. If size=None, just one is produced.
-        The following tests match the output of Ron's and Philip's implementations.
+
+        >>> r = SHA256(12345678901234567890)
+        >>> r.randint(0, 5, size=3)
+        array([3, 2, 4])
+
+        Parameters
+        ----------
+        a : int
+            lower limit (included in samples)
+        b : int
+            upper limit (not included in samples)
+        size : {int, tuple, None}
+            If None (default), return a single random number.
+            If size is an int, return that many random numbers.
+            If size is a tuple, it determines the shape of an array
+            filled with random numbers.
         """
         assert a <= b, "lower and upper limits are switched"
 
