@@ -66,90 +66,31 @@ if sys.version_info[0] < 3:
 else:
     int_from_hash = int_from_hash_py3
 
-################################################################################
-############################## Base PRNG Class #################################
-################################################################################
-
-class BaseRandom(random.Random):
-    '''Random number generator base class'''
-
-    def __init__(self, seed=None):
-        """Initialize an instance.
-
-        Optional argument seed controls seeding, as for Random.seed().
-        """
-
-        self.seed(seed)
-
-
-    def seed(self, baseseed=None, counter=0):
-        """Initialize internal state from hashable object.
-
-        None or no argument seeds from current time or from an operating
-        system specific randomness source if available.
-
-        If a is not None or an int or long, hash(a) is used instead.
-
-        a only gets changed at initiation. Counter gets updated each time
-        the prng gets called.
-
-        randbits are random bits not yet returned outside the class
-
-        """
-        self.baseseed = baseseed
-        self.counter = counter
-        self.randbits = None
-        self.randbits_remaining = 0
-
-
-    def next(self):
-        """
-        Update the counter
-        """
-        self.counter += 1
-
-
-    def getstate(self):
-        return (self.baseseed, self.counter)
-
-
-    def setstate(self, state):
-        """
-        Set the state (seed and counter)
-        """
-        (self.baseseed, self.counter) = (int(val) for val in state)
-
-
-    def jumpahead(self, n):
-        """
-        Jump ahead n steps in the period
-        """
-        self.counter += n
-
-
-    def __repr__(self):
-        """
-        >>> r = SHA256(5)
-        >>> repr(r)
-        'SHA256 PRNG with seed 5'
-        >>> str(r)
-        'SHA256 PRNG with seed 5'
-        """
-        stringrepr = self.__class__.__name__ + " PRNG with seed " + \
-                    str(self.baseseed) + " and counter " + str(self.counter)
-        return stringrepr
-
 
 ################################################################################
 ############################## SHA-256 Class ###################################
 ################################################################################
 
-class SHA256(BaseRandom):
+class SHA256(random.Random):
     """
     PRNG based on the SHA-256 cryptographic hash function.
 
     Attributes:
-        fill in
+    -----------
+    baseseed : {int, str}
+        the initial "seed" message for the SHA-256 hash function
+    counter : int
+        tracks how many times the PRNG has been called.
+        (Counter uses zero indexing.)
+    hashfun : str
+        name of the hash function
+    randbits : int or None
+        if not None, randbits tracks random bits that have been generated
+        but not yet used to generate integers
+    randbits_remaining : int
+        number of random bits available for use to generate integers
+    basehash : _hashlib.HASH
+        hashlib SHA-256 instance
     """
 
     def __init__(self, seed=None):
@@ -165,6 +106,20 @@ class SHA256(BaseRandom):
         self.seed(seed)
         self.hashfun = "SHA-256"
         self._basehash()
+
+
+    def __repr__(self):
+        """
+        >>> r = SHA256(5)
+        >>> repr(r)
+        'SHA256 PRNG with seed 5'
+        >>> str(r)
+        'SHA256 PRNG with seed 5'
+        """
+        stringrepr = self.__class__.__name__ + " PRNG with seed " + \
+                    str(self.baseseed) + " and counter " + str(self.counter)
+        return stringrepr
+
 
     def _basehash(self):
         """
@@ -214,6 +169,10 @@ class SHA256(BaseRandom):
         (self.baseseed, self.counter) = (baseseed, counter)
         self._basehash()
         self.basehash.update(b'\x00'*counter)
+
+
+    def getstate(self):
+        return (self.baseseed, self.counter)
 
 
     def jumpahead(self, n):
