@@ -1,2 +1,2 @@
 # THIS FILE IS GENERATED FROM THE CRYPTORANDOM SETUP.PY
-version='0.1dev'
+version='0.1'
