@@ -50,8 +50,11 @@ def random_sample(a, size, replace=False, p=None, method="sample_by_index", prng
 
         Exponential:     sampling with weights, without replacement
         Elimination:     sampling with weights, without replacement
-        ...
-
+    
+    Fisher-Yates, PIKK, sample_by_index, Exponential, and Elimination return ordered samples, 
+    i.e. they are equally likely to return [1, 2] as they are to return [2, 1]. Waterman_R,
+    Vitter_Z, and recursive aren't guaranteed to randomize the order of items in the sample.
+    
     Parameters
     ----------
     a : 1-D array-like or int
@@ -501,7 +504,7 @@ def exponential_sample(k, p, prng=None):
     elif k == n:
         return np.array(range(k))
     else:
-        sam = prng.random(size=n)
+        sam = np.array(prng.random(size=n), dtype=float)
         sam = -np.log(sam)/weights
         sample = sam.argsort()[0:k]
         return sample+1
