@@ -261,7 +261,7 @@ def test_fykd_shuffle():
     Test Fisher-Yates shuffle for random permutations, fykd_shuffle
     """
     ff = fake_generator()
-    sam = fykd_shuffle(5, prng=ff)
+    sam = fykd_sample(5, 5, prng=ff)
     assert (sam == [1, 2, 3, 4, 5]).all()
 
     ff = fake_generator()
@@ -279,7 +279,7 @@ def test_pikk_shuffle():
     Test PIKK shuffling
     """
     ff = fake_generator()
-    sam = pikk_shuffle(5, prng=ff)
+    sam = pikk(5, 5, prng=ff)
     assert (sam == [1, 2, 3, 4, 5]).all()
 
     ff = fake_generator()
@@ -292,7 +292,7 @@ def test_permute_by_index():
     Test permuting by index shuffling
     """
     ff = fake_generator()
-    sam = permute_by_index(5, prng=ff)
+    sam = sample_by_index(5, 5, prng=ff)
     assert (sam == [2, 3, 1, 4, 5]).all()
 
     ff = fake_generator()

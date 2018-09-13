@@ -158,9 +158,9 @@ def random_permutation(a, method="Fisher-Yates", prng=None):
         raise ValueError("a must be an integer or array-like")
 
     methods = {
-        "Fisher-Yates" : lambda  N: fykd_shuffle(N, prng=prng),
-        "random_sort" : lambda N: pikk_shuffle(N, prng=prng),
-        "permute_by_index" : lambda N: permute_by_index(N, prng=prng),
+        "Fisher-Yates" : lambda  N: fykd_sample(N, N, prng=prng),
+        "random_sort" : lambda N: pikk(N, N, prng=prng),
+        "permute_by_index" : lambda N: sample_by_index(N, N, prng=prng),
     }
 
     try:
@@ -500,63 +500,3 @@ def exponential_sample(k, p, prng=None):
         sam = -np.log(sam)/weights
         sample = sam.argsort()[0:k]
         return sample+1
-
-######################## Permutation functions #################################
-
-def fykd_shuffle(n, prng=None):
-    '''
-    Use Fisher-Yates-Knuth-Durstenfeld algorithm to permute 1, ..., n
-
-    Parameters
-    ----------
-    n : int
-        Population size
-    prng : {None, int, object}
-        If prng is None, return a randomly seeded instance of SHA256.
-        If prng is an int, return a new SHA256 instance seeded with seed.
-        If prng is already a PRNG instance, return it.
-    Returns
-    -------
-    permuted list of {1, ..., n}
-    '''
-    return fykd_sample(n, n, prng=prng)
-
-
-def pikk_shuffle(n, prng=None):
-    '''
-    Assign random values between 0 and 1 to the numbers 1, ..., n and sort them
-    according to these random values.
-
-    Parameters
-    ----------
-    n : int
-        Population size
-    prng : {None, int, object}
-        If prng is None, return a randomly seeded instance of SHA256.
-        If prng is an int, return a new SHA256 instance seeded with seed.
-        If prng is already a PRNG instance, return it.
-    Returns
-    -------
-    list of items sampled
-    '''
-    prng = get_prng(prng)
-    return np.argsort(prng.random(n)) + 1
-
-
-def permute_by_index(n, prng=None):
-    '''
-    Select indices uniformly at random, without replacement, to permute 1, ..., n
-
-    Parameters
-    ----------
-    n : int
-        Population size
-    prng : {None, int, object}
-        If prng is None, return a randomly seeded instance of SHA256.
-        If prng is an int, return a new SHA256 instance seeded with seed.
-        If prng is already a PRNG instance, return it.
-    Returns
-    -------
-    list of items sampled
-    '''
-    return sample_by_index(n, n, prng=prng)
