@@ -10,7 +10,7 @@ The prototype generator is built on SHA-256.
 ## Installation from binaries
 
 ```
-$ pip install git+git://github.com/statlab/cryptorandom.git
+$ pip install cryptorandom
 ```
 
 ## Installation from source
