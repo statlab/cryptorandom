@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>sample module &mdash; cryptorandom 0.1 documentation</title>
+    <title>sample module &mdash; cryptorandom 0.2 documentation</title>
     
     <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.1',
+        VERSION:     '0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,14 +23,14 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="cryptorandom 0.1 documentation" href="../index.html" />
+    <link rel="top" title="cryptorandom 0.2 documentation" href="../index.html" />
     <link rel="up" title="Package documentation" href="index.html" />
     <link rel="next" title="Examples" href="../examples/index.html" />
     <link rel="prev" title="cryptorandom module" href="cryptorandom.html" /> 
   </head>
   <body role="document">
       <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
-          <span>cryptorandom 0.1 documentation</span></a></h1>
+          <span>cryptorandom 0.2 documentation</span></a></h1>
         <h2 class="heading"><span>sample module</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
@@ -144,32 +144,6 @@ If prng is already a PRNG instance, return it.</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="cryptorandom.sample.fykd_shuffle">
-<code class="descname">fykd_shuffle</code><span class="sig-paren">(</span><em>n</em>, <em>prng=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/sample.html#fykd_shuffle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cryptorandom.sample.fykd_shuffle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Use Fisher-Yates-Knuth-Durstenfeld algorithm to permute 1, ..., n</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>n</strong> (<em>int</em>) &#8211; Population size</li>
-<li><strong>prng</strong> (<em>{None, int, object}</em>) &#8211; If prng is None, return a randomly seeded instance of SHA256.
-If prng is an int, return a new SHA256 instance seeded with seed.
-If prng is already a PRNG instance, return it.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">permuted list of {1, ..., n}</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
 <dt id="cryptorandom.sample.get_prng">
 <code class="descname">get_prng</code><span class="sig-paren">(</span><em>seed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/sample.html#get_prng"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cryptorandom.sample.get_prng" title="Permalink to this definition">¶</a></dt>
 <dd><p>Turn seed into a PRNG instance</p>
@@ -185,32 +159,6 @@ Otherwise raise ValueError.</td>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">object</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="cryptorandom.sample.permute_by_index">
-<code class="descname">permute_by_index</code><span class="sig-paren">(</span><em>n</em>, <em>prng=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/sample.html#permute_by_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cryptorandom.sample.permute_by_index" title="Permalink to this definition">¶</a></dt>
-<dd><p>Select indices uniformly at random, without replacement, to permute 1, ..., n</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>n</strong> (<em>int</em>) &#8211; Population size</li>
-<li><strong>prng</strong> (<em>{None, int, object}</em>) &#8211; If prng is None, return a randomly seeded instance of SHA256.
-If prng is an int, return a new SHA256 instance seeded with seed.
-If prng is already a PRNG instance, return it.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of items sampled</p>
-</td>
 </tr>
 </tbody>
 </table>
@@ -246,41 +194,17 @@ If prng is already a PRNG instance, return it.</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="cryptorandom.sample.pikk_shuffle">
-<code class="descname">pikk_shuffle</code><span class="sig-paren">(</span><em>n</em>, <em>prng=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/sample.html#pikk_shuffle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cryptorandom.sample.pikk_shuffle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Assign random values between 0 and 1 to the numbers 1, ..., n and sort them
-according to these random values.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>n</strong> (<em>int</em>) &#8211; Population size</li>
-<li><strong>prng</strong> (<em>{None, int, object}</em>) &#8211; If prng is None, return a randomly seeded instance of SHA256.
-If prng is an int, return a new SHA256 instance seeded with seed.
-If prng is already a PRNG instance, return it.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of items sampled</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
 <dt id="cryptorandom.sample.random_permutation">
 <code class="descname">random_permutation</code><span class="sig-paren">(</span><em>a</em>, <em>method='Fisher-Yates'</em>, <em>prng=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/sample.html#random_permutation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cryptorandom.sample.random_permutation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Construct a random permutation (re-ordering) of a population <cite>a</cite>.</p>
 <dl class="docutils">
 <dt>The algorithms available are:</dt>
-<dd>Fisher-Yates:        a shuffling algorithm
-random_sort:         generate random floats and sort
-permute_by_index:    sample integer indices without replacement</dd>
+<dd><ul class="first last simple">
+<li>Fisher-Yates:        a shuffling algorithm</li>
+<li>random_sort:         generate random floats and sort</li>
+<li>permute_by_index:    sample integer indices without replacement</li>
+</ul>
+</dd>
 </dl>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -316,17 +240,21 @@ with or without replacement.</p>
 If weights are provided, len(weights) must equal N.</p>
 <dl class="docutils">
 <dt>Sampling methods available are:</dt>
-<dd><p class="first">Fisher-Yates:    sampling without weights, without replacement
-PIKK:            sampling without weights, without replacement
-recursive:       samping without weights, without replacement
-Waterman_R:      sampling without weights, without replacement
-Vitter_Z:        sampling without weights, without replacement
-sample_by_index: sampling without weights, without replacement</p>
-<p class="last">Exponential:     sampling with weights, without replacement
-Elimination:     sampling with weights, without replacement
-...</p>
+<dd><ul class="first last simple">
+<li>Fisher-Yates:    sampling without weights, without replacement</li>
+<li>PIKK:            sampling without weights, without replacement</li>
+<li>recursive:       samping without weights, without replacement</li>
+<li>Waterman_R:      sampling without weights, without replacement</li>
+<li>Vitter_Z:        sampling without weights, without replacement</li>
+<li>sample_by_index: sampling without weights, without replacement</li>
+<li>Exponential:     sampling with weights, without replacement</li>
+<li>Elimination:     sampling with weights, without replacement</li>
+</ul>
 </dd>
 </dl>
+<p>Fisher-Yates, PIKK, sample_by_index, Exponential, and Elimination return ordered samples,
+i.e. they are equally likely to return [1, 2] as they are to return [2, 1]. Waterman_R,
+Vitter_Z, and recursive aren&#8217;t guaranteed to randomize the order of items in the sample.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -421,7 +349,7 @@ If prng is already a PRNG instance, return it.</li>
 <dl class="function">
 <dt id="cryptorandom.sample.vitter_z">
 <code class="descname">vitter_z</code><span class="sig-paren">(</span><em>n</em>, <em>k</em>, <em>prng=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/sample.html#vitter_z"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cryptorandom.sample.vitter_z" title="Permalink to this definition">¶</a></dt>
-<dd><p>Vitter&#8217;s Algorithm Z for resevoir SRSs (Vitter 1985).
+<dd><p>Vitter&#8217;s Algorithm Z for reservoir SRSs (Vitter 1985).
 Draw a sample of to sample k out of 1, ..., n without replacement</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -449,7 +377,7 @@ If prng is already a PRNG instance, return it.</li>
 <dl class="function">
 <dt id="cryptorandom.sample.waterman_r">
 <code class="descname">waterman_r</code><span class="sig-paren">(</span><em>n</em>, <em>k</em>, <em>prng=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/sample.html#waterman_r"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cryptorandom.sample.waterman_r" title="Permalink to this definition">¶</a></dt>
-<dd><p>Waterman&#8217;s Algorithm R for resevoir SRSs
+<dd><p>Waterman&#8217;s Algorithm R for reservoir SRSs
 Draw a sample of to sample k out of 1, ..., n without replacement</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

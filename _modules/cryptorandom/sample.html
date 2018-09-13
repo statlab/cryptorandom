@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>cryptorandom.sample &mdash; cryptorandom 0.1 documentation</title>
+    <title>cryptorandom.sample &mdash; cryptorandom 0.2 documentation</title>
     
     <link rel="stylesheet" href="../../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.1',
+        VERSION:     '0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,12 +23,12 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="cryptorandom 0.1 documentation" href="../../index.html" />
+    <link rel="top" title="cryptorandom 0.2 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
       <div class="header" role="banner"><h1 class="heading"><a href="../../index.html">
-          <span>cryptorandom 0.1 documentation</span></a></h1>
+          <span>cryptorandom 0.2 documentation</span></a></h1>
         <h2 class="heading"><span>cryptorandom.sample</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
@@ -85,17 +85,19 @@
 <span class="sd">    If weights are provided, len(weights) must equal N.</span>
 
 <span class="sd">    Sampling methods available are:</span>
-<span class="sd">        Fisher-Yates:    sampling without weights, without replacement</span>
-<span class="sd">        PIKK:            sampling without weights, without replacement</span>
-<span class="sd">        recursive:       samping without weights, without replacement</span>
-<span class="sd">        Waterman_R:      sampling without weights, without replacement</span>
-<span class="sd">        Vitter_Z:        sampling without weights, without replacement</span>
-<span class="sd">        sample_by_index: sampling without weights, without replacement</span>
-
-<span class="sd">        Exponential:     sampling with weights, without replacement</span>
-<span class="sd">        Elimination:     sampling with weights, without replacement</span>
-<span class="sd">        ...</span>
-
+<span class="sd">        * Fisher-Yates:    sampling without weights, without replacement</span>
+<span class="sd">        * PIKK:            sampling without weights, without replacement</span>
+<span class="sd">        * recursive:       samping without weights, without replacement</span>
+<span class="sd">        * Waterman_R:      sampling without weights, without replacement</span>
+<span class="sd">        * Vitter_Z:        sampling without weights, without replacement</span>
+<span class="sd">        * sample_by_index: sampling without weights, without replacement</span>
+<span class="sd">        * Exponential:     sampling with weights, without replacement</span>
+<span class="sd">        * Elimination:     sampling with weights, without replacement</span>
+<span class="sd">    </span>
+<span class="sd">    Fisher-Yates, PIKK, sample_by_index, Exponential, and Elimination return ordered samples, </span>
+<span class="sd">    i.e. they are equally likely to return [1, 2] as they are to return [2, 1]. Waterman_R,</span>
+<span class="sd">    Vitter_Z, and recursive aren&#39;t guaranteed to randomize the order of items in the sample.</span>
+<span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    a : 1-D array-like or int</span>
@@ -170,9 +172,9 @@
 <span class="sd">    Construct a random permutation (re-ordering) of a population `a`.</span>
 <span class="sd">    </span>
 <span class="sd">    The algorithms available are:</span>
-<span class="sd">        Fisher-Yates:        a shuffling algorithm</span>
-<span class="sd">        random_sort:         generate random floats and sort</span>
-<span class="sd">        permute_by_index:    sample integer indices without replacement</span>
+<span class="sd">        * Fisher-Yates:        a shuffling algorithm</span>
+<span class="sd">        * random_sort:         generate random floats and sort</span>
+<span class="sd">        * permute_by_index:    sample integer indices without replacement</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -202,9 +204,9 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;a must be an integer or array-like&quot;</span><span class="p">)</span>
 
     <span class="n">methods</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;Fisher-Yates&quot;</span> <span class="p">:</span> <span class="k">lambda</span>  <span class="n">N</span><span class="p">:</span> <span class="n">fykd_shuffle</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="n">prng</span><span class="p">),</span>
-        <span class="s2">&quot;random_sort&quot;</span> <span class="p">:</span> <span class="k">lambda</span> <span class="n">N</span><span class="p">:</span> <span class="n">pikk_shuffle</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="n">prng</span><span class="p">),</span>
-        <span class="s2">&quot;permute_by_index&quot;</span> <span class="p">:</span> <span class="k">lambda</span> <span class="n">N</span><span class="p">:</span> <span class="n">permute_by_index</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="n">prng</span><span class="p">),</span>
+        <span class="s2">&quot;Fisher-Yates&quot;</span> <span class="p">:</span> <span class="k">lambda</span>  <span class="n">N</span><span class="p">:</span> <span class="n">fykd_sample</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="n">prng</span><span class="p">),</span>
+        <span class="s2">&quot;random_sort&quot;</span> <span class="p">:</span> <span class="k">lambda</span> <span class="n">N</span><span class="p">:</span> <span class="n">pikk</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="n">prng</span><span class="p">),</span>
+        <span class="s2">&quot;permute_by_index&quot;</span> <span class="p">:</span> <span class="k">lambda</span> <span class="n">N</span><span class="p">:</span> <span class="n">sample_by_index</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="n">prng</span><span class="p">),</span>
     <span class="p">}</span>
 
     <span class="k">try</span><span class="p">:</span>
@@ -307,7 +309,7 @@
 </div>
 <div class="viewcode-block" id="waterman_r"><a class="viewcode-back" href="../../api/sample.html#cryptorandom.sample.waterman_r">[docs]</a><span class="k">def</span> <span class="nf">waterman_r</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Waterman&#39;s Algorithm R for resevoir SRSs</span>
+<span class="sd">    Waterman&#39;s Algorithm R for reservoir SRSs</span>
 <span class="sd">    Draw a sample of to sample k out of 1, ..., n without replacement</span>
 
 <span class="sd">    Parameters</span>
@@ -335,7 +337,7 @@
 </div>
 <div class="viewcode-block" id="vitter_z"><a class="viewcode-back" href="../../api/sample.html#cryptorandom.sample.vitter_z">[docs]</a><span class="k">def</span> <span class="nf">vitter_z</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Vitter&#39;s Algorithm Z for resevoir SRSs (Vitter 1985).</span>
+<span class="sd">    Vitter&#39;s Algorithm Z for reservoir SRSs (Vitter 1985).</span>
 <span class="sd">    Draw a sample of to sample k out of 1, ..., n without replacement</span>
 
 <span class="sd">    Parameters</span>
@@ -357,10 +359,15 @@
     <span class="k">def</span> <span class="nf">Algorithm_X</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
         <span class="n">V</span> <span class="o">=</span> <span class="n">prng</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
         <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">frac</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">numer</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="n">t</span><span class="o">+</span><span class="n">s</span><span class="o">+</span><span class="mi">1</span><span class="o">-</span><span class="n">n</span><span class="p">)</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">denom</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="n">t</span><span class="o">+</span><span class="n">s</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">frac</span> <span class="o">=</span> <span class="n">numer</span><span class="o">/</span><span class="n">denom</span>
+        
         <span class="k">while</span> <span class="n">frac</span> <span class="o">&gt;</span> <span class="n">V</span><span class="p">:</span>
             <span class="n">s</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="n">frac</span> <span class="o">=</span> <span class="p">((</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="o">-</span><span class="n">n</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="n">s</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">numer</span> <span class="o">=</span> <span class="p">(</span><span class="n">t</span><span class="o">+</span><span class="n">s</span><span class="o">+</span><span class="mi">1</span><span class="o">-</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="n">numer</span>
+            <span class="n">denom</span> <span class="o">=</span> <span class="p">(</span><span class="n">t</span><span class="o">+</span><span class="n">s</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">denom</span>
+            <span class="n">frac</span> <span class="o">=</span> <span class="n">numer</span><span class="o">/</span><span class="n">denom</span>
         <span class="k">return</span> <span class="n">s</span>
 
     <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
@@ -382,7 +389,7 @@
     <span class="n">sam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># fill the reservoir</span>
     <span class="n">t</span> <span class="o">=</span> <span class="n">k</span>
 
-    <span class="k">while</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">:</span>
+    <span class="k">while</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
         <span class="c1"># Determine how many unseen records, nu, to skip</span>
         <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="mi">22</span><span class="o">*</span><span class="n">k</span><span class="p">:</span> <span class="c1"># the choice of 22 is taken from Vitter&#39;s 1985 ACM paper</span>
             <span class="n">nu</span> <span class="o">=</span> <span class="n">Algorithm_X</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
@@ -397,10 +404,10 @@
                     <span class="k">break</span>
                 <span class="n">var</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">t</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">c</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">*</span><span class="n">g</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
             <span class="n">nu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">t</span><span class="o">+</span><span class="n">nu</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">t</span><span class="o">+</span><span class="n">nu</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
             <span class="c1"># Make the next record a candidate, replacing one at random</span>
             <span class="n">i</span> <span class="o">=</span> <span class="n">prng</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-            <span class="n">sam</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="o">+</span><span class="n">nu</span><span class="p">)</span>
+            <span class="n">sam</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="o">+</span><span class="n">nu</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="o">+</span><span class="n">nu</span><span class="o">+</span><span class="mi">1</span>
     <span class="k">return</span> <span class="n">sam</span>
 
@@ -540,70 +547,10 @@
     <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">sam</span> <span class="o">=</span> <span class="n">prng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">sam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">prng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
         <span class="n">sam</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sam</span><span class="p">)</span><span class="o">/</span><span class="n">weights</span>
         <span class="n">sample</span> <span class="o">=</span> <span class="n">sam</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="n">k</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">sample</span><span class="o">+</span><span class="mi">1</span>
-
-<span class="c1">######################## Permutation functions #################################</span>
-</div>
-<div class="viewcode-block" id="fykd_shuffle"><a class="viewcode-back" href="../../api/sample.html#cryptorandom.sample.fykd_shuffle">[docs]</a><span class="k">def</span> <span class="nf">fykd_shuffle</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Use Fisher-Yates-Knuth-Durstenfeld algorithm to permute 1, ..., n</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    n : int</span>
-<span class="sd">        Population size</span>
-<span class="sd">    prng : {None, int, object}</span>
-<span class="sd">        If prng is None, return a randomly seeded instance of SHA256.</span>
-<span class="sd">        If prng is an int, return a new SHA256 instance seeded with seed.</span>
-<span class="sd">        If prng is already a PRNG instance, return it.</span>
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    permuted list of {1, ..., n}</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">return</span> <span class="n">fykd_sample</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="n">prng</span><span class="p">)</span>
-
-</div>
-<div class="viewcode-block" id="pikk_shuffle"><a class="viewcode-back" href="../../api/sample.html#cryptorandom.sample.pikk_shuffle">[docs]</a><span class="k">def</span> <span class="nf">pikk_shuffle</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Assign random values between 0 and 1 to the numbers 1, ..., n and sort them</span>
-<span class="sd">    according to these random values.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    n : int</span>
-<span class="sd">        Population size</span>
-<span class="sd">    prng : {None, int, object}</span>
-<span class="sd">        If prng is None, return a randomly seeded instance of SHA256.</span>
-<span class="sd">        If prng is an int, return a new SHA256 instance seeded with seed.</span>
-<span class="sd">        If prng is already a PRNG instance, return it.</span>
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    list of items sampled</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">prng</span> <span class="o">=</span> <span class="n">get_prng</span><span class="p">(</span><span class="n">prng</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">prng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
-
-</div>
-<div class="viewcode-block" id="permute_by_index"><a class="viewcode-back" href="../../api/sample.html#cryptorandom.sample.permute_by_index">[docs]</a><span class="k">def</span> <span class="nf">permute_by_index</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Select indices uniformly at random, without replacement, to permute 1, ..., n</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    n : int</span>
-<span class="sd">        Population size</span>
-<span class="sd">    prng : {None, int, object}</span>
-<span class="sd">        If prng is None, return a randomly seeded instance of SHA256.</span>
-<span class="sd">        If prng is an int, return a new SHA256 instance seeded with seed.</span>
-<span class="sd">        If prng is already a PRNG instance, return it.</span>
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    list of items sampled</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">return</span> <span class="n">sample_by_index</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="n">prng</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">sample</span><span class="o">+</span><span class="mi">1</span></div>
 </pre></div>
 
       </div>
