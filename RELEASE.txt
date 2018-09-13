@@ -35,10 +35,10 @@ How to make a new release of ``cryptorandom``
 
 - Publish on PyPi::
 
-   python setup.py register
-   python setup.py sdist upload
-   python setup.py bdist_wheel upload
-
+   python setup.py sdist
+   python setup.py bdist_wheel
+   twine upload dist/*
+   
 - Increase the version number
 
   - In ``setup.py``, set to ``0.Xdev``.

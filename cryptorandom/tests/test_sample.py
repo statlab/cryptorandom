@@ -132,7 +132,7 @@ def test_fykd():
     """
     ff = fake_generator()
     sam = fykd_sample(5, 2, prng=ff)
-    assert sam == [1, 2]
+    assert (sam == [1, 2]).all()
 
     ff = fake_generator()
     sam = random_sample(5, 2, method="Fisher-Yates", prng=ff)
@@ -163,7 +163,7 @@ def test_recursive_sample():
     """
     ff = fake_generator()
     sam = recursive_sample(5, 2, prng=ff)
-    assert sam == [2, 3]
+    assert (sam == [2, 3]).all()
 
     ff = fake_generator()
     sam = random_sample(5, 2, method="recursive", prng=ff)
@@ -181,7 +181,7 @@ def test_waterman_r():
     """
     ff = fake_generator()
     sam = waterman_r(5, 2, prng=ff)
-    assert sam == [1, 3]
+    assert (sam == [1, 3]).all()
 
     ff = fake_generator()
     sam = random_sample(5, 2, method="Waterman_R", prng=ff)
@@ -194,7 +194,7 @@ def test_sbi():
     """
     ff = fake_generator()
     sam = sample_by_index(5, 2, prng=ff)
-    assert sam == [2, 3]
+    assert (sam == [2, 3]).all()
 
     ff = fake_generator()
     sam = random_sample(5, 2, method="sample_by_index", prng=ff)
@@ -207,7 +207,7 @@ def test_vitter_z():
     """
     ff = fake_generator()
     sam = vitter_z(5, 2, prng=ff)
-    assert sam == [4, 2]
+    assert (sam == [4, 2]).all()
 
     ff = fake_generator()
     sam = random_sample(5, 2, method="Vitter_Z", prng=ff)
@@ -215,7 +215,7 @@ def test_vitter_z():
 
     ff = fake_generator()
     sam = vitter_z(500, 2, prng=ff)
-    assert sam == [420, 265]
+    assert (sam == [420, 265]).all()
 
     ff = fake_generator()
     sam = random_sample(500, 2, method="Vitter_Z", prng=ff)
@@ -254,3 +254,47 @@ def test_exponential_sample():
     ff = fake_generator()
     sam = random_sample(5, 2, p=[0.2]*5, replace=False, method="Exponential", prng=ff)
     assert (sam+1 == [5, 4]).all() # shift to 1-index
+
+
+def test_fykd_shuffle():
+    """
+    Test Fisher-Yates shuffle for random permutations, fykd_shuffle
+    """
+    ff = fake_generator()
+    sam = fykd_shuffle(5, prng=ff)
+    assert (sam == [1, 2, 3, 4, 5]).all()
+
+    ff = fake_generator()
+    sam = random_permutation(5, method="Fisher-Yates", prng=ff)
+    assert (sam+1 == [1, 2, 3, 4, 5]).all() # shift to 1-index
+
+    ff = fake_generator()
+    fruit = ['apple', 'banana', 'cherry', 'pear', 'plum']
+    sam = random_permutation(fruit, method="Fisher-Yates", prng=ff)
+    assert (sam == fruit).all()
+
+
+def test_pikk_shuffle():
+    """
+    Test PIKK shuffling
+    """
+    ff = fake_generator()
+    sam = pikk_shuffle(5, prng=ff)
+    assert (sam == [1, 2, 3, 4, 5]).all()
+
+    ff = fake_generator()
+    sam = random_permutation(5, method="random_sort", prng=ff)
+    assert (sam+1 == [1, 2, 3, 4, 5]).all() # shift to 1-index
+
+
+def test_permute_by_index():
+    """
+    Test permuting by index shuffling
+    """
+    ff = fake_generator()
+    sam = permute_by_index(5, prng=ff)
+    assert (sam == [2, 3, 1, 4, 5]).all()
+
+    ff = fake_generator()
+    sam = random_permutation(5, method="permute_by_index", prng=ff)
+    assert (sam+1 == [2, 3, 1, 4, 5]).all() # shift to 1-index
