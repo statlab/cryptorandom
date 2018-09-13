@@ -207,19 +207,19 @@ def test_vitter_z():
     """
     ff = fake_generator()
     sam = vitter_z(5, 2, prng=ff)
-    assert (sam == [4, 2]).all()
+    assert (sam == [5, 2]).all()
 
     ff = fake_generator()
     sam = random_sample(5, 2, method="Vitter_Z", prng=ff)
-    assert (sam+1 == [4, 2]).all() # shift to 1-index
+    assert (sam+1 == [5, 2]).all() # shift to 1-index
 
     ff = fake_generator()
     sam = vitter_z(500, 2, prng=ff)
-    assert (sam == [420, 265]).all()
+    assert (sam == [472, 422]).all()
 
     ff = fake_generator()
     sam = random_sample(500, 2, method="Vitter_Z", prng=ff)
-    assert (sam+1 == [420, 265]).all() # shift to 1-index
+    assert (sam+1 == [472, 422]).all() # shift to 1-index
 
 
 def test_elimination_sample():

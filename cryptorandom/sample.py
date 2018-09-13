@@ -263,7 +263,7 @@ def recursive_sample(n, k, prng=None):
 
 def waterman_r(n, k, prng=None):
     '''
-    Waterman's Algorithm R for resevoir SRSs
+    Waterman's Algorithm R for reservoir SRSs
     Draw a sample of to sample k out of 1, ..., n without replacement
 
     Parameters
@@ -291,7 +291,7 @@ def waterman_r(n, k, prng=None):
 
 def vitter_z(n, k, prng=None):
     '''
-    Vitter's Algorithm Z for resevoir SRSs (Vitter 1985).
+    Vitter's Algorithm Z for reservoir SRSs (Vitter 1985).
     Draw a sample of to sample k out of 1, ..., n without replacement
 
     Parameters
@@ -313,10 +313,15 @@ def vitter_z(n, k, prng=None):
     def Algorithm_X(n, t):
         V = prng.random()
         s = 0
-        frac = 2
+        numer = math.factorial(t+s+1-n)/math.factorial(t-n)
+        denom = math.factorial(t+s+1)/math.factorial(t)
+        frac = numer/denom
+        
         while frac > V:
             s += 1
-            frac = ((t+1-n)/(t+1))**(s+1)
+            numer = (t+s+1-n)*numer
+            denom = (t+s+1)*denom
+            frac = numer/denom
         return s
 
     def f(x, t):
@@ -338,7 +343,7 @@ def vitter_z(n, k, prng=None):
     sam = np.array(range(1, k+1))  # fill the reservoir
     t = k
 
-    while t <= n:
+    while t < n:
         # Determine how many unseen records, nu, to skip
         if t <= 22*k: # the choice of 22 is taken from Vitter's 1985 ACM paper
             nu = Algorithm_X(k, t)
@@ -353,10 +358,10 @@ def vitter_z(n, k, prng=None):
                     break
                 var = f(np.floor(X), t)/(c(t)*g(X, t))
             nu = np.floor(X)
-        if t+nu <= n:
+        if t+nu < n:
             # Make the next record a candidate, replacing one at random
             i = prng.randint(0, k)
-            sam[i] = int(t+nu)
+            sam[i] = int(t+nu+1)
         t = t+nu+1
     return sam
 
