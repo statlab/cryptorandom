@@ -41,15 +41,14 @@ def random_sample(a, size, replace=False, p=None, method="sample_by_index", prng
     If weights are provided, len(weights) must equal N.
 
     Sampling methods available are:
-        Fisher-Yates:    sampling without weights, without replacement
-        PIKK:            sampling without weights, without replacement
-        recursive:       samping without weights, without replacement
-        Waterman_R:      sampling without weights, without replacement
-        Vitter_Z:        sampling without weights, without replacement
-        sample_by_index: sampling without weights, without replacement
-
-        Exponential:     sampling with weights, without replacement
-        Elimination:     sampling with weights, without replacement
+        * Fisher-Yates:    sampling without weights, without replacement
+        * PIKK:            sampling without weights, without replacement
+        * recursive:       samping without weights, without replacement
+        * Waterman_R:      sampling without weights, without replacement
+        * Vitter_Z:        sampling without weights, without replacement
+        * sample_by_index: sampling without weights, without replacement
+        * Exponential:     sampling with weights, without replacement
+        * Elimination:     sampling with weights, without replacement
     
     Fisher-Yates, PIKK, sample_by_index, Exponential, and Elimination return ordered samples, 
     i.e. they are equally likely to return [1, 2] as they are to return [2, 1]. Waterman_R,
@@ -129,9 +128,9 @@ def random_permutation(a, method="Fisher-Yates", prng=None):
     Construct a random permutation (re-ordering) of a population `a`.
     
     The algorithms available are:
-        Fisher-Yates:        a shuffling algorithm
-        random_sort:         generate random floats and sort
-        permute_by_index:    sample integer indices without replacement
+        * Fisher-Yates:        a shuffling algorithm
+        * random_sort:         generate random floats and sort
+        * permute_by_index:    sample integer indices without replacement
 
     Parameters
     ----------

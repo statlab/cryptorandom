@@ -55,4 +55,68 @@ Elimination       yes         without replacement
     10000 loops, best of 3: 22 µs per loop
     >>> %timeit random_sample(fruit, 2, method="sample_by_index", prng=s)
     100000 loops, best of 3: 15 µs per loop
+	
+	
+Some sampling methods (Fisher-Yates, PIKK, sample_by_index, Exponential, and Elimination) return ordered samples, i.e. they are equally likely to return [1, 2] as they are to return [2, 1].
 
+.. code::
+
+    >>> s = SHA256(1234567890)
+    >>> counts = {}
+    >>> for i in range(10000):
+    >>>     sam = pikk(5, 2, prng=s)
+    >>>     if str(sam) in counts.keys():
+    >>>         counts[str(sam)]+=1
+    >>>     else:
+    >>>         counts[str(sam)]=0
+    >>> counts
+	{'[1 2]': 549,
+	 '[1 3]': 528,
+	 '[1 4]': 512,
+	 '[1 5]': 502,
+	 '[2 1]': 515,
+	 '[2 3]': 485,
+	 '[2 4]': 487,
+	 '[2 5]': 482,
+	 '[3 1]': 484,
+	 '[3 2]': 482,
+	 '[3 4]': 466,
+	 '[3 5]': 525,
+	 '[4 1]': 468,
+	 '[4 2]': 512,
+	 '[4 3]': 490,
+	 '[4 5]': 490,
+	 '[5 1]': 547,
+	 '[5 2]': 460,
+	 '[5 3]': 507,
+	 '[5 4]': 489}
+	 
+The reservoir algorithms (Waterman_R and Vitter_Z) and the recursive method aren't guaranteed to randomize the order of sampled items.
+
+.. code::
+
+    >>> s = SHA256(1234567890)
+    >>> counts = {}
+    >>> for i in range(10000):
+    >>>     sam = recursive_sample(5, 2, prng=s)
+    >>>     if str(sam) in counts.keys():
+    >>>         counts[str(sam)]+=1
+    >>>     else:
+    >>>         counts[str(sam)]=0
+    >>> counts
+	{'[1 2]': 492,
+	 '[1 3]': 499,
+	 '[1 4]': 503,
+	 '[1 5]': 1016,
+	 '[2 1]': 462,
+	 '[2 3]': 487,
+	 '[2 4]': 525,
+	 '[2 5]': 985,
+	 '[3 1]': 481,
+	 '[3 2]': 485,
+	 '[3 4]': 507,
+	 '[3 5]': 984,
+	 '[4 1]': 524,
+	 '[4 2]': 475,
+	 '[4 3]': 516,
+	 '[4 5]': 1043}
