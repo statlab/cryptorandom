@@ -25,6 +25,7 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="cryptorandom 0.1 documentation" href="../index.html" />
     <link rel="up" title="Examples" href="index.html" />
+    <link rel="next" title="Permuting a list" href="permutations.html" />
     <link rel="prev" title="SHA-256 PRNG" href="prng.html" /> 
   </head>
   <body role="document">
@@ -38,6 +39,8 @@
         «&#160;&#160;<a href="prng.html">SHA-256 PRNG</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="permutations.html">Permuting a list</a>&#160;&#160;»
         </p>
 
       </div>
@@ -51,14 +54,20 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 </pre></div>
 </div>
-<p>Numpy and the base random module offer methods for drawing simple random samples with and without replacement. The default is to use sampling indices without replacement:</p>
+<p>We provide a sampling module compatible with any pseudorandom number generator that has <cite>randint</cite> and <cite>random</cite> methods. The module includes a variety of algorithms for weighted or unweighted sampling, with or without replacement.</p>
+<p>The main workhorse is the <cite>random_sample</cite> function. The default sampling algorithm is <cite>sample_by_index</cite>, sampling indices without replacement.</p>
 <div class="code highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fruit</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;banana&#39;</span><span class="p">,</span> <span class="s1">&#39;cherry&#39;</span><span class="p">,</span> <span class="s1">&#39;pear&#39;</span><span class="p">,</span> <span class="s1">&#39;plum&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">SHA256</span><span class="p">(</span><span class="mi">1234567890</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">random_sample</span><span class="p">(</span><span class="n">fruit</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="n">s</span><span class="p">)</span>
 <span class="go">    array([&#39;plum&#39;, &#39;cherry&#39;], dtype=&#39;&lt;U6&#39;)</span>
 </pre></div>
 </div>
-<p>The sampling methods available are:</p>
+<p>Numpy and the base random module offer methods for drawing simple random samples with and without replacement, but don&#8217;t allow you to choose the pseudorandom number generator. Numpy&#8217;s <cite>choice</cite> method uses the Fisher-Yates method to draw a random sample.</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">fruit</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="go">array([&#39;plum&#39;, &#39;apple&#39;], dtype=&#39;&lt;U6&#39;)</span>
+</pre></div>
+</div>
+<p>The sampling methods available in <cite>cryptorandom</cite> are below.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="33%" />
@@ -106,7 +115,6 @@
 </tr>
 </tbody>
 </table>
-<p>Below is a time test of the unweighted sampling without replacement methods.</p>
 <div class="code highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">timeit</span> <span class="n">random_sample</span><span class="p">(</span><span class="n">fruit</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Fisher-Yates&quot;</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="n">s</span><span class="p">)</span>
 <span class="go">10000 loops, best of 3: 46.4 µs per loop</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">timeit</span> <span class="n">random_sample</span><span class="p">(</span><span class="n">fruit</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;PIKK&quot;</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="n">s</span><span class="p">)</span>
@@ -131,6 +139,8 @@
         «&#160;&#160;<a href="prng.html">SHA-256 PRNG</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="permutations.html">Permuting a list</a>&#160;&#160;»
         </p>
 
       </div>

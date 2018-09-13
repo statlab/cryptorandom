@@ -4,7 +4,11 @@ Welcome to cryptorandom's documentation!
 `cryptorandom` is a package random sampling and random number generation using
 cryptographically secure pseudorandom number generators.
 
-`Download the package here!`__
+`Download the package on Github`__ or install it from PyPi:
+
+.. code::
+
+	pip install cryptorandom
 
 .. __: https://github.com/statlab/cryptorandom
 

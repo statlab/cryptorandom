@@ -86,13 +86,13 @@
 
 <span class="sd">    Sampling methods available are:</span>
 <span class="sd">        Fisher-Yates:    sampling without weights, without replacement</span>
-<span class="sd">        PIKK:            sampling without weights, without replacement (deprecated)</span>
-<span class="sd">        Cormen:          samping without weights, without replacement</span>
+<span class="sd">        PIKK:            sampling without weights, without replacement</span>
+<span class="sd">        recursive:       samping without weights, without replacement</span>
 <span class="sd">        Waterman_R:      sampling without weights, without replacement</span>
 <span class="sd">        Vitter_Z:        sampling without weights, without replacement</span>
 <span class="sd">        sample_by_index: sampling without weights, without replacement</span>
 
-<span class="sd">        Exponential:     sampling with weights, without replacement (deprecated)</span>
+<span class="sd">        Exponential:     sampling with weights, without replacement</span>
 <span class="sd">        Elimination:     sampling with weights, without replacement</span>
 <span class="sd">        ...</span>
 
@@ -164,6 +164,55 @@
             <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Sampling method is incompatible with the inputs&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">a</span><span class="p">[</span><span class="n">sam</span><span class="p">]</span>
 
+</div>
+<div class="viewcode-block" id="random_permutation"><a class="viewcode-back" href="../../api/sample.html#cryptorandom.sample.random_permutation">[docs]</a><span class="k">def</span> <span class="nf">random_permutation</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Fisher-Yates&quot;</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Construct a random permutation (re-ordering) of a population `a`.</span>
+<span class="sd">    </span>
+<span class="sd">    The algorithms available are:</span>
+<span class="sd">        Fisher-Yates:        a shuffling algorithm</span>
+<span class="sd">        random_sort:         generate random floats and sort</span>
+<span class="sd">        permute_by_index:    sample integer indices without replacement</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a : 1-D array-like or int</span>
+<span class="sd">        If an array or list, a random permutation is generated from its elements.</span>
+<span class="sd">        If an int, the random permutation is generated as if a were np.arange(a)</span>
+<span class="sd">    method : string</span>
+<span class="sd">        Which sampling function?</span>
+<span class="sd">    prng : {None, int, object}</span>
+<span class="sd">        If prng is None, return a randomly seeded instance of SHA256.</span>
+<span class="sd">        If prng is an int, return a new SHA256 instance seeded with seed.</span>
+<span class="sd">        If prng is already a PRNG instance, return it.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    samples : single item or ndarray</span>
+<span class="sd">        The generated random samples</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">prng</span> <span class="o">=</span> <span class="n">get_prng</span><span class="p">(</span><span class="n">prng</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="n">a</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">N</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Population size must be nonnegative&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;a must be an integer or array-like&quot;</span><span class="p">)</span>
+
+    <span class="n">methods</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;Fisher-Yates&quot;</span> <span class="p">:</span> <span class="k">lambda</span>  <span class="n">N</span><span class="p">:</span> <span class="n">fykd_shuffle</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="n">prng</span><span class="p">),</span>
+        <span class="s2">&quot;random_sort&quot;</span> <span class="p">:</span> <span class="k">lambda</span> <span class="n">N</span><span class="p">:</span> <span class="n">pikk_shuffle</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="n">prng</span><span class="p">),</span>
+        <span class="s2">&quot;permute_by_index&quot;</span> <span class="p">:</span> <span class="k">lambda</span> <span class="n">N</span><span class="p">:</span> <span class="n">permute_by_index</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="n">prng</span><span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">sam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">methods</span><span class="p">[</span><span class="n">method</span><span class="p">](</span><span class="n">N</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1"># shift to 0 indexing</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Bad permutation algorithm&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">a</span><span class="p">[</span><span class="n">sam</span><span class="p">]</span>
+
 
 <span class="c1">###################### Sampling functions #####################################</span>
 </div>
@@ -186,7 +235,7 @@
 <span class="sd">    list of items sampled</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">prng</span> <span class="o">=</span> <span class="n">get_prng</span><span class="p">(</span><span class="n">prng</span><span class="p">)</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
     <span class="n">rand</span> <span class="o">=</span> <span class="n">prng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
     <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
     <span class="n">JJ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ind</span> <span class="o">+</span> <span class="n">rand</span><span class="o">*</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">ind</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
@@ -245,14 +294,14 @@
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">prng</span> <span class="o">=</span> <span class="n">get_prng</span><span class="p">(</span><span class="n">prng</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">S</span> <span class="o">=</span> <span class="n">recursive_sample</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="n">prng</span><span class="p">)</span>
         <span class="n">i</span> <span class="o">=</span> <span class="n">prng</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">S</span><span class="p">:</span>
-            <span class="n">S</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+            <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="p">[</span><span class="n">n</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">S</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="p">[</span><span class="n">i</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">S</span>
 
 </div>
@@ -276,7 +325,7 @@
 <span class="sd">    list of items sampled</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">prng</span> <span class="o">=</span> <span class="n">get_prng</span><span class="p">(</span><span class="n">prng</span><span class="p">)</span>
-    <span class="n">S</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># fill the reservoir</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># fill the reservoir</span>
     <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
         <span class="n">i</span> <span class="o">=</span> <span class="n">prng</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">k</span><span class="p">:</span>
@@ -330,7 +379,7 @@
     <span class="k">def</span> <span class="nf">c</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="n">sam</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># fill the reservoir</span>
+    <span class="n">sam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># fill the reservoir</span>
     <span class="n">t</span> <span class="o">=</span> <span class="n">k</span>
 
     <span class="k">while</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">:</span>
@@ -387,7 +436,7 @@
         <span class="k">if</span> <span class="n">w</span> <span class="o">&lt;</span> <span class="n">nprime</span><span class="p">:</span>
             <span class="n">Pop</span><span class="p">[</span><span class="n">w</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">lastvalue</span> <span class="c1"># Move last population item to the wth position</span>
         <span class="n">nprime</span> <span class="o">=</span> <span class="n">nprime</span> <span class="o">-</span> <span class="mi">1</span>
-    <span class="k">return</span> <span class="n">S</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
 
 </div>
 <div class="viewcode-block" id="elimination_sample"><a class="viewcode-back" href="../../api/sample.html#cryptorandom.sample.elimination_sample">[docs]</a><span class="k">def</span> <span class="nf">elimination_sample</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -494,7 +543,67 @@
         <span class="n">sam</span> <span class="o">=</span> <span class="n">prng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
         <span class="n">sam</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sam</span><span class="p">)</span><span class="o">/</span><span class="n">weights</span>
         <span class="n">sample</span> <span class="o">=</span> <span class="n">sam</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="n">k</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">sample</span><span class="o">+</span><span class="mi">1</span></div>
+        <span class="k">return</span> <span class="n">sample</span><span class="o">+</span><span class="mi">1</span>
+
+<span class="c1">######################## Permutation functions #################################</span>
+</div>
+<div class="viewcode-block" id="fykd_shuffle"><a class="viewcode-back" href="../../api/sample.html#cryptorandom.sample.fykd_shuffle">[docs]</a><span class="k">def</span> <span class="nf">fykd_shuffle</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Use Fisher-Yates-Knuth-Durstenfeld algorithm to permute 1, ..., n</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : int</span>
+<span class="sd">        Population size</span>
+<span class="sd">    prng : {None, int, object}</span>
+<span class="sd">        If prng is None, return a randomly seeded instance of SHA256.</span>
+<span class="sd">        If prng is an int, return a new SHA256 instance seeded with seed.</span>
+<span class="sd">        If prng is already a PRNG instance, return it.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    permuted list of {1, ..., n}</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">fykd_sample</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="n">prng</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="pikk_shuffle"><a class="viewcode-back" href="../../api/sample.html#cryptorandom.sample.pikk_shuffle">[docs]</a><span class="k">def</span> <span class="nf">pikk_shuffle</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Assign random values between 0 and 1 to the numbers 1, ..., n and sort them</span>
+<span class="sd">    according to these random values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : int</span>
+<span class="sd">        Population size</span>
+<span class="sd">    prng : {None, int, object}</span>
+<span class="sd">        If prng is None, return a randomly seeded instance of SHA256.</span>
+<span class="sd">        If prng is an int, return a new SHA256 instance seeded with seed.</span>
+<span class="sd">        If prng is already a PRNG instance, return it.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of items sampled</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">prng</span> <span class="o">=</span> <span class="n">get_prng</span><span class="p">(</span><span class="n">prng</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">prng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
+
+</div>
+<div class="viewcode-block" id="permute_by_index"><a class="viewcode-back" href="../../api/sample.html#cryptorandom.sample.permute_by_index">[docs]</a><span class="k">def</span> <span class="nf">permute_by_index</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Select indices uniformly at random, without replacement, to permute 1, ..., n</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : int</span>
+<span class="sd">        Population size</span>
+<span class="sd">    prng : {None, int, object}</span>
+<span class="sd">        If prng is None, return a randomly seeded instance of SHA256.</span>
+<span class="sd">        If prng is an int, return a new SHA256 instance seeded with seed.</span>
+<span class="sd">        If prng is already a PRNG instance, return it.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of items sampled</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">sample_by_index</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="n">prng</span><span class="p">)</span></div>
 </pre></div>
 
       </div>

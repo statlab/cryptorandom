@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Permuting a list &mdash; cryptorandom 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="cryptorandom 0.1 documentation" href="../index.html" />
+    <link rel="up" title="Examples" href="index.html" />
+    <link rel="prev" title="Random sampling" href="sample.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
+          <span>cryptorandom 0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>Permuting a list</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="sample.html">Random sampling</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="permuting-a-list">
+<h1>Permuting a list<a class="headerlink" href="#permuting-a-list" title="Permalink to this headline">¶</a></h1>
+<div class="code highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cryptorandom.cryptorandom</span> <span class="kn">import</span> <span class="n">SHA256</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cryptorandom.sample</span> <span class="kn">import</span> <span class="n">random_permutation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+<p>The <cite>sample</cite> module contains methods for generating random permutations, compatible with any pseudorandom number generator that has <cite>randint</cite> and <cite>random</cite> methods. The module includes several algorithms to permute lists or arrays.</p>
+<p>The main workhorse is the <cite>random_permutation</cite> function. The default algorithm is <cite>Fisher-Yates</cite>, a shuffling method.</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fruit</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;banana&#39;</span><span class="p">,</span> <span class="s1">&#39;cherry&#39;</span><span class="p">,</span> <span class="s1">&#39;pear&#39;</span><span class="p">,</span> <span class="s1">&#39;plum&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">SHA256</span><span class="p">(</span><span class="mi">1234567890</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">random_permutation</span><span class="p">(</span><span class="n">fruit</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="n">s</span><span class="p">)</span>
+<span class="go">    array([&#39;plum&#39;, &#39;apple&#39;, &#39;banana&#39;, &#39;pear&#39;, &#39;cherry&#39;], dtype=&#39;&lt;U6&#39;)</span>
+</pre></div>
+</div>
+<p>Numpy and the base random module offer methods for drawing simple random samples with and without replacement, but don&#8217;t allow you to choose the pseudorandom number generator. Numpy&#8217;s <cite>choice</cite> method also uses the Fisher-Yates method.</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">fruit</span><span class="p">)</span> <span class="c1"># Returns permuted list</span>
+<span class="go">array([&#39;apple&#39;, &#39;banana&#39;, &#39;plum&#39;, &#39;cherry&#39;, &#39;pear&#39;], dtype=&#39;&lt;U6&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">fruit</span><span class="p">)</span> <span class="c1"># Permutes the list in place, returns None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fruit</span>
+<span class="go">[&#39;cherry&#39;, &#39;plum&#39;, &#39;pear&#39;, &#39;banana&#39;, &#39;apple&#39;]</span>
+</pre></div>
+</div>
+<p>The permutation algorithms available are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Method</th>
+<th class="head">description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Fisher-Yates</td>
+<td>a shuffling algorithm</td>
+</tr>
+<tr class="row-odd"><td>random_sort</td>
+<td>generate random floats and sort</td>
+</tr>
+<tr class="row-even"><td>permute_by_index</td>
+<td>sample integer indices without replacement</td>
+</tr>
+</tbody>
+</table>
+<div class="code highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">timeit</span> <span class="n">random_permutation</span><span class="p">(</span><span class="n">fruit</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Fisher-Yates&quot;</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="n">s</span><span class="p">)</span>
+<span class="go">10000 loops, best of 3: 53.3 µs per loop</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">timeit</span> <span class="n">random_permutation</span><span class="p">(</span><span class="n">fruit</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;random_sort&quot;</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="n">s</span><span class="p">)</span>
+<span class="go">10000 loops, best of 3: 37.5 µs per loop</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">timeit</span> <span class="n">random_permutation</span><span class="p">(</span><span class="n">fruit</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;permute_by_index&quot;</span><span class="p">,</span> <span class="n">prng</span><span class="o">=</span><span class="n">s</span><span class="p">)</span>
+<span class="go">10000 loops, best of 3: 22 µs per loop</span>
+</pre></div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="sample.html">Random sampling</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2018, Kellie Ottoboni and Philip B. Stark.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

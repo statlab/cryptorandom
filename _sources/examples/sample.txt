@@ -7,19 +7,26 @@ Random sampling
     >>> from cryptorandom.sample import random_sample
     >>> import numpy as np
 
+We provide a sampling module compatible with any pseudorandom number generator that has `randint` and `random` methods. The module includes a variety of algorithms for weighted or unweighted sampling, with or without replacement.
 
-Numpy and the base random module offer methods for drawing simple random samples with and without replacement. The default is to use sampling indices without replacement:
+The main workhorse is the `random_sample` function. The default sampling algorithm is `sample_by_index`, sampling indices without replacement.
 
 .. code::
-
 
     >>> fruit = ['apple', 'banana', 'cherry', 'pear', 'plum']
     >>> s = SHA256(1234567890)
     >>> random_sample(fruit, 2, prng=s)
 	array(['plum', 'cherry'], dtype='<U6')
-	
 
-The sampling methods available are:
+
+Numpy and the base random module offer methods for drawing simple random samples with and without replacement, but don't allow you to choose the pseudorandom number generator. Numpy's `choice` method uses the Fisher-Yates method to draw a random sample.
+
+.. code::
+
+	>>> np.random.choice(fruit, 2)
+	array(['plum', 'apple'], dtype='<U6')
+
+The sampling methods available in `cryptorandom` are below.
 
 ================ =========== ======================
 Method             weights    replacement
@@ -33,9 +40,6 @@ sample_by_index   no          without replacement
 Exponential       yes         either
 Elimination       yes         without replacement
 ================ =========== ======================
-
-Below is a time test of the unweighted sampling without replacement methods.
-
 
 .. code::
 
