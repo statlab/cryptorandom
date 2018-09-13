@@ -207,19 +207,19 @@ def test_vitter_z():
     """
     ff = fake_generator()
     sam = vitter_z(5, 2, prng=ff)
-    assert (sam == [4, 2]).all()
+    assert (sam == [5, 2]).all()
 
     ff = fake_generator()
     sam = random_sample(5, 2, method="Vitter_Z", prng=ff)
-    assert (sam+1 == [4, 2]).all() # shift to 1-index
+    assert (sam+1 == [5, 2]).all() # shift to 1-index
 
     ff = fake_generator()
     sam = vitter_z(500, 2, prng=ff)
-    assert (sam == [420, 265]).all()
+    assert (sam == [472, 422]).all()
 
     ff = fake_generator()
     sam = random_sample(500, 2, method="Vitter_Z", prng=ff)
-    assert (sam+1 == [420, 265]).all() # shift to 1-index
+    assert (sam+1 == [472, 422]).all() # shift to 1-index
 
 
 def test_elimination_sample():
@@ -261,7 +261,7 @@ def test_fykd_shuffle():
     Test Fisher-Yates shuffle for random permutations, fykd_shuffle
     """
     ff = fake_generator()
-    sam = fykd_shuffle(5, prng=ff)
+    sam = fykd_sample(5, 5, prng=ff)
     assert (sam == [1, 2, 3, 4, 5]).all()
 
     ff = fake_generator()
@@ -279,7 +279,7 @@ def test_pikk_shuffle():
     Test PIKK shuffling
     """
     ff = fake_generator()
-    sam = pikk_shuffle(5, prng=ff)
+    sam = pikk(5, 5, prng=ff)
     assert (sam == [1, 2, 3, 4, 5]).all()
 
     ff = fake_generator()
@@ -292,7 +292,7 @@ def test_permute_by_index():
     Test permuting by index shuffling
     """
     ff = fake_generator()
-    sam = permute_by_index(5, prng=ff)
+    sam = sample_by_index(5, 5, prng=ff)
     assert (sam == [2, 3, 1, 4, 5]).all()
 
     ff = fake_generator()

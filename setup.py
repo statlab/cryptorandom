@@ -15,7 +15,7 @@ AUTHOR_EMAIL = 'kellieotto@berkeley.edu'
 URL = 'http://www.github.com/statlab/cryptorandom'
 LICENSE = 'BSD License'
 DOWNLOAD_URL = 'http://www.github.com/statlab/cryptorandom'
-VERSION = '0.1'
+VERSION = '0.2'
 PYTHON_VERSION = (2, 7)
 
 INSTALL_REQUIRES = [

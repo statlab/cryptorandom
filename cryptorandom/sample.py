@@ -41,17 +41,19 @@ def random_sample(a, size, replace=False, p=None, method="sample_by_index", prng
     If weights are provided, len(weights) must equal N.
 
     Sampling methods available are:
-        Fisher-Yates:    sampling without weights, without replacement
-        PIKK:            sampling without weights, without replacement
-        recursive:       samping without weights, without replacement
-        Waterman_R:      sampling without weights, without replacement
-        Vitter_Z:        sampling without weights, without replacement
-        sample_by_index: sampling without weights, without replacement
-
-        Exponential:     sampling with weights, without replacement
-        Elimination:     sampling with weights, without replacement
-        ...
-
+        * Fisher-Yates:    sampling without weights, without replacement
+        * PIKK:            sampling without weights, without replacement
+        * recursive:       samping without weights, without replacement
+        * Waterman_R:      sampling without weights, without replacement
+        * Vitter_Z:        sampling without weights, without replacement
+        * sample_by_index: sampling without weights, without replacement
+        * Exponential:     sampling with weights, without replacement
+        * Elimination:     sampling with weights, without replacement
+    
+    Fisher-Yates, PIKK, sample_by_index, Exponential, and Elimination return ordered samples, 
+    i.e. they are equally likely to return [1, 2] as they are to return [2, 1]. Waterman_R,
+    Vitter_Z, and recursive aren't guaranteed to randomize the order of items in the sample.
+    
     Parameters
     ----------
     a : 1-D array-like or int
@@ -126,9 +128,9 @@ def random_permutation(a, method="Fisher-Yates", prng=None):
     Construct a random permutation (re-ordering) of a population `a`.
     
     The algorithms available are:
-        Fisher-Yates:        a shuffling algorithm
-        random_sort:         generate random floats and sort
-        permute_by_index:    sample integer indices without replacement
+        * Fisher-Yates:        a shuffling algorithm
+        * random_sort:         generate random floats and sort
+        * permute_by_index:    sample integer indices without replacement
 
     Parameters
     ----------
@@ -158,9 +160,9 @@ def random_permutation(a, method="Fisher-Yates", prng=None):
         raise ValueError("a must be an integer or array-like")
 
     methods = {
-        "Fisher-Yates" : lambda  N: fykd_shuffle(N, prng=prng),
-        "random_sort" : lambda N: pikk_shuffle(N, prng=prng),
-        "permute_by_index" : lambda N: permute_by_index(N, prng=prng),
+        "Fisher-Yates" : lambda  N: fykd_sample(N, N, prng=prng),
+        "random_sort" : lambda N: pikk(N, N, prng=prng),
+        "permute_by_index" : lambda N: sample_by_index(N, N, prng=prng),
     }
 
     try:
@@ -263,7 +265,7 @@ def recursive_sample(n, k, prng=None):
 
 def waterman_r(n, k, prng=None):
     '''
-    Waterman's Algorithm R for resevoir SRSs
+    Waterman's Algorithm R for reservoir SRSs
     Draw a sample of to sample k out of 1, ..., n without replacement
 
     Parameters
@@ -291,7 +293,7 @@ def waterman_r(n, k, prng=None):
 
 def vitter_z(n, k, prng=None):
     '''
-    Vitter's Algorithm Z for resevoir SRSs (Vitter 1985).
+    Vitter's Algorithm Z for reservoir SRSs (Vitter 1985).
     Draw a sample of to sample k out of 1, ..., n without replacement
 
     Parameters
@@ -313,10 +315,15 @@ def vitter_z(n, k, prng=None):
     def Algorithm_X(n, t):
         V = prng.random()
         s = 0
-        frac = 2
+        numer = math.factorial(t+s+1-n)/math.factorial(t-n)
+        denom = math.factorial(t+s+1)/math.factorial(t)
+        frac = numer/denom
+        
         while frac > V:
             s += 1
-            frac = ((t+1-n)/(t+1))**(s+1)
+            numer = (t+s+1-n)*numer
+            denom = (t+s+1)*denom
+            frac = numer/denom
         return s
 
     def f(x, t):
@@ -338,7 +345,7 @@ def vitter_z(n, k, prng=None):
     sam = np.array(range(1, k+1))  # fill the reservoir
     t = k
 
-    while t <= n:
+    while t < n:
         # Determine how many unseen records, nu, to skip
         if t <= 22*k: # the choice of 22 is taken from Vitter's 1985 ACM paper
             nu = Algorithm_X(k, t)
@@ -353,10 +360,10 @@ def vitter_z(n, k, prng=None):
                     break
                 var = f(np.floor(X), t)/(c(t)*g(X, t))
             nu = np.floor(X)
-        if t+nu <= n:
+        if t+nu < n:
             # Make the next record a candidate, replacing one at random
             i = prng.randint(0, k)
-            sam[i] = int(t+nu)
+            sam[i] = int(t+nu+1)
         t = t+nu+1
     return sam
 
@@ -496,67 +503,7 @@ def exponential_sample(k, p, prng=None):
     elif k == n:
         return np.array(range(k))
     else:
-        sam = prng.random(size=n)
+        sam = np.array(prng.random(size=n), dtype=float)
         sam = -np.log(sam)/weights
         sample = sam.argsort()[0:k]
         return sample+1
-
-######################## Permutation functions #################################
-
-def fykd_shuffle(n, prng=None):
-    '''
-    Use Fisher-Yates-Knuth-Durstenfeld algorithm to permute 1, ..., n
-
-    Parameters
-    ----------
-    n : int
-        Population size
-    prng : {None, int, object}
-        If prng is None, return a randomly seeded instance of SHA256.
-        If prng is an int, return a new SHA256 instance seeded with seed.
-        If prng is already a PRNG instance, return it.
-    Returns
-    -------
-    permuted list of {1, ..., n}
-    '''
-    return fykd_sample(n, n, prng=prng)
-
-
-def pikk_shuffle(n, prng=None):
-    '''
-    Assign random values between 0 and 1 to the numbers 1, ..., n and sort them
-    according to these random values.
-
-    Parameters
-    ----------
-    n : int
-        Population size
-    prng : {None, int, object}
-        If prng is None, return a randomly seeded instance of SHA256.
-        If prng is an int, return a new SHA256 instance seeded with seed.
-        If prng is already a PRNG instance, return it.
-    Returns
-    -------
-    list of items sampled
-    '''
-    prng = get_prng(prng)
-    return np.argsort(prng.random(n)) + 1
-
-
-def permute_by_index(n, prng=None):
-    '''
-    Select indices uniformly at random, without replacement, to permute 1, ..., n
-
-    Parameters
-    ----------
-    n : int
-        Population size
-    prng : {None, int, object}
-        If prng is None, return a randomly seeded instance of SHA256.
-        If prng is an int, return a new SHA256 instance seeded with seed.
-        If prng is already a PRNG instance, return it.
-    Returns
-    -------
-    list of items sampled
-    '''
-    return sample_by_index(n, n, prng=prng)
