@@ -8,3 +8,4 @@ Contents:
 
    prng.rst
    sample.rst
+   permutations.rst
