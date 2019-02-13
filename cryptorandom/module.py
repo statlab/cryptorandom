@@ -19,15 +19,14 @@ def add(x, y):
 
     Parameters
     ----------
-    x : (data type)
-        (description of x)
-    y : (data type)
-        (description of y)
-
+    x : int, string, array, etc
+        first value to be added (x has a type that can be "added" using + operation) x and y must have same type
+    y : int, string, array, etc
+        second value to be added (y has a type that can be "added" using + operation)
     Returns
     -------
-    (data type returned)
-        (description of return value)
+    type of input
+        x + y
     """
     # core of the function
     return x + y
