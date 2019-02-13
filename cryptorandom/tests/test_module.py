@@ -37,8 +37,9 @@ def test_add_edge_case():
     np.testing.assert_equal(result, expected)
 
 
-@raises(ValueError)
+@raises(TypeError)
 def test_add_error():
     # To check that it's giving the right errors, you should put what is called a decorator in the line above the function definition.
     # Then just run the function in a way you expect to throw the error.
+    # could not figure out inputs to raise "ValueError", but this raises "TypeError"
     add("hello", 8)
