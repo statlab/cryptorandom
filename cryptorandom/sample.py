@@ -463,16 +463,16 @@ def sample_by_index(n, k, replace=False, prng=None):
     if not replace and k > n:
         raise ValueError('sample size greater than population size')
     prng = get_prng(prng)
-    # initialize sample
-    S = []
-    Pop = list(range(1, n+1))
-    # sample k indices
-    for i in range(k):
-        # sample indices
-        if replace:
-            w = prng.randint(1, n + 1)
-            S.append(Pop[w - 1])
-        else:
+    Pop = list(range(1, n + 1))
+    # check if with replacement
+    if replace:
+        w  = prng.randint(1, n + 1, size = k)
+        S = [Pop[i] for i in (w - 1)]
+    else: 
+        # initialize sample
+        S = []
+        # sample k indices
+        for i in range(k):
             w = prng.randint(1, n - i + 1)
             S.append(Pop[w - 1])
             lastvalue = Pop.pop()
