@@ -23,7 +23,7 @@ def get_prng(seed=None):
     object
     """
     if seed is None:
-        seed = np.random.randint(0, 10**10) # generate an integer
+        seed = np.random.randint(0, 10**10, dtype=np.int64) # generate an integer
         return SHA256(seed)
     if isinstance(seed, (int, np.integer)):
         return SHA256(seed)
@@ -102,7 +102,7 @@ def random_sample(a, size, replace=False, p=None, method="sample_by_index", prng
         "recursive" : lambda N, n: recursive_sample(N, n, prng=prng),
         "Waterman_R" : lambda N, n: waterman_r(N, n, prng=prng),
         "Vitter_Z" : lambda N, n: vitter_z(N, n, prng=prng),
-        "sample_by_index" : lambda N, n: sample_by_index(N, n, prng=prng),
+        "sample_by_index" : lambda N, n: sample_by_index(N, n, replace=replace, prng=prng),
         "Exponential" : lambda n, p: exponential_sample(n, p, prng=prng),
         "Elimination" : lambda n, p: elimination_sample(n, p, replace=replace, prng=prng)
     }
@@ -113,8 +113,13 @@ def random_sample(a, size, replace=False, p=None, method="sample_by_index", prng
         except ValueError:
             print("Sampling method is incompatible with the inputs")
     elif replace is True and method in ['Fisher-Yates', 'PIKK', 'recursive',
-        'Waterman_R', 'Vitter_Z', 'sample_by_index']:
+        'Waterman_R', 'Vitter_Z']:
         raise ValueError("Method is meant for sampling without replacement")
+    elif replace is True and method in ['sample_by_index']:
+        try:
+            sam = np.array(methods[method](N, size), dtype=np.int) - 1 # shift to 0 indexing
+        except ValueError:
+            print("Sampling method is incompatible with the inputs")
     else:
         try:
             sam = np.array(methods[method](size, p), dtype=np.int) - 1
@@ -122,6 +127,70 @@ def random_sample(a, size, replace=False, p=None, method="sample_by_index", prng
             print("Sampling method is incompatible with the inputs")
     return a[sam]
 
+
+def random_allocation(a, sizes, replace=False, p=None, method="sample_by_index", prng=None):
+    '''
+    Random samples of sizes `sizes` from a population `a` drawn with or without weights,
+    with or without replacement.
+
+    If no weights are provided, the sample is drawn with equal probability of selecting every item.
+    If weights are provided, len(weights) must equal N.
+    
+    Parameters
+    ----------
+    a : 1-D array-like or int
+        If an array or list, a random sample is generated from its elements.
+        If an int, the random sample is generated as if a were np.arange(a)
+    sizes : 1-D array-like
+        sizes of samples to return
+    replace : boolean, optional
+        Whether the sampling is with or without replacement.
+        Default False.
+    p : 1-D array-like, optional
+        The probabilities associated with each entry in a.
+        If not given the sample assumes a uniform distribution over all entries in a.
+    method : string
+        Which sampling function? 
+        Default sample_by_index
+    prng : {None, int, object}
+        If prng is None, return a randomly seeded instance of SHA256.
+        If prng is an int, return a new SHA256 instance seeded with seed.
+        If prng is already a PRNG instance, return it.
+    Returns
+    -------
+    samples : list of lists
+        The generated random samples
+    '''
+    if isinstance(a, (list, np.ndarray)):
+        N = len(a)
+    elif isinstance(a, int):
+        N = a
+        a = list(np.arange(N))
+        assert N > 0, "Population size must be nonnegative"
+        
+    # raise error if without replacement and sample sizes greater than population size
+    if not replace and np.sum(sizes) > N:
+        raise ValueError('sample sizes greater than population size')
+        
+    samples = [0] * len(sizes)
+    # sort sizes from smallest to largest
+    sizes.sort()
+    # get random samples for all the groups except the largest one
+    for i in range(len(sizes) - 1):
+        sam = random_sample(a, sizes[i], replace, p, method, prng)
+        samples[i] = sam
+        if not replace:
+            for item in sam:
+                a.remove(item)
+    # get the sample for the largest group
+    if not replace and N == np.sum(sizes):
+        sam = a
+    else:
+        sam = random_sample(a, sizes[-1], replace, p, method, prng)
+    samples[-1] = sam
+    
+    return samples
+            
 
 def random_permutation(a, method="Fisher-Yates", prng=None):
     '''
@@ -368,7 +437,7 @@ def vitter_z(n, k, prng=None):
     return sam
 
 
-def sample_by_index(n, k, prng=None):
+def sample_by_index(n, k, replace=False, prng=None):
     '''
     Select indices uniformly at random to
     draw a sample of to sample k out of 1, ..., n without replacement
@@ -379,6 +448,9 @@ def sample_by_index(n, k, prng=None):
         Population size
     k : int
         Desired sample size
+    replace : boolean, optional
+        Whether the sample is with or without replacement.
+        Default False.
     prng : {None, int, object}
         If prng is None, return a randomly seeded instance of SHA256.
         If prng is an int, return a new SHA256 instance seeded with seed.
@@ -387,18 +459,26 @@ def sample_by_index(n, k, prng=None):
     -------
     list of items sampled
     '''
+    # raise error if without replacement and sample size greater than population size
+    if not replace and k > n:
+        raise ValueError('sample size greater than population size')
     prng = get_prng(prng)
-    nprime = n
-    S = []
-    Pop = list(range(1, n+1))
-    while nprime > n-k:
-        w = prng.randint(1, nprime+1)
-        j = Pop[w-1]
-        S.append(j)
-        lastvalue = Pop.pop()
-        if w < nprime:
-            Pop[w-1] = lastvalue # Move last population item to the wth position
-        nprime = nprime - 1
+    Pop = list(range(1, n + 1))
+    # check if with replacement
+    if replace:
+        w  = prng.randint(1, n + 1, size = k)
+        S = [Pop[i] for i in (w - 1)]
+    else: 
+        # initialize sample
+        S = []
+        # sample k indices
+        for i in range(k):
+            w = prng.randint(1, n - i + 1)
+            S.append(Pop[w - 1])
+            lastvalue = Pop.pop()
+            if w < (n - i):
+                Pop[w - 1] = lastvalue # Move last population item to the wth position
+        
     return np.array(S)
 
 

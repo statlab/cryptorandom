@@ -124,6 +124,11 @@ def test_random_sample_bad_method1():
 @raises(ValueError)
 def test_random_sample_bad_method2():
     random_sample(5, 2, replace=True, method="PIKK")
+    
+    
+@raises(ValueError)
+def test_random_allocation_bad_size():
+    random_allocation(5, [10])
 
 
 def test_fykd():
@@ -298,3 +303,26 @@ def test_permute_by_index():
     ff = fake_generator()
     sam = random_permutation(5, method="permute_by_index", prng=ff)
     assert (sam+1 == [2, 3, 1, 4, 5]).all() # shift to 1-index
+    
+    
+def test_random_allocation():
+    # test random allocation without replacement
+    samples = random_allocation(10, [5, 5], replace = False)
+    assert all(x in np.arange(10) for x in samples[0])
+    assert all(x in np.arange(10) for x in samples[1])
+    assert np.sum(samples) == np.sum(np.arange(10))
+    
+    # test with replacement
+    a = [1, 2, 2, 3, 3]
+    sizes = [2, 3]
+    samples = random_allocation(a, sizes, replace = True)
+    assert all(x in a for x in samples[0])
+    assert all(x in a for x in samples[1])
+    # test that smallest sample is sample first
+    assert len(samples[0]) == np.min(sizes) 
+    
+    # test when sum of sample sizes is less than population size
+    a = [1, 2, 2, 3, 3]
+    sizes = [1, 2, 1]
+    samples = random_allocation(a, sizes, replace = False)
+    assert (len(samples[0]) + len(samples[1]) + len(samples[2])) == np.sum(sizes)
