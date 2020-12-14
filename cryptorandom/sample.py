@@ -130,11 +130,7 @@ def random_sample(a, size, replace=False, p=None, method="sample_by_index", prng
 
 def random_allocation(a, sizes, replace=False, p=None, method="sample_by_index", prng=None):
     '''
-    Random samples of sizes `sizes` from a population `a` drawn with or without weights,
-    with or without replacement.
-
-    If no weights are provided, the sample is drawn with equal probability of selecting every item.
-    If weights are provided, len(weights) must equal N.
+    Random samples of sizes `sizes` from a population `a` drawn with or without replacement.
     
     Parameters
     ----------
@@ -163,9 +159,12 @@ def random_allocation(a, sizes, replace=False, p=None, method="sample_by_index",
     '''
     if isinstance(a, (list, np.ndarray)):
         N = len(a)
+        a = np.array(a)
+        indices = np.arange(N)
     elif isinstance(a, int):
         N = a
-        a = list(np.arange(N))
+        a = np.arange(N)
+        indices = np.arange(N)
         assert N > 0, "Population size must be nonnegative"
         
     # raise error if without replacement and sample sizes greater than population size
@@ -177,17 +176,16 @@ def random_allocation(a, sizes, replace=False, p=None, method="sample_by_index",
     sizes.sort()
     # get random samples for all the groups except the largest one
     for i in range(len(sizes) - 1):
-        sam = random_sample(a, sizes[i], replace, p, method, prng)
-        samples[i] = sam
+        sam = random_sample(list(indices), sizes[i], replace, p, method, prng)
+        samples[i] = a[sam]
         if not replace:
-            for item in sam:
-                a.remove(item)
+            indices = set(indices) - set(sam)
     # get the sample for the largest group
     if not replace and N == np.sum(sizes):
-        sam = a
+        sam = list(indices)
     else:
-        sam = random_sample(a, sizes[-1], replace, p, method, prng)
-    samples[-1] = sam
+        sam = random_sample(list(indices), sizes[-1], replace, p, method, prng)
+    samples[-1] = a[sam]
     
     return samples
             
@@ -469,15 +467,18 @@ def sample_by_index(n, k, replace=False, prng=None):
         w  = prng.randint(1, n + 1, size = k)
         S = [Pop[i] for i in (w - 1)]
     else: 
+        num_sample = min(k, n - k)
         # initialize sample
         S = []
-        # sample k indices
-        for i in range(k):
+        # sample min of k and n-k indices
+        for i in range(num_sample):
             w = prng.randint(1, n - i + 1)
             S.append(Pop[w - 1])
             lastvalue = Pop.pop()
             if w < (n - i):
                 Pop[w - 1] = lastvalue # Move last population item to the wth position
+        if n - k < k:
+            S = list(set(range(1, n + 1)) - set(S))
         
     return np.array(S)
 
