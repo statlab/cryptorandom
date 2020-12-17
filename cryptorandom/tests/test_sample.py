@@ -204,6 +204,14 @@ def test_sbi():
     ff = fake_generator()
     sam = random_sample(5, 2, method="sample_by_index", prng=ff)
     assert (sam+1 == [2, 3]).all() # shift to 1-index
+    
+    ff = fake_generator()
+    sam = sample_by_index(5, 5, fast=True, prng=ff)
+    assert (sam == [1, 2, 3, 4, 5]).all()
+    
+    ff = fake_generator()
+    sam = random_sample(5, 5, replace=False, fast=True, method="sample_by_index", prng=ff)
+    assert (sam == [0, 1, 2, 3, 4]).all()
 
 
 def test_vitter_z():

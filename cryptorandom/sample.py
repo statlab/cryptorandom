@@ -32,7 +32,7 @@ def get_prng(seed=None):
     raise ValueError('%r cannot be used to seed a PRNG' % seed)
 
 
-def random_sample(a, size, replace=False, p=None, method="sample_by_index", prng=None):
+def random_sample(a, size, replace=False, fast=False, p=None, method="sample_by_index", prng=None):
     '''
     Random sample of size `size` from a population `a` drawn with or without weights,
     with or without replacement.
@@ -65,6 +65,9 @@ def random_sample(a, size, replace=False, p=None, method="sample_by_index", prng
         Default is None, in which case a single value is returned.
     replace : boolean, optional
         Whether the sample is with or without replacement.
+        Default False.
+    fast : boolean, optional
+        Whether to speed up sampling by not sampling with random order.
         Default False.
     p : 1-D array-like, optional
         The probabilities associated with each entry in a.
@@ -102,7 +105,7 @@ def random_sample(a, size, replace=False, p=None, method="sample_by_index", prng
         "recursive" : lambda N, n: recursive_sample(N, n, prng=prng),
         "Waterman_R" : lambda N, n: waterman_r(N, n, prng=prng),
         "Vitter_Z" : lambda N, n: vitter_z(N, n, prng=prng),
-        "sample_by_index" : lambda N, n: sample_by_index(N, n, replace=replace, prng=prng),
+        "sample_by_index" : lambda N, n: sample_by_index(N, n, replace=replace, fast=fast, prng=prng),
         "Exponential" : lambda n, p: exponential_sample(n, p, prng=prng),
         "Elimination" : lambda n, p: elimination_sample(n, p, replace=replace, prng=prng)
     }
@@ -128,13 +131,9 @@ def random_sample(a, size, replace=False, p=None, method="sample_by_index", prng
     return a[sam]
 
 
-def random_allocation(a, sizes, replace=False, p=None, method="sample_by_index", prng=None):
+def random_allocation(a, sizes, replace=False, fast=False, p=None, method="sample_by_index", prng=None):
     '''
-    Random samples of sizes `sizes` from a population `a` drawn with or without weights,
-    with or without replacement.
-
-    If no weights are provided, the sample is drawn with equal probability of selecting every item.
-    If weights are provided, len(weights) must equal N.
+    Random samples of sizes `sizes` from a population `a` drawn with or without replacement.
     
     Parameters
     ----------
@@ -145,6 +144,9 @@ def random_allocation(a, sizes, replace=False, p=None, method="sample_by_index",
         sizes of samples to return
     replace : boolean, optional
         Whether the sampling is with or without replacement.
+        Default False.
+    fast : boolean, optional
+        Whether to speed up sampling by not sampling with random order.
         Default False.
     p : 1-D array-like, optional
         The probabilities associated with each entry in a.
@@ -163,9 +165,12 @@ def random_allocation(a, sizes, replace=False, p=None, method="sample_by_index",
     '''
     if isinstance(a, (list, np.ndarray)):
         N = len(a)
+        a = np.array(a)
+        indices = np.arange(N)
     elif isinstance(a, int):
         N = a
-        a = list(np.arange(N))
+        a = np.arange(N)
+        indices = np.arange(N)
         assert N > 0, "Population size must be nonnegative"
         
     # raise error if without replacement and sample sizes greater than population size
@@ -177,17 +182,16 @@ def random_allocation(a, sizes, replace=False, p=None, method="sample_by_index",
     sizes.sort()
     # get random samples for all the groups except the largest one
     for i in range(len(sizes) - 1):
-        sam = random_sample(a, sizes[i], replace, p, method, prng)
-        samples[i] = sam
+        sam = random_sample(list(indices), sizes[i], replace, fast, p, method, prng)
+        samples[i] = a[sam]
         if not replace:
-            for item in sam:
-                a.remove(item)
+            indices = set(indices) - set(sam)
     # get the sample for the largest group
     if not replace and N == np.sum(sizes):
-        sam = a
+        sam = list(indices)
     else:
-        sam = random_sample(a, sizes[-1], replace, p, method, prng)
-    samples[-1] = sam
+        sam = random_sample(list(indices), sizes[-1], replace, fast, p, method, prng)
+    samples[-1] = a[sam]
     
     return samples
             
@@ -437,7 +441,7 @@ def vitter_z(n, k, prng=None):
     return sam
 
 
-def sample_by_index(n, k, replace=False, prng=None):
+def sample_by_index(n, k, replace=False, fast=False, prng=None):
     '''
     Select indices uniformly at random to
     draw a sample of to sample k out of 1, ..., n without replacement
@@ -451,13 +455,16 @@ def sample_by_index(n, k, replace=False, prng=None):
     replace : boolean, optional
         Whether the sample is with or without replacement.
         Default False.
+    fast : boolean, optional
+        Whether to speed up sampling by not sampling with random order.
+        Default False.
     prng : {None, int, object}
         If prng is None, return a randomly seeded instance of SHA256.
         If prng is an int, return a new SHA256 instance seeded with seed.
         If prng is already a PRNG instance, return it.
     Returns
     -------
-    list of items sampled
+    list of items sampled, in random order if not fast
     '''
     # raise error if without replacement and sample size greater than population size
     if not replace and k > n:
@@ -469,15 +476,21 @@ def sample_by_index(n, k, replace=False, prng=None):
         w  = prng.randint(1, n + 1, size = k)
         S = [Pop[i] for i in (w - 1)]
     else: 
+        if fast:
+            num_sample = min(k, n - k)
+        else:
+            num_sample = k
         # initialize sample
         S = []
-        # sample k indices
-        for i in range(k):
+        # sample min of k and n-k indices
+        for i in range(num_sample):
             w = prng.randint(1, n - i + 1)
             S.append(Pop[w - 1])
             lastvalue = Pop.pop()
             if w < (n - i):
                 Pop[w - 1] = lastvalue # Move last population item to the wth position
+        if n - k < k and fast:
+            S = list(set(range(1, n + 1)) - set(S))
         
     return np.array(S)
 
