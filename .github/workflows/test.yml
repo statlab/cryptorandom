@@ -32,8 +32,10 @@ jobs:
         pip install .
         pip list
 
-    - name: Test permute
-      run: make test-all
+    - name: Test cryptorandom
+      run: |
+        source ~/venv/bin/activate
+        make test-all
 
   macos:
     runs-on: macOS-latest
@@ -59,8 +61,10 @@ jobs:
         pip install .
         pip list
 
-    - name: Test permute
-      run: make test-all
+    - name: Test cryptorandom
+      run: |
+        source ~/venv/bin/activate
+        make test-all
 
   windows:
     runs-on: windows-latest
@@ -86,5 +90,5 @@ jobs:
         pip install .
         pip list
 
-    - name: Test permute
+    - name: Test cryptorandom
       run: make test-all
