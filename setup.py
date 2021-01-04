@@ -1,56 +1,46 @@
-#! /usr/bin/env python
-
-descr = """Pseudorandom number generator and random sampling using cryptographic hash functions
-
-"""
-
 import os
+from setuptools import setup
 
+
+
+if sys.version_info[:2] < (3, 7):
+    error = (
+        "cryptorandom 0.3+ requires Python 3.7 or later (%d.%d detected). \n"
+        % sys.version_info[:2]
+    )
+    sys.stderr.write(error + "\n")
+    sys.exit(1)
 
 DISTNAME = 'cryptorandom'
 DESCRIPTION = 'Pseudorandom number generator and random sampling using cryptographic hash functions'
-LONG_DESCRIPTION = descr
 AUTHOR = 'Kellie Ottoboni and Philip B. Stark'
 AUTHOR_EMAIL = 'kellieotto@berkeley.edu'
 URL = 'http://www.github.com/statlab/cryptorandom'
 LICENSE = 'BSD License'
 DOWNLOAD_URL = 'http://www.github.com/statlab/cryptorandom'
-VERSION = '0.2'
-PYTHON_VERSION = (2, 7)
 
-INSTALL_REQUIRES = [
-    'numpy',
-    'scipy'
-]
+with open("cryptorandom/__init__.py") as fid:
+    for line in fid:
+        if line.startswith("__version__"):
+            VERSION = line.strip().split()[-1][1:-1]
+            break
 
-TESTS_REQUIRE = [
-    'coverage',
-    'nose',
-    'flake8'
-]
+with open("README.md", "r") as fh:
+    LONG_DESCRIPTION = fh.read()
+
+def parse_requirements_file(filename):
+    with open(filename, encoding="utf-8") as fid:
+        requires = [l.strip() for l in fid.readlines() if l]
+
+    return requires
 
 
-def write_version_py(filename='cryptorandom/version.py'):
-    template = """# THIS FILE IS GENERATED FROM THE CRYPTORANDOM SETUP.PY
-version='%s'
-"""
-
-    try:
-        fname = os.path.join(os.path.dirname(__file__), filename)
-        with open(fname, 'w') as f:
-            f.write(template % VERSION)
-    except IOError:
-        raise IOError("Could not open/write to cryptorandom/version.py - did you "
-                      "install using sudo in the past? If so, run\n"
-                      "sudo chown -R your_username ./*\n"
-                      "from package root to fix permissions, and try again.")
+INSTALL_REQUIRES = parse_requirements_file("requirements/default.txt")
+TESTS_REQUIRE = parse_requirements_file("requirements/test.txt")
 
 
 if __name__ == "__main__":
 
-    write_version_py()
-
-    from setuptools import setup
     setup(
         name=DISTNAME,
         version=VERSION,
@@ -69,9 +59,9 @@ if __name__ == "__main__":
             'Intended Audience :: Science/Research',
             'License :: OSI Approved :: BSD License',
             'Programming Language :: Python',
-            'Programming Language :: Python :: 2.7',
-            'Programming Language :: Python :: 3.4',
-            'Programming Language :: Python :: 3.5',
+            'Programming Language :: Python :: 3.7',
+            'Programming Language :: Python :: 3.8',
+            'Programming Language :: Python :: 3.9',
             'Topic :: Scientific/Engineering',
             'Operating System :: Microsoft :: Windows',
             'Operating System :: POSIX',
