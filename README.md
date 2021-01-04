@@ -1,5 +1,7 @@
-[![Build Status](https://travis-ci.org/statlab/cryptorandom.svg?branch=master)](https://travis-ci.org/statlab/cryptorandom)
 # cryptorandom
+
+[![Build Status](https://github.com/networkx/networkx/workflows/test/badge.svg?branch=master)](https://github.com/statlab/cryptorandom/actions?query=workflow%3A%22test%22)
+
 Pseudorandom number generator and random sampling using cryptographic hash functions.
 The prototype generator is built on SHA-256.
 
