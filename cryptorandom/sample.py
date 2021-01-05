@@ -78,6 +78,7 @@ def random_sample(a, size, replace=False, fast=False, p=None, method="sample_by_
         If prng is None, return a randomly seeded instance of SHA256.
         If prng is an int, return a new SHA256 instance seeded with seed.
         If prng is already a PRNG instance, return it.
+
     Returns
     -------
     samples : single item or ndarray
@@ -158,6 +159,7 @@ def random_allocation(a, sizes, replace=False, fast=False, p=None, method="sampl
         If prng is None, return a randomly seeded instance of SHA256.
         If prng is an int, return a new SHA256 instance seeded with seed.
         If prng is already a PRNG instance, return it.
+
     Returns
     -------
     samples : list of lists
@@ -216,6 +218,7 @@ def random_permutation(a, method="Fisher-Yates", prng=None):
         If prng is None, return a randomly seeded instance of SHA256.
         If prng is an int, return a new SHA256 instance seeded with seed.
         If prng is already a PRNG instance, return it.
+
     Returns
     -------
     samples : single item or ndarray
@@ -261,6 +264,7 @@ def fykd_sample(n, k, prng=None):
         If prng is None, return a randomly seeded instance of SHA256.
         If prng is an int, return a new SHA256 instance seeded with seed.
         If prng is already a PRNG instance, return it.
+
     Returns
     -------
     list of items sampled
@@ -292,6 +296,7 @@ def pikk(n, k, prng=None):
         If prng is None, return a randomly seeded instance of SHA256.
         If prng is an int, return a new SHA256 instance seeded with seed.
         If prng is already a PRNG instance, return it.
+
     Returns
     -------
     list of items sampled
@@ -319,6 +324,7 @@ def recursive_sample(n, k, prng=None):
         If prng is None, return a randomly seeded instance of SHA256.
         If prng is an int, return a new SHA256 instance seeded with seed.
         If prng is already a PRNG instance, return it.
+
     Returns
     -------
     list of items sampled
@@ -351,6 +357,7 @@ def waterman_r(n, k, prng=None):
         If prng is None, return a randomly seeded instance of SHA256.
         If prng is an int, return a new SHA256 instance seeded with seed.
         If prng is already a PRNG instance, return it.
+
     Returns
     -------
     list of items sampled
@@ -379,6 +386,7 @@ def vitter_z(n, k, prng=None):
         If prng is None, return a randomly seeded instance of SHA256.
         If prng is an int, return a new SHA256 instance seeded with seed.
         If prng is already a PRNG instance, return it.
+
     Returns
     -------
     list of items sampled
@@ -462,6 +470,7 @@ def sample_by_index(n, k, replace=False, fast=False, prng=None):
         If prng is None, return a randomly seeded instance of SHA256.
         If prng is an int, return a new SHA256 instance seeded with seed.
         If prng is already a PRNG instance, return it.
+
     Returns
     -------
     list of items sampled, in random order if not fast
@@ -514,6 +523,7 @@ def elimination_sample(k, p, replace=True, prng=None):
         If prng is None, return a randomly seeded instance of SHA256.
         If prng is an int, return a new SHA256 instance seeded with seed.
         If prng is already a PRNG instance, return it.
+
     Returns
     -------
     list of items sampled
@@ -581,6 +591,7 @@ def exponential_sample(k, p, prng=None):
         If prng is None, return a randomly seeded instance of SHA256.
         If prng is an int, return a new SHA256 instance seeded with seed.
         If prng is already a PRNG instance, return it.
+
     Returns
     -------
     list of items sampled
