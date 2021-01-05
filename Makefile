@@ -9,7 +9,8 @@ clean:
 	rm -rf .ipynb_checkpoints .coverage .cache
 
 test:
-	pytest --durations=10 --pyargs cryptorandom
+	#pytest --durations=10 --pyargs cryptorandom
+	pytest --durations=10
 
 test-all: test
 	# TODO
@@ -19,4 +20,4 @@ doctest:
 
 coverage:
 	# pytest --cov=cryptorandom --doctest-modules --durations=10 --pyargs cryptorandom
-	pytest --cov=cryptorandom --durations=10 --pyargs cryptorandom
+	pytest --cov=cryptorandom --durations=10
