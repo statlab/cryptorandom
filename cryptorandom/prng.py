@@ -1,4 +1,3 @@
-from __future__ import division
 import numpy as np
 
 # LCG; defaults to RANDU, a particularly bad choice

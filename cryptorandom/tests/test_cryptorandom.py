@@ -1,7 +1,5 @@
 """Unit tests for cryptorandom PRNG"""
 
-from __future__ import (absolute_import, division,
-                        print_function, unicode_literals)
 import numpy as np
 from ..cryptorandom import SHA256, int_from_hash
 

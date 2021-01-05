@@ -2,7 +2,6 @@
 Sampling with or without weights, with or without replacement.
 """
 
-from __future__ import division
 import numpy as np
 import math
 from .cryptorandom import SHA256
@@ -29,7 +28,7 @@ def get_prng(seed=None):
         return SHA256(seed)
     if hasattr(seed, "random") and hasattr(seed, "randint"):
         return seed
-    raise ValueError('%r cannot be used to seed a PRNG' % seed)
+    raise ValueError(f'{seed!r} cannot be used to seed a PRNG')
 
 
 def random_sample(a, size, replace=False, fast=False, p=None, method="sample_by_index", prng=None):
