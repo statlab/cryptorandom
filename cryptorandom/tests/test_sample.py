@@ -2,9 +2,9 @@
 
 from __future__ import (absolute_import, division,
                         print_function, unicode_literals)
+import pytest
 import numpy as np
 from ..sample import *
-from nose.tools import assert_raises, raises
 
 
 class fake_generator():
@@ -96,39 +96,39 @@ def test_get_prng():
     assert (rand1 == rand2).all()
 
 
-@raises(AssertionError)
 def test_random_sample_bad_N():
-    random_sample(-2, 2)
+    with pytest.raises(AssertionError):
+        random_sample(-2, 2)
 
 
-@raises(ValueError)
 def test_random_sample_bad_a():
-    random_sample(2.5, 2)
+    with pytest.raises(ValueError):
+        random_sample(2.5, 2)
 
 
-@raises(AssertionError)
 def test_random_sample_bad_p():
-    random_sample(5, 2, p=[0.25]*4)
+    with pytest.raises(AssertionError):
+        random_sample(5, 2, p=[0.25]*4)
 
 
-@raises(AssertionError)
 def test_random_sample_bad_size():
-    random_sample(2, 5)
+    with pytest.raises(AssertionError):
+        random_sample(2, 5)
 
 
-@raises(TypeError)
 def test_random_sample_bad_method1():
-    random_sample(5, 2, method="Exponential")
+    with pytest.raises(TypeError):
+        random_sample(5, 2, method="Exponential")
 
 
-@raises(ValueError)
 def test_random_sample_bad_method2():
-    random_sample(5, 2, replace=True, method="PIKK")
+    with pytest.raises(ValueError):
+        random_sample(5, 2, replace=True, method="PIKK")
     
     
-@raises(ValueError)
 def test_random_allocation_bad_size():
-    random_allocation(5, [10])
+    with pytest.raises(ValueError):
+        random_allocation(5, [10])
 
 
 def test_fykd():
@@ -175,9 +175,9 @@ def test_recursive_sample():
     assert (sam+1 == [2, 3]).all() # shift to 1-index
 
 
-@raises(RuntimeError)
 def test_cormen_recursion_depth():
-    recursive_sample(2000, 1500)
+    with pytest.raises(RuntimeError):
+        recursive_sample(2000, 1500)
 
 
 def test_waterman_r():

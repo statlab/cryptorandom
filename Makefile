@@ -9,13 +9,14 @@ clean:
 	rm -rf .ipynb_checkpoints .coverage .cache
 
 test:
-	nosetests cryptorandom -A 'not slow' --ignore-files=^_test -v -s
+	pytest --durations=10 --pyargs cryptorandom
 
-test-all:
-	nosetests cryptorandom --ignore-files=^_test -v -s
+test-all: test
+	# TODO
 
 doctest:
-	nosetests cryptorandom --ignore-files=^_test -v -s --with-doctest --ignore-files=^\. --ignore-files=^setup\.py$$ --ignore-files=test
+	pytest --doctest-modules --durations=10 --pyargs cryptorandom
 
 coverage:
-	nosetests cryptorandom --with-coverage --cover-package=cryptorandom --ignore-files=^_test  -v -s
+	# pytest --cov=cryptorandom --doctest-modules --durations=10 --pyargs cryptorandom
+	pytest --cov=cryptorandom --durations=10 --pyargs cryptorandom
