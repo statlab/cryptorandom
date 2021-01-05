@@ -1,0 +1,5 @@
+[run]
+branch = True
+source = cryptorandom
+include = */cryptorandom/*
+omit = */setup.py
