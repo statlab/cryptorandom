@@ -1,6 +1,8 @@
 # cryptorandom
 
-[![Build Status](https://github.com/networkx/networkx/workflows/test/badge.svg?branch=master)](https://github.com/statlab/cryptorandom/actions?query=workflow%3A%22test%22)
+[![PyPI](https://img.shields.io/pypi/v/cryptorandom.svg)](https://pypi.org/project/cryptorandom/)
+[![Build Status](https://github.com/statlab/cryptorandom/workflows/test/badge.svg?branch=master)(https://github.com/statlab/cryptorandom/actions?query=workflow%3A%22test%22)
+[![Coverage Status](https://codecov.io/gh/statlab/cryptorandom/branch/master/graph/badge.svg)](https://app.codecov.io/gh/statlab/cryptorandom/branch/master)
 
 Pseudorandom number generator and random sampling using cryptographic hash functions.
 The prototype generator is built on SHA-256.
