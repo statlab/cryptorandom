@@ -11,15 +11,17 @@ def test_SHA256():
     assert repr(r) == 'SHA256 PRNG. seed: 5 counter: 0 randbits_remaining: 0'
     assert str(r) == 'SHA256 PRNG. seed: 5 counter: 0 randbits_remaining: 0'
 
-    assert r.getstate() == (5, 0)
+    assert r.getstate() == (5, 0, 0)
     r.next()
-    assert r.getstate() == (5, 1)
+    assert r.getstate() == (5, 1, 0)
     r.jumpahead(5)
-    assert r.getstate() == (5, 6)
+    assert r.getstate() == (5, 6, 0)
     r.seed(22)
-    assert r.getstate() == (22, 0)
+    assert r.getstate() == (22, 0, 0)
     r.setstate(2345, 3)
-    assert r.getstate() == (2345, 3)
+    assert r.getstate() == (2345, 3, 0)
+    r.randint(0, 100, 2)
+    assert r.getstate() == (2345, 4, 242)
 
 def test_SHA256_random():
     """
