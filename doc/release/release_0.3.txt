@@ -1,0 +1,33 @@
+Announcement: cryptorandom 0.3.0
+================================
+
+We're happy to announce the release of cryptorandom v0.3.0!
+
+cryptorandom is a cryptographic quality PRNG and sampling module for Python.
+
+For more information, examples, and documentation, please visit our website:
+
+http://statlab.github.io/cryptorandom/
+
+
+New Features
+------------
+
+- added ``random_allocation``
+- added ``fast`` option to ``random_sample`` and ``sample_by_index``
+- better way to generate random integers using randbits
+- ``getrandbits`` uses cache of randombits to reduce calls to hash function
+- performance improvements by extending message rather than altering messages
+
+Improvements
+------------
+
+- removed old Python 2 shims
+- switched from nose to pytest
+
+Contributors to this release
+----------------------------
+
+- Philip Stark
+- Amanda Glazer
+- Jarrod Millman
