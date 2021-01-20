@@ -9,6 +9,6 @@ built on SHA-256.
 See https://statlab.github.io/cryptorandom/ for complete documentation.
 """
 
-__version__ = "0.3rc1.dev0"
+__version__ = "0.3rc1"
 
 from cryptorandom import *
