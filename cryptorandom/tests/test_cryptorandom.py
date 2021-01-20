@@ -8,8 +8,8 @@ def test_SHA256():
     Test that SHA256 prng is instantiated correctly
     """
     r = SHA256(5)
-    assert repr(r) == 'SHA256 PRNG with seed 5 and counter 0'
-    assert str(r) == 'SHA256 PRNG with seed 5 and counter 0'
+    assert repr(r) == 'SHA256 PRNG. seed: 5 counter: 0 randbits_remaining: 0'
+    assert str(r) == 'SHA256 PRNG. seed: 5 counter: 0 randbits_remaining: 0
 
     assert r.getstate() == (5, 0)
     r.next()
