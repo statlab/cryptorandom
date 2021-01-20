@@ -1,7 +1,7 @@
-Announcement: cryptorandom 0.X.0
+Announcement: cryptorandom 0.4.0
 ================================
 
-We're happy to announce the release of cryptorandom v0.X.0!
+We're happy to announce the release of cryptorandom v0.4.0!
 
 cryptorandom is a cryptographic quality PRNG and sampling module for Python.
 
