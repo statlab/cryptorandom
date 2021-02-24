@@ -13,10 +13,12 @@ How to make a new release of ``cryptorandom``
   3. Copy ``doc/release/release_template.txt`` to
      ``doc/release/release_dev.txt`` for the next release.
 
-- Update the version number in ``cryptorandom/__init__.py`` and commit::
+- Update the version number in ``cryptorandom/__init__.py`` by removing the
+  ``.dev0`` suffix, commit, and push::
 
     git add cryptorandom/__init__.py
-    git commit -m "Designate v0.X.0 release"
+    git commit -m "Designate <version> release"
+    git push <...>
 
 - Update the docs:
 
@@ -26,7 +28,7 @@ How to make a new release of ``cryptorandom``
 
 - Add the version number as a tag in git::
 
-   git tag v0.X.0
+   git tag -s cryptorandom-<version> -m 'signed <version> tag'
 
   (If you do not have a gpg key, use -m instead; it is important for
   Debian packaging that the tags are annotated)
@@ -46,9 +48,13 @@ How to make a new release of ``cryptorandom``
    python setup.py bdist_wheel
    twine upload dist/*
    
-- Increase the version number
+- On the main branch, update the version number in ``cryptorandom/__init__.py``
+  to the next ``.dev0`` version, commit, and push. For example, after the
+  ``0.3rc1`` release the version number should be updated to ``0.3rc2.dev0``.
 
-  - In ``setup.py``, set to ``0.Xdev``.
+    git add cryptorandom/__init__.py
+    git commit -m 'Bump version'
+    git push <...>
 
 - Update the development docs for the new version ``0.Xdev`` just like above
 
