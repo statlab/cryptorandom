@@ -25,7 +25,7 @@ with open("cryptorandom/__init__.py") as fid:
             VERSION = line.strip().split()[-1][1:-1]
             break
 
-with open("README.md") as fh:
+with open("README.rst") as fh:
     LONG_DESCRIPTION = fh.read()
 
 def parse_requirements_file(filename):
