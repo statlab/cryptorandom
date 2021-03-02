@@ -10,11 +10,6 @@ jobs:
       - checkout  # checkout source code to working directory
 
       - run:
-          name: Install TeX
-          command: |
-            sudo apt-get install texlive texlive-latex-extra latexmk texlive-xetex
-
-      - run:
           name: Install Python dependencies
           command: |
             python3 -m venv venv
@@ -35,8 +30,6 @@ jobs:
           command: |
             source venv/bin/activate
             make -C doc/ html
-            make -C doc/ latexpdf LATEXOPTS="-file-line-error -halt-on-error"
-            cp -a doc/build/latex/cryptorandom.pdf doc/build/html/.
 
       - store_artifacts:
           path: doc/build/html
