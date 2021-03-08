@@ -260,7 +260,7 @@ class SHA256(random.Random):
             return a + (int_from_hash(self.nextRandom()) % (b-a))
         else:
             return np.reshape(np.array([a + (int_from_hash(self.nextRandom()) % (b-a)) \
-                for i in np.arange(np.prod(size))]), size)
+                for i in range(np.prod(size))]), size)
 
 
     def getrandbits(self, k):
@@ -335,4 +335,4 @@ class SHA256(random.Random):
             return a + self.randbelow_from_randbits(b-a)
         else:
             return np.reshape(np.array([a + self.randbelow_from_randbits(b-a) \
-                for i in np.arange(np.prod(size))]), size)
+                for i in range(np.prod(size))]), size)
