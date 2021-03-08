@@ -94,12 +94,13 @@ class SHA256(random.Random):
         """
         >>> r = SHA256(5)
         >>> repr(r)
-        'SHA256 PRNG with seed 5 and counter 0'
+        'SHA256 PRNG. seed: 5 counter: 0 randbits_remaining: 0'
         >>> str(r)
-        'SHA256 PRNG with seed 5 and counter 0'
+        'SHA256 PRNG. seed: 5 counter: 0 randbits_remaining: 0'
         """
-        stringrepr = self.__class__.__name__ + " PRNG with seed " + \
-                    str(self.baseseed) + " and counter " + str(self.counter)
+        stringrepr = self.__class__.__name__ + " PRNG. seed: " + \
+                    str(self.baseseed) + " counter: " + str(self.counter) + \
+                    " randbits_remaining: " + str(self.randbits_remaining)
         return stringrepr
 
 
@@ -135,7 +136,7 @@ class SHA256(random.Random):
         self.randbits_remaining = 0
 
 
-    def setstate(self, baseseed=None, counter=0):
+    def setstate(self, baseseed=None, counter=0, randbits_remaining=0):
         """
         Set the state (seed and counter)
 
@@ -151,13 +152,14 @@ class SHA256(random.Random):
         (self.baseseed, self.counter) = (baseseed, counter)
         self._basehash()
         self.basehash.update(b'\x00'*counter)
+        self.randbits_remaining = randbits_remaining
 
 
     def getstate(self):
         """
         Get the current state of the PRNG
         """
-        return (self.baseseed, self.counter)
+        return (self.baseseed, self.counter, self.randbits_remaining)
 
 
     def jumpahead(self, n):
@@ -258,7 +260,7 @@ class SHA256(random.Random):
             return a + (int_from_hash(self.nextRandom()) % (b-a))
         else:
             return np.reshape(np.array([a + (int_from_hash(self.nextRandom()) % (b-a)) \
-                for i in np.arange(np.prod(size))]), size)
+                for i in range(np.prod(size))]), size)
 
 
     def getrandbits(self, k):
@@ -333,4 +335,4 @@ class SHA256(random.Random):
             return a + self.randbelow_from_randbits(b-a)
         else:
             return np.reshape(np.array([a + self.randbelow_from_randbits(b-a) \
-                for i in np.arange(np.prod(size))]), size)
+                for i in range(np.prod(size))]), size)
