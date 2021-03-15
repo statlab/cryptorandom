@@ -112,7 +112,7 @@ def random_sample(a, size, replace=False, fast=False, p=None, method="sample_by_
 
     if replace is False and p is None:
         try:
-            sam = np.array(methods[method](N, size), dtype=np.int) - 1 # shift to 0 indexing
+            sam = np.array(methods[method](N, size), dtype=np.int64) - 1 # shift to 0 indexing
         except ValueError:
             print("Sampling method is incompatible with the inputs")
     elif replace is True and method in ['Fisher-Yates', 'PIKK', 'recursive',
@@ -120,12 +120,12 @@ def random_sample(a, size, replace=False, fast=False, p=None, method="sample_by_
         raise ValueError("Method is meant for sampling without replacement")
     elif replace is True and method in ['sample_by_index']:
         try:
-            sam = np.array(methods[method](N, size), dtype=np.int) - 1 # shift to 0 indexing
+            sam = np.array(methods[method](N, size), dtype=np.int64) - 1 # shift to 0 indexing
         except ValueError:
             print("Sampling method is incompatible with the inputs")
     else:
         try:
-            sam = np.array(methods[method](size, p), dtype=np.int) - 1
+            sam = np.array(methods[method](size, p), dtype=np.int64) - 1
         except ValueError:
             print("Sampling method is incompatible with the inputs")
     return a[sam]
@@ -241,7 +241,7 @@ def random_permutation(a, method="Fisher-Yates", prng=None):
     }
 
     try:
-        sam = np.array(methods[method](N), dtype=np.int) - 1 # shift to 0 indexing
+        sam = np.array(methods[method](N), dtype=np.int64) - 1 # shift to 0 indexing
     except ValueError:
         print("Bad permutation algorithm")
     return a[sam]
@@ -330,7 +330,7 @@ def recursive_sample(n, k, prng=None):
     '''
     prng = get_prng(prng)
     if k == 0:
-        return np.empty(0, dtype=np.int)
+        return np.empty(0, dtype=np.int64)
     else:
         S = recursive_sample(n-1, k-1, prng=prng)
         i = prng.randint(1, n+1)
