@@ -50,3 +50,6 @@ terms & conditions for usage, and a DISCLAIMER OF ALL WARRANTIES.
    :target: https://github.com/statlab/cryptorandom/actions?query=workflow%3A%22test%22
 .. |Coverage Status| image:: https://codecov.io/gh/statlab/cryptorandom/branch/main/graph/badge.svg
    :target: https://app.codecov.io/gh/statlab/cryptorandom/branch/main
+
+
+This is a great contribution to the readme!
