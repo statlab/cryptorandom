@@ -1,36 +1,25 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>cryptorandom module &mdash; cryptorandom 0.2 documentation</title>
-    
-    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>cryptorandom module &#8212; cryptorandom 0.3 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="cryptorandom 0.2 documentation" href="../index.html" />
-    <link rel="up" title="Package documentation" href="index.html" />
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="sample module" href="sample.html" />
     <link rel="prev" title="Package documentation" href="index.html" /> 
-  </head>
-  <body role="document">
+  </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
-          <span>cryptorandom 0.2 documentation</span></a></h1>
+          <span>cryptorandom 0.3 documentation</span></a></h1>
         <h2 class="heading"><span>cryptorandom module</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
@@ -44,56 +33,137 @@
         </p>
 
       </div>
-      <div class="content">
+      <div class="content" role="main">
         
         
-  <div class="section" id="cryptorandom-module">
+  <section id="cryptorandom-module">
 <h1><cite>cryptorandom</cite> module<a class="headerlink" href="#cryptorandom-module" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="cryptorandom.cryptorandom.SHA256">
-<em class="property">class </em><code class="descname">SHA256</code><span class="sig-paren">(</span><em>seed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">SHA256</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256" title="Permalink to this definition">¶</a></dt>
 <dd><p>PRNG based on the SHA-256 cryptographic hash function.</p>
-<dl class="method">
-<dt id="cryptorandom.cryptorandom.SHA256.__repr__">
-<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.__repr__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.__repr__" title="Permalink to this definition">¶</a></dt>
-<dd><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">SHA256</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">repr</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
-<span class="go">&#39;SHA256 PRNG with seed 5 and counter 0&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
-<span class="go">&#39;SHA256 PRNG with seed 5 and counter 0&#39;</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">betavariate</span></code>(alpha, beta)</p></td>
+<td><p>Beta distribution.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">choice</span></code>(seq)</p></td>
+<td><p>Choose a random element from a non-empty sequence.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">choices</span></code>(population[, weights, cum_weights, k])</p></td>
+<td><p>Return a k sized list of population elements chosen with replacement.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">expovariate</span></code>(lambd)</p></td>
+<td><p>Exponential distribution.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">gammavariate</span></code>(alpha, beta)</p></td>
+<td><p>Gamma distribution.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">gauss</span></code>(mu, sigma)</p></td>
+<td><p>Gaussian distribution.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cryptorandom.cryptorandom.SHA256.getrandbits" title="cryptorandom.cryptorandom.SHA256.getrandbits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getrandbits</span></code></a>(k)</p></td>
+<td><p>Generate k pseudorandom bits.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#cryptorandom.cryptorandom.SHA256.getstate" title="cryptorandom.cryptorandom.SHA256.getstate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getstate</span></code></a>()</p></td>
+<td><p>Get the current state of the PRNG</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cryptorandom.cryptorandom.SHA256.jumpahead" title="cryptorandom.cryptorandom.SHA256.jumpahead"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jumpahead</span></code></a>(n)</p></td>
+<td><p>Jump ahead n steps in the period</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lognormvariate</span></code>(mu, sigma)</p></td>
+<td><p>Log normal distribution.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cryptorandom.cryptorandom.SHA256.next" title="cryptorandom.cryptorandom.SHA256.next"><code class="xref py py-obj docutils literal notranslate"><span class="pre">next</span></code></a>()</p></td>
+<td><p>Increment the counter and basehash by one</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#cryptorandom.cryptorandom.SHA256.nextRandom" title="cryptorandom.cryptorandom.SHA256.nextRandom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nextRandom</span></code></a>()</p></td>
+<td><p>Generate the next hash value</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">normalvariate</span></code>(mu, sigma)</p></td>
+<td><p>Normal distribution.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">paretovariate</span></code>(alpha)</p></td>
+<td><p>Pareto distribution.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cryptorandom.cryptorandom.SHA256.randbelow_from_randbits" title="cryptorandom.cryptorandom.SHA256.randbelow_from_randbits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">randbelow_from_randbits</span></code></a>(n)</p></td>
+<td><p>Generate a random integer between 0 (inclusive) and n (exclusive).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">randbytes</span></code>(n)</p></td>
+<td><p>Generate n random bytes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cryptorandom.cryptorandom.SHA256.randint" title="cryptorandom.cryptorandom.SHA256.randint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">randint</span></code></a>(a, b[, size])</p></td>
+<td><p>Generate random integers between a (inclusive) and b (exclusive).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#cryptorandom.cryptorandom.SHA256.randint_trunc" title="cryptorandom.cryptorandom.SHA256.randint_trunc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">randint_trunc</span></code></a>(a, b[, size])</p></td>
+<td><p>Deprecated.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cryptorandom.cryptorandom.SHA256.random" title="cryptorandom.cryptorandom.SHA256.random"><code class="xref py py-obj docutils literal notranslate"><span class="pre">random</span></code></a>([size])</p></td>
+<td><p>Generate random numbers between 0 and 1.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">randrange</span></code>(start[, stop, step])</p></td>
+<td><p>Choose a random item from range(start, stop[, step]).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample</span></code>(population, k, *[, counts])</p></td>
+<td><p>Chooses k unique random elements from a population sequence or set.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#cryptorandom.cryptorandom.SHA256.seed" title="cryptorandom.cryptorandom.SHA256.seed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">seed</span></code></a>([baseseed])</p></td>
+<td><p>Initialize internal seed and hashable object with counter 0.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cryptorandom.cryptorandom.SHA256.setstate" title="cryptorandom.cryptorandom.SHA256.setstate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setstate</span></code></a>([baseseed, counter, randbits_remaining])</p></td>
+<td><p>Set the state (seed and counter)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">shuffle</span></code>(x[, random])</p></td>
+<td><p>Shuffle list x in place, and return None.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">triangular</span></code>([low, high, mode])</p></td>
+<td><p>Triangular distribution.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">uniform</span></code>(a, b)</p></td>
+<td><p>Get a random number in the range [a, b) or [a, b] depending on rounding.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vonmisesvariate</span></code>(mu, kappa)</p></td>
+<td><p>Circular data distribution.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">weibullvariate</span></code>(alpha, beta)</p></td>
+<td><p>Weibull distribution.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
 <dt id="cryptorandom.cryptorandom.SHA256.getrandbits">
-<code class="descname">getrandbits</code><span class="sig-paren">(</span><em>k</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.getrandbits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.getrandbits" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">getrandbits</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.getrandbits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.getrandbits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate k pseudorandom bits.</p>
 <p>If self.randbits contains at least k bits, returns k of those bits and removes them.
 If self.randbits has fewer than k bits, calls self.nextRandom() as many times as needed to
 populate self.randbits with at least k random bits, returns those k, and keeps
 any remaining bits in self.randbits</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>k</strong> (<em>int</em>) &#8211; number of pseudorandom bits</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>k</strong><span class="classifier">int</span></dt><dd><p>number of pseudorandom bits</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="cryptorandom.cryptorandom.SHA256.getstate">
-<code class="descname">getstate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.getstate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.getstate" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">getstate</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.getstate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.getstate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the current state of the PRNG</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="cryptorandom.cryptorandom.SHA256.jumpahead">
-<code class="descname">jumpahead</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.jumpahead"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.jumpahead" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">jumpahead</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.jumpahead"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.jumpahead" title="Permalink to this definition">¶</a></dt>
 <dd><p>Jump ahead n steps in the period</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">SHA256</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">SHA256</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">jumpahead</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">repr</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
 <span class="go">&#39;SHA256 PRNG with seed 5 and counter 5&#39;</span>
@@ -101,17 +171,17 @@ any remaining bits in self.randbits</p>
 </div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="cryptorandom.cryptorandom.SHA256.next">
-<code class="descname">next</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.next"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.next" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">next</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.next"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.next" title="Permalink to this definition">¶</a></dt>
 <dd><p>Increment the counter and basehash by one</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="cryptorandom.cryptorandom.SHA256.nextRandom">
-<code class="descname">nextRandom</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.nextRandom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.nextRandom" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">nextRandom</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.nextRandom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.nextRandom" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the next hash value</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">SHA256</span><span class="p">(</span><span class="mi">12345678901234567890</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">SHA256</span><span class="p">(</span><span class="mi">12345678901234567890</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">nextRandom</span><span class="p">()</span>
 <span class="go">4da594a8ab6064d666eab2bdf20cb4480e819e0c3102ca353de57caae1d11fd1</span>
@@ -119,86 +189,84 @@ any remaining bits in self.randbits</p>
 </div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="cryptorandom.cryptorandom.SHA256.randbelow_from_randbits">
-<code class="descname">randbelow_from_randbits</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.randbelow_from_randbits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.randbelow_from_randbits" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">randbelow_from_randbits</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.randbelow_from_randbits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.randbelow_from_randbits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a random integer between 0 (inclusive) and n (exclusive).
 Raises ValueError if n==0.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n</strong> (<em>int</em>) &#8211; upper limit</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>upper limit</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="cryptorandom.cryptorandom.SHA256.randint">
-<code class="descname">randint</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>size=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.randint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.randint" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">randint</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.randint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.randint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate random integers between a (inclusive) and b (exclusive).
 size controls the number of ints generated. If size=None, just one is produced.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">SHA256</span><span class="p">(</span><span class="mi">12345678901234567890</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">SHA256</span><span class="p">(</span><span class="mi">12345678901234567890</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="go">array([3, 2, 4])</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>a</strong> (<em>int</em>) &#8211; lower limit (included in samples)</li>
-<li><strong>b</strong> (<em>int</em>) &#8211; upper limit (not included in samples)</li>
-<li><strong>size</strong> (<em>{int, tuple, None}</em>) &#8211; If None (default), return a single random number.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>a</strong><span class="classifier">int</span></dt><dd><p>lower limit (included in samples)</p>
+</dd>
+<dt><strong>b</strong><span class="classifier">int</span></dt><dd><p>upper limit (not included in samples)</p>
+</dd>
+<dt><strong>size</strong><span class="classifier">{int, tuple, None}</span></dt><dd><p>If None (default), return a single random number.
 If size is an int, return that many random numbers.
 If size is a tuple, it determines the shape of an array
-filled with random numbers.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
+filled with random numbers.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="cryptorandom.cryptorandom.SHA256.randint_trunc">
-<code class="descname">randint_trunc</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>size=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.randint_trunc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.randint_trunc" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">randint_trunc</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.randint_trunc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.randint_trunc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deprecated. For large values of (b-a), this algorithm does not produce integers
 uniformly at random.</p>
 <p>Generate random integers between a (inclusive) and b (exclusive).
 size controls the number of ints generated. If size=None, just one is produced.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">SHA256</span><span class="p">(</span><span class="mi">12345678901234567890</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">SHA256</span><span class="p">(</span><span class="mi">12345678901234567890</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">randint_trunc</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="go">array([0, 0, 0])</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>a</strong> (<em>int</em>) &#8211; lower limit (included in samples)</li>
-<li><strong>b</strong> (<em>int</em>) &#8211; upper limit (not included in samples)</li>
-<li><strong>size</strong> (<em>{int, tuple, None}</em>) &#8211; If None (default), return a single random number.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>a</strong><span class="classifier">int</span></dt><dd><p>lower limit (included in samples)</p>
+</dd>
+<dt><strong>b</strong><span class="classifier">int</span></dt><dd><p>upper limit (not included in samples)</p>
+</dd>
+<dt><strong>size</strong><span class="classifier">{int, tuple, None}</span></dt><dd><p>If None (default), return a single random number.
 If size is an int, return that many random numbers.
 If size is a tuple, it determines the shape of an array
-filled with random numbers.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
+filled with random numbers.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="cryptorandom.cryptorandom.SHA256.random">
-<code class="descname">random</code><span class="sig-paren">(</span><em>size=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.random"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.random" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">random</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.random"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.random" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate random numbers between 0 and 1.
 size controls the number of ints generated. If size=None, just one is produced.
-The following tests match the output of Ron&#8217;s and Philip&#8217;s implementations.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">SHA256</span><span class="p">(</span><span class="mi">12345678901234567890</span><span class="p">)</span>
+The following tests match the output of Ron’s and Philip’s implementations.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">SHA256</span><span class="p">(</span><span class="mi">12345678901234567890</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="go">array([0.9272915426537484, 0.1916135318809483], dtype=object)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
@@ -206,62 +274,62 @@ The following tests match the output of Ron&#8217;s and Philip&#8217;s implement
 <span class="go">       [0.9022661737961881, 0.052310932788987144]], dtype=object)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>size</strong> (<em>{int, tuple, None}</em>) &#8211; If None (default), return a single random number.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>size</strong><span class="classifier">{int, tuple, None}</span></dt><dd><p>If None (default), return a single random number.
 If size is an int, return that many random numbers.
 If size is a tuple, it determines the shape of an array
-filled with random numbers.</td>
-</tr>
-</tbody>
-</table>
+filled with random numbers.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="cryptorandom.cryptorandom.SHA256.seed">
-<code class="descname">seed</code><span class="sig-paren">(</span><em>baseseed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.seed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.seed" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">seed</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">baseseed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.seed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.seed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize internal seed and hashable object with counter 0.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>baseseed</strong> (<em>{None, int, string} (optional)</em>) &#8211; Random seed used to initialize the PRNG. It can be an integer of arbitrary length,
-a string of arbitrary length, or <cite>None</cite>. Default is <cite>None</cite>.</li>
-<li><strong>counter</strong> (<em>int (optional)</em>) &#8211; Integer that counts how many times the PRNG has been called. The counter
-is used to update the internal state after each step. Default is 0.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>baseseed</strong><span class="classifier">{None, int, string} (optional)</span></dt><dd><p>Random seed used to initialize the PRNG. It can be an integer of arbitrary length,
+a string of arbitrary length, or <cite>None</cite>. Default is <cite>None</cite>.</p>
+</dd>
+<dt><strong>counter</strong><span class="classifier">int (optional)</span></dt><dd><dl class="simple">
+<dt>Integer that counts how many times the PRNG has been called. The counter</dt><dd><p>is used to update the internal state after each step. Default is 0.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="cryptorandom.cryptorandom.SHA256.setstate">
-<code class="descname">setstate</code><span class="sig-paren">(</span><em>baseseed=None</em>, <em>counter=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.setstate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.setstate" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">setstate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">baseseed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">counter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">randbits_remaining</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cryptorandom/cryptorandom.html#SHA256.setstate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptorandom.cryptorandom.SHA256.setstate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the state (seed and counter)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>baseseed</strong> (<em>{None, int, string} (optional)</em>) &#8211; Random seed used to initialize the PRNG. It can be an integer of arbitrary length,
-a string of arbitrary length, or <cite>None</cite>. Default is <cite>None</cite>.</li>
-<li><strong>counter</strong> (<em>int (optional)</em>) &#8211; Integer that counts how many times the PRNG has been called. The counter
-is used to update the internal state after each step. Default is 0.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>baseseed</strong><span class="classifier">{None, int, string} (optional)</span></dt><dd><p>Random seed used to initialize the PRNG. It can be an integer of arbitrary length,
+a string of arbitrary length, or <cite>None</cite>. Default is <cite>None</cite>.</p>
+</dd>
+<dt><strong>counter</strong><span class="classifier">int (optional)</span></dt><dd><dl class="simple">
+<dt>Integer that counts how many times the PRNG has been called. The counter</dt><dd><p>is used to update the internal state after each step. Default is 0.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
-</div>
+</section>
 
 
       </div>
@@ -278,8 +346,8 @@ is used to update the internal state after each step. Default is 0.</li>
       </div>
 
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2018, Kellie Ottoboni and Philip B. Stark.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+        &#169; Copyright 2018-2021, Kellie Ottoboni and Philip B. Stark.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.1.
     </div>
   </body>
 </html>
