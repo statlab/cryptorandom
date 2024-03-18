@@ -316,7 +316,7 @@ def test_random_allocation():
     samples = random_allocation(10, [5, 5], replace = False)
     assert all(x in np.arange(10) for x in samples[0])
     assert all(x in np.arange(10) for x in samples[1])
-    assert np.sum(samples) == np.sum(np.arange(10))
+    assert set(samples[0]) + set(samples[1]) == set(np.arange(10))
     
     # test with replacement
     a = [1, 2, 2, 3, 3]

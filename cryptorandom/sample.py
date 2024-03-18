@@ -179,20 +179,20 @@ def random_allocation(a, sizes, replace=False, fast=False, p=None, method="sampl
         raise ValueError('sample sizes greater than population size')
         
     samples = [0] * len(sizes)
-    # sort sizes from smallest to largest
-    sizes.sort()
-    # get random samples for all the groups except the largest one
-    for i in range(len(sizes) - 1):
+    # get random samples for all the groups except the largest one. Work from smallest to largest for numerical stability
+    size_increasing_inx = argsort(sizes)
+    biggest = size_increasing_inx[-1]
+    for i in size_increasing_inx[:-1]:
         sam = random_sample(list(indices), sizes[i], replace, fast, p, method, prng)
         samples[i] = a[sam]
         if not replace:
             indices = set(indices) - set(sam)
     # get the sample for the largest group
-    if not replace and N == np.sum(sizes):
+    if (not replace) and N == np.sum(sizes) and fast:
         sam = list(indices)
     else:
-        sam = random_sample(list(indices), sizes[-1], replace, fast, p, method, prng)
-    samples[-1] = a[sam]
+        sam = random_sample(list(indices), sizes[biggest], replace, fast, p, method, prng)
+    samples[biggest] = a[sam]
     
     return samples
             
