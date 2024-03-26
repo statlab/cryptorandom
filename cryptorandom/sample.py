@@ -186,7 +186,7 @@ def random_allocation(a, sizes, replace=False, fast=False, p=None, method="sampl
         sam = random_sample(list(indices), sizes[i], replace, fast, p, method, prng)
         samples[i] = a[sam]
         if not replace:
-            indices = set(indices) - set(sam)
+            indices = list(set(indices) - set(sam))
     # get the sample for the largest group
     if (not replace) and N == np.sum(sizes) and fast:
         sam = list(indices)
