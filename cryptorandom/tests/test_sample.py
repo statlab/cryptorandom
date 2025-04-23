@@ -313,10 +313,14 @@ def test_permute_by_index():
     
 def test_random_allocation():
     # test random allocation without replacement
-    samples = random_allocation(10, [5, 5], replace = False)
-    assert all(x in np.arange(10) for x in samples[0])
-    assert all(x in np.arange(10) for x in samples[1])
-    assert np.sum(samples) == np.sum(np.arange(10))
+    samples = random_allocation(15, [6, 4, 5], replace = False)
+    assert len(samples[0]) == 6
+    assert len(samples[1]) == 4
+    assert len(samples[2]) == 5
+    assert all(x in np.arange(15) for x in samples[0])
+    assert all(x in np.arange(15) for x in samples[1])
+    assert all(x in np.arange(15) for x in samples[2])
+    assert set(samples[0]) | set(samples[1]) | set(samples[2]) == set(np.arange(15))
     
     # test with replacement
     a = [1, 2, 2, 3, 3]
@@ -324,8 +328,6 @@ def test_random_allocation():
     samples = random_allocation(a, sizes, replace = True)
     assert all(x in a for x in samples[0])
     assert all(x in a for x in samples[1])
-    # test that smallest sample is sample first
-    assert len(samples[0]) == np.min(sizes) 
     
     # test when sum of sample sizes is less than population size
     a = [1, 2, 2, 3, 3]
