@@ -180,7 +180,7 @@ def random_allocation(a, sizes, replace=False, fast=False, p=None, method="sampl
         
     samples = [0] * len(sizes)
     # get random samples for all the groups except the largest one. Work from smallest to largest for numerical stability
-    size_increasing_inx = argsort(sizes)
+    size_increasing_inx = np.argsort(sizes)
     biggest = size_increasing_inx[-1]
     for i in size_increasing_inx[:-1]:
         sam = random_sample(list(indices), sizes[i], replace, fast, p, method, prng)
