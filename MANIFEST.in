@@ -1,0 +1,2 @@
+include requirements/default.txt
+include requirements/test.txt
