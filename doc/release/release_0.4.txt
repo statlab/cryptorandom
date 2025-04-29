@@ -1,7 +1,7 @@
 Announcement: cryptorandom 0.4.0
 ================================
 
-We're happy to announce the release of cryptorandom v0.5.0!
+We're happy to announce the release of cryptorandom v0.4.0!
 
 cryptorandom is a cryptographic quality PRNG and sampling module for Python.
 
@@ -15,9 +15,9 @@ New Features
 
 
 
-
 Improvements
 ------------
+sample.random_allocation() returns the samples in the size-order requested. The previous version returned them from smallest to largest.
 
 
 
@@ -35,4 +35,5 @@ Deprecations
 Contributors to this release
 ----------------------------
 (Listed alphabetically by last name)
+Stark, Philip B.
 

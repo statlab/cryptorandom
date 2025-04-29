@@ -3,9 +3,9 @@ from setuptools import setup
 
 
 
-if sys.version_info[:2] < (3, 7):
+if sys.version_info[:2] < (3, 11):
     error = (
-        "cryptorandom 0.3+ requires Python 3.7 or later (%d.%d detected). \n"
+        "cryptorandom 0.4+ requires Python 3.11 or later (%d.%d detected). \n"
         % sys.version_info[:2]
     )
     sys.stderr.write(error + "\n")
@@ -53,15 +53,15 @@ if __name__ == "__main__":
         download_url=DOWNLOAD_URL,
 
         classifiers=[
-            'Development Status :: 3 - Alpha',
+            'Development Status :: 4 - Alpha',
             'Environment :: Console',
             'Intended Audience :: Developers',
             'Intended Audience :: Science/Research',
             'License :: OSI Approved :: BSD License',
             'Programming Language :: Python',
-            'Programming Language :: Python :: 3.7',
-            'Programming Language :: Python :: 3.8',
-            'Programming Language :: Python :: 3.9',
+            'Programming Language :: Python :: 3.11',
+            'Programming Language :: Python :: 3.12',
+            'Programming Language :: Python :: 3.13',
             'Topic :: Scientific/Engineering',
             'Operating System :: Microsoft :: Windows',
             'Operating System :: POSIX',
