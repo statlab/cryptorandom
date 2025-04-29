@@ -13,8 +13,8 @@ if sys.version_info[:2] < (3, 11):
 
 DISTNAME = 'cryptorandom'
 DESCRIPTION = 'Pseudorandom number generator and random sampling using cryptographic hash functions'
-AUTHOR = 'Kellie Ottoboni and Philip B. Stark'
-AUTHOR_EMAIL = 'kellieotto@berkeley.edu'
+AUTHOR = 'Amanda Glazer, Kellie Ottoboni, Philip B. Stark'
+AUTHOR_EMAIL = 'pbstark@berkeley.edu'
 URL = 'http://www.github.com/statlab/cryptorandom'
 LICENSE = 'BSD License'
 DOWNLOAD_URL = 'http://www.github.com/statlab/cryptorandom'
